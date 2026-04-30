@@ -2069,8 +2069,9 @@ let userProfile = {
 let savedAddresses = [];
 let defaultAddressIdx = 0;
 let selectedAddrType = "Home";
-let orderHistory = [];
-let freeshippingUsed = false;
+// Load order history from localStorage on startup
+let orderHistory = JSON.parse(localStorage.getItem("99f_orders") || "[]");
+let freeshippingUsed = localStorage.getItem("99f_freeship") === "true";
 
 // ===== GOOGLE SIGN-IN + QUICK LOGIN =====
 
@@ -2855,6 +2856,9 @@ function addToOrderHistory(total){
   });
   // Mark free shipping coupon as used after first order
   freeshippingUsed = true;
+  // Save to localStorage so history persists after refresh
+  localStorage.setItem("99f_orders", JSON.stringify(orderHistory));
+  localStorage.setItem("99f_freeship", "true");
   document.getElementById("profileOrderCount").innerText = orderHistory.length;
 }
 
