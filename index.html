@@ -250,7 +250,7 @@ box-shadow:0 30px 80px rgba(0,0,0,0.6);
 }
 .nav-title{font-size:18px;font-weight:800;color:#fff;letter-spacing:-0.5px}
 .nav-sub{font-size:11px;color:#ff4d4d;font-weight:600}
-.nav-search-wrap{flex:1;position:relative;max-width:420px;margin:0 auto}
+.nav-search-wrap{flex:1;position:relative;max-width:420px;margin:0 auto;min-width:0;}
 .nav-search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:14px}
 .search{
   width:100%;padding:10px 12px 10px 36px;
@@ -339,10 +339,10 @@ box-shadow:0 30px 80px rgba(0,0,0,0.6);
 }
 @keyframes spin-slow{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
 @media(max-width:600px){
-  .nav-search-wrap{display:none}
-  .navbar{padding:10px 12px;}
+  .nav-search-wrap{display:none !important;flex:0 !important;width:0 !important;margin:0 !important;padding:0 !important;}
+  .navbar{padding:10px 12px;gap:8px;}
   .nav-btn{width:38px;height:38px;font-size:16px;}
-  .nav-actions{gap:6px;}
+  .nav-actions{gap:6px;margin-left:auto;}
   .hero-banner{padding:20px 16px}
   .hero-title{font-size:24px;-webkit-text-fill-color:#fff}
   .hero-img{width:130px;height:110px}
@@ -579,7 +579,6 @@ box-shadow:0 30px 80px rgba(0,0,0,0.6);
 @media(max-width:600px){
   .container{grid-template-columns:repeat(2,1fr);gap:10px;padding:0 12px 16px}
   .hero-title{font-size:20px}
-  .nav-search-wrap{display:none}
 }
 
 /* ── PROMO STRIP ── */
