@@ -1,0 +1,2964 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>99Foodies — Good Food, Great Mood!</title>
+
+<!-- ══ PWA META TAGS ══ -->
+<meta name="application-name" content="99Foodies">
+<meta name="description" content="Order fresh food delivered fast to your door in 30 minutes">
+<meta name="theme-color" content="#ff4d4d">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="99Foodies">
+<meta name="msapplication-TileColor" content="#ff4d4d">
+<meta name="msapplication-tap-highlight" content="no">
+
+<!-- ══ PWA MANIFEST ══ -->
+<link rel="manifest" href="manifest.json">
+
+<!-- ══ APPLE TOUCH ICONS ══ -->
+<link rel="apple-touch-icon" href="https://via.placeholder.com/180x180/ff4d4d/ffffff?text=99F">
+<link rel="apple-touch-icon" sizes="152x152" href="https://via.placeholder.com/152x152/ff4d4d/ffffff?text=99F">
+<link rel="apple-touch-icon" sizes="180x180" href="https://via.placeholder.com/180x180/ff4d4d/ffffff?text=99F">
+<link rel="apple-touch-icon" sizes="167x167" href="https://via.placeholder.com/167x167/ff4d4d/ffffff?text=99F">
+
+<!-- ══ SPLASH SCREENS (iOS) ══ -->
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+<!-- ══ OPEN GRAPH ══ -->
+<meta property="og:title" content="99Foodies — Good Food, Great Mood!">
+<meta property="og:description" content="Order fresh food delivered fast">
+<meta property="og:type" content="website">
+
+<!-- ══ FONTS ══ -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+<!-- ══ FIREBASE ══ -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script>
+  const firebaseConfig = {
+    apiKey:            "AIzaSyAZCz1vhVC77twHwA7wxpyMu3lwodIw3Ek",
+    authDomain:        "foodies-44cd3.firebaseapp.com",
+    projectId:         "foodies-44cd3",
+    storageBucket:     "foodies-44cd3.firebasestorage.app",
+    messagingSenderId: "735776291980",
+    appId:             "1:735776291980:web:8c7292442ddc421b6e0fa9"
+  };
+  firebase.initializeApp(firebaseConfig);
+  window._fbAuth = firebase.auth();
+  console.log("✅ Firebase loaded");
+</script>
+
+<style>
+body{
+margin:0;
+font-family:'Poppins',sans-serif;
+color:white;
+/* Safe area for iPhone notch */
+padding-top: env(safe-area-inset-top);
+padding-bottom: env(safe-area-inset-bottom);
+
+/* CAFE BACKGROUND */
+background:linear-gradient(rgba(0,0,0,0.75),rgba(0,0,0,0.75)),
+url('https://images.unsplash.com/photo-1504674900247-0877df9cc836');
+background-size:cover;
+background-attachment:fixed;
+}
+
+/* LOGIN — OTP FLOW */
+.login{
+position:fixed;top:0;left:0;width:100%;height:100%;
+background:linear-gradient(135deg,rgba(0,0,0,0.88) 0%,rgba(20,0,0,0.93) 100%),
+url('https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=1200');
+background-size:cover;
+background-position:center;
+display:flex;justify-content:center;align-items:center;
+flex-direction:column;
+z-index:9999;
+overflow-y:auto;
+padding:20px 0;
+}
+.login-card{
+background:rgba(255,255,255,0.04);
+backdrop-filter:blur(24px);
+-webkit-backdrop-filter:blur(24px);
+border:1px solid rgba(255,255,255,0.09);
+border-radius:28px;
+padding:36px 32px 32px;
+width:100%;
+max-width:390px;
+box-shadow:0 30px 80px rgba(0,0,0,0.6);
+}
+.login-logo{text-align:center;margin-bottom:24px;}
+.login-logo-img{
+  width:100px;height:100px;
+  display:block;margin:0 auto 10px;
+  border-radius:50%;
+  filter:drop-shadow(0 4px 24px rgba(255,165,0,0.4));
+}
+.login-logo h2{margin:0 0 2px;font-size:22px;font-weight:800;color:#fff;letter-spacing:-0.5px}
+.login-logo p{margin:0;color:#888;font-size:12px;}
+
+/* GOOGLE SIGN IN BUTTON */
+.google-signin-btn{
+  width:100%;padding:14px;
+  background:#fff;color:#1a1a1a;
+  border:none;border-radius:14px;
+  font-size:15px;font-weight:600;font-family:Poppins;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;gap:12px;
+  transition:0.2s;box-shadow:0 2px 12px rgba(0,0,0,0.3);
+  margin-bottom:6px;
+}
+.google-signin-btn:hover{background:#f5f5f5;transform:translateY(-1px);box-shadow:0 4px 20px rgba(0,0,0,0.4);}
+.google-signin-btn:disabled{opacity:0.6;cursor:not-allowed;transform:none;}
+.login-divider-line{
+  display:flex;align-items:center;margin:16px 0;
+}
+.login-divider-line span:first-child,
+.login-divider-line span:last-child{
+  flex:1;height:1px;background:#2a2a2a;
+}
+
+/* INPUT GROUP */
+.login-input-group{position:relative;margin-bottom:14px;}
+.login-input-group .lig-icon{
+  position:absolute;left:14px;top:50%;transform:translateY(-50%);
+  font-size:16px;line-height:1;
+}
+.login-input-group input{
+  width:100%;padding:14px 14px 14px 44px;
+  background:rgba(255,255,255,0.06);
+  border:1.5px solid rgba(255,255,255,0.1);
+  border-radius:14px;color:#fff;font-size:15px;
+  font-family:Poppins;outline:none;box-sizing:border-box;transition:0.2s;
+}
+.login-input-group input::placeholder{color:#555}
+.login-input-group input:focus{border-color:#ff4d4d;background:rgba(255,77,77,0.07);}
+
+/* PHONE ROW */
+.phone-row{display:flex;gap:8px;margin-bottom:14px;}
+.phone-code{
+  padding:14px 12px;background:rgba(255,255,255,0.06);
+  border:1.5px solid rgba(255,255,255,0.1);border-radius:14px;
+  color:#fff;font-size:14px;font-weight:700;white-space:nowrap;
+  display:flex;align-items:center;gap:6px;flex-shrink:0;
+}
+.phone-input{
+  flex:1;padding:14px;
+  background:rgba(255,255,255,0.06);
+  border:1.5px solid rgba(255,255,255,0.1);
+  border-radius:14px;color:#fff;font-size:15px;
+  font-family:Poppins;outline:none;box-sizing:border-box;transition:0.2s;
+  letter-spacing:1px;
+}
+.phone-input:focus{border-color:#ff4d4d;background:rgba(255,77,77,0.07);}
+.phone-input::placeholder{color:#555;letter-spacing:0;}
+
+/* OTP BOXES */
+.otp-row{display:flex;gap:10px;justify-content:center;margin:8px 0 18px;}
+.otp-box{
+  width:52px;height:58px;
+  background:rgba(255,255,255,0.06);
+  border:1.5px solid rgba(255,255,255,0.12);
+  border-radius:14px;color:#fff;
+  font-size:24px;font-weight:800;font-family:Poppins;
+  text-align:center;outline:none;
+  transition:0.2s;caret-color:#ff4d4d;
+}
+.otp-box:focus{border-color:#ff4d4d;background:rgba(255,77,77,0.08);box-shadow:0 0 0 3px rgba(255,77,77,0.15);}
+.otp-box.filled{border-color:#ff4d4d55;color:#fff;}
+
+/* RESEND */
+.otp-resend-row{text-align:center;margin-bottom:16px;}
+.otp-timer{font-size:13px;color:#666;}
+.otp-timer span{color:#ff4d4d;font-weight:700;}
+.otp-resend-btn{
+  background:none;border:none;color:#ff4d4d;
+  font-size:13px;font-weight:700;font-family:Poppins;
+  cursor:pointer;padding:0;display:none;
+}
+.otp-resend-btn:hover{text-decoration:underline;}
+
+/* SENT BADGE */
+.otp-sent-badge{
+  display:flex;align-items:center;gap:8px;
+  background:#0d2e1f;border:1px solid #1e4a2f;
+  border-radius:12px;padding:10px 14px;margin-bottom:16px;
+  font-size:12px;color:#4caf50;
+}
+
+/* MAIN BUTTON */
+.login-btn{
+  width:100%;padding:15px;
+  background:linear-gradient(135deg,#ff4d4d,#ff1a1a);
+  color:white;border:none;border-radius:14px;
+  font-size:16px;font-weight:700;font-family:Poppins;
+  cursor:pointer;margin-top:4px;transition:0.2s;
+  box-shadow:0 4px 20px rgba(255,77,77,0.4);
+  display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.login-btn:hover{transform:translateY(-1px);box-shadow:0 6px 25px rgba(255,77,77,0.55);}
+.login-btn:disabled{background:#333;color:#666;cursor:not-allowed;box-shadow:none;transform:none;}
+.login-btn-back{
+  width:100%;padding:12px;margin-top:8px;
+  background:transparent;border:1.5px solid #2a2a2a;
+  color:#888;border-radius:14px;font-size:14px;font-weight:600;
+  font-family:Poppins;cursor:pointer;transition:0.2s;
+}
+.login-btn-back:hover{border-color:#444;color:#fff;}
+
+/* ERROR */
+#loginError{
+  display:none;background:#ff4d4d18;border:1px solid #ff4d4d44;
+  border-radius:10px;padding:10px 14px;font-size:13px;color:#ff6b6b;
+  margin-bottom:12px;text-align:center;
+}
+
+.login-footer{
+  text-align:center;margin-top:20px;color:#444;font-size:11px;line-height:1.6;
+}
+@media(max-width:420px){
+  .login-card{padding:28px 20px 24px;border-radius:20px;}
+  .otp-box{width:44px;height:52px;font-size:20px;}
+}
+@keyframes popIn{0%{transform:scale(0.5);opacity:0}70%{transform:scale(1.15)}100%{transform:scale(1);opacity:1}}
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+
+/* NAV */
+.navbar{
+  display:flex;align-items:center;gap:12px;
+  padding:10px 20px;
+  background:rgba(8,8,8,0.97);
+  backdrop-filter:blur(24px);
+  -webkit-backdrop-filter:blur(24px);
+  border-bottom:1px solid rgba(255,255,255,0.06);
+  position:sticky;top:0;z-index:500;
+  box-shadow:0 4px 24px rgba(0,0,0,0.4);
+}
+.nav-brand{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.nav-logo-img{
+  width:48px;height:48px;
+  object-fit:contain;border-radius:50%;
+  filter:drop-shadow(0 2px 8px rgba(255,165,0,0.3));
+}
+.nav-title{font-size:18px;font-weight:800;color:#fff;letter-spacing:-0.5px}
+.nav-sub{font-size:11px;color:#ff4d4d;font-weight:600}
+.nav-search-wrap{flex:1;position:relative;max-width:420px;margin:0 auto}
+.nav-search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:14px}
+.search{
+  width:100%;padding:10px 12px 10px 36px;
+  border-radius:12px;border:1px solid #2a2a2a;
+  background:#1a1a1a;color:#fff;font-family:Poppins;font-size:14px;
+  outline:none;box-sizing:border-box;transition:0.2s;
+}
+.search:focus{border-color:#ff4d4d;background:#1e1010}
+.search::placeholder{color:#555}
+.nav-actions{display:flex;gap:8px;flex-shrink:0}
+.nav-btn{
+  width:42px;height:42px;background:#111;border:1px solid #222;
+  border-radius:12px;font-size:18px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:0.2s;color:#fff;position:relative;
+}
+.nav-btn:hover{background:#1a1a1a;border-color:#333;transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,0.3)}
+.cart-badge{
+  position:absolute;top:-6px;right:-6px;
+  background:#ff3b30;color:#fff;border-radius:50%;
+  width:18px;height:18px;font-size:10px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;line-height:1;
+  border:2px solid #0a0a0a;
+}
+
+/* ── ENHANCED HERO ── */
+.hero-banner{
+  display:flex;align-items:center;justify-content:space-between;
+  background:linear-gradient(135deg,#0a0a0a 0%,#1a0505 40%,#0d0d0d 100%);
+  padding:36px 32px;gap:20px;overflow:hidden;position:relative;
+  border-bottom:1px solid #1a1a1a;
+  min-height:220px;
+}
+.hero-banner::before{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse at 20% 50%,rgba(255,77,77,0.15) 0%,transparent 60%),
+    radial-gradient(ellipse at 80% 20%,rgba(255,165,0,0.06) 0%,transparent 50%);
+}
+.hero-banner::after{
+  content:'';position:absolute;
+  top:-60px;right:280px;
+  width:300px;height:300px;
+  background:radial-gradient(circle,rgba(255,77,77,0.08),transparent 70%);
+  border-radius:50%;
+  pointer-events:none;
+}
+.hero-content{flex:1;position:relative;z-index:1}
+.hero-tag{
+  display:inline-flex;align-items:center;gap:6px;
+  background:linear-gradient(135deg,#ff4d4d22,#ff4d4d11);
+  border:1px solid #ff4d4d55;
+  color:#ff4d4d;font-size:12px;font-weight:700;padding:5px 14px;
+  border-radius:20px;margin-bottom:14px;letter-spacing:0.5px;
+  animation:pulse 2s ease infinite;
+}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(255,77,77,0.3)}50%{box-shadow:0 0 0 6px rgba(255,77,77,0)}}
+.hero-title{
+  margin:0 0 12px;font-size:36px;font-weight:900;
+  color:#fff;line-height:1.1;letter-spacing:-1.5px;
+  background:linear-gradient(135deg,#fff 60%,#ffaaaa);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.hero-sub{margin:0 0 22px;font-size:14px;color:#777;line-height:1.6;max-width:360px}
+.hero-stats{display:flex;align-items:center;gap:20px}
+.hero-stat{text-align:center}
+.hero-stat span{display:block;font-size:20px;font-weight:900;color:#ff4d4d;letter-spacing:-0.5px}
+.hero-stat{font-size:11px;color:#555;font-weight:600}
+.hero-stat-div{width:1px;height:36px;background:linear-gradient(transparent,#333,transparent)}
+.hero-img-wrap{position:relative;flex-shrink:0}
+.hero-img{
+  width:220px;height:180px;object-fit:cover;border-radius:24px;
+  box-shadow:0 20px 60px rgba(255,77,77,0.25),0 0 0 1px rgba(255,255,255,0.05);
+  transition:transform 0.3s ease;
+}
+.hero-img:hover{transform:scale(1.03) rotate(1deg)}
+.hero-badge{
+  position:absolute;top:-12px;right:-12px;
+  background:linear-gradient(135deg,#ff4d4d,#ff1a1a);
+  color:#fff;font-size:10px;font-weight:800;text-align:center;
+  width:60px;height:60px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;line-height:1.2;
+  box-shadow:0 4px 20px rgba(255,77,77,0.6);
+  animation:spin-slow 8s linear infinite;
+  letter-spacing:0.5px;
+}
+@keyframes spin-slow{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+@media(max-width:600px){
+  .hero-banner{padding:20px 16px}
+  .hero-title{font-size:24px;-webkit-text-fill-color:#fff}
+  .hero-img{width:130px;height:110px}
+  .hero-badge{width:46px;height:46px;font-size:9px}
+}
+
+/* BRAND CAROUSEL */
+/* ── ENHANCED SECTION LABEL ── */
+.section-label{
+  font-size:11px;font-weight:800;color:#ff4d4d;
+  padding:20px 20px 10px;letter-spacing:2px;
+  text-transform:uppercase;
+  display:flex;align-items:center;gap:8px;
+}
+.section-label::after{
+  content:'';flex:1;height:1px;
+  background:linear-gradient(90deg,#ff4d4d33,transparent);
+  max-width:200px;
+}
+.brand-scroll{
+  display:flex;gap:10px;padding:4px 20px 16px;
+  overflow-x:auto;scrollbar-width:none;
+}
+.brand-scroll::-webkit-scrollbar{display:none}
+.brand-chip{
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  cursor:pointer;flex-shrink:0;transition:0.2s;
+}
+.brand-chip-icon{
+  width:52px;height:52px;border-radius:16px;
+  background:#1a1a1a;border:2px solid #2a2a2a;
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;transition:0.2s;
+}
+.brand-chip span:last-child{font-size:11px;color:#888;font-weight:600;white-space:nowrap}
+.brand-chip.active .brand-chip-icon{border-color:#ff4d4d;box-shadow:0 0 16px rgba(255,77,77,0.3)}
+.brand-chip.active span:last-child{color:#ff4d4d}
+.brand-chip:hover .brand-chip-icon{border-color:#ff4d4d55;transform:translateY(-2px)}
+
+/* CATEGORY GRID — big image cards */
+.brand-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(130px,1fr));
+  gap:10px;
+  padding:4px 20px 20px;
+  max-width:1400px;
+  margin:0 auto;
+}
+.brand-card{
+  position:relative;
+  border-radius:18px;
+  overflow:hidden;
+  cursor:pointer;
+  border:2px solid transparent;
+  transition:transform 0.22s ease,box-shadow 0.22s ease,border-color 0.22s ease;
+  background:#111;
+  aspect-ratio:1/1;
+}
+.brand-card:hover{
+  transform:translateY(-6px) scale(1.02);
+  box-shadow:0 12px 32px rgba(255,77,77,0.35);
+  border-color:#ff4d4d88;
+}
+.brand-card.active{
+  border-color:#ff4d4d;
+  box-shadow:0 0 0 3px rgba(255,77,77,0.3),0 10px 32px rgba(255,77,77,0.4);
+}
+.brand-card-img{
+  width:100%;height:100%;
+  object-fit:cover;
+  display:block;
+  transition:transform 0.4s ease;
+}
+.brand-card:hover .brand-card-img{transform:scale(1.1)}
+.brand-card-title{
+  position:absolute;
+  bottom:0;left:0;right:0;
+  padding:28px 10px 10px;
+  background:linear-gradient(transparent,rgba(0,0,0,0.88));
+  font-size:13px;
+  font-weight:800;
+  color:#fff;
+  text-align:center;
+  letter-spacing:0.5px;
+  text-shadow:0 1px 4px rgba(0,0,0,0.5);
+}
+.brand-card.active .brand-card-title{color:#ff6b6b}
+.brand-card.active::after{
+  content:'';position:absolute;inset:0;
+  background:rgba(255,77,77,0.12);
+  pointer-events:none;
+}
+@media(max-width:600px){
+  .brand-grid{grid-template-columns:repeat(4,1fr);gap:8px;padding:4px 12px 16px}
+  .brand-card-title{font-size:10px;padding:20px 4px 7px}
+}
+
+/* CHIP IMAGE */
+.brand-chip-img{
+  width:52px;height:52px;border-radius:14px;
+  object-fit:cover;border:2px solid #2a2a2a;
+  transition:border-color 0.2s,transform 0.2s;
+}
+.brand-chip.active .brand-chip-img{border-color:#ff4d4d;box-shadow:0 0 12px rgba(255,77,77,0.35)}
+.brand-chip:hover .brand-chip-img{border-color:#ff4d4d55;transform:translateY(-2px)}
+
+/* FILTERS */
+.filters{
+  display:flex;gap:8px;padding:4px 20px 18px;
+  overflow-x:auto;scrollbar-width:none;
+}
+.filters::-webkit-scrollbar{display:none}
+.filter-btn{
+  padding:9px 20px;border:1.5px solid #2a2a2a;border-radius:24px;
+  background:rgba(255,255,255,0.03);color:#666;font-size:13px;font-weight:600;
+  font-family:Poppins;cursor:pointer;white-space:nowrap;transition:0.2s;flex-shrink:0;
+  letter-spacing:0.3px;
+}
+.filter-btn:hover{border-color:#ff4d4d55;color:#fff;background:rgba(255,77,77,0.05)}
+.filter-btn.active{
+  background:linear-gradient(135deg,#ff4d4d22,#ff1a1a11);
+  border-color:#ff4d4d;color:#ff4d4d;
+  box-shadow:0 0 16px rgba(255,77,77,0.15);
+}
+.veg-filter.active{
+  background:linear-gradient(135deg,#4caf5022,#4caf5011);
+  border-color:#4caf50;color:#4caf50;
+  box-shadow:0 0 16px rgba(76,175,80,0.15);
+}
+
+/* CARDS — text only, no image */
+.container{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+  gap:16px;padding:0 20px 32px;
+  max-width:1400px;margin:0 auto;
+}
+.card{
+  background:rgba(255,255,255,0.03);
+  border-radius:20px;overflow:hidden;
+  border:1px solid rgba(255,255,255,0.06);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  transition:transform 0.25s ease,box-shadow 0.25s ease,border-color 0.25s ease,background 0.25s ease;
+  position:relative;display:flex;flex-direction:column;cursor:pointer;
+}
+.card:hover{
+  transform:translateY(-8px);
+  background:rgba(255,255,255,0.07);
+  box-shadow:
+    0 0 0 1px #ff4d4d55,
+    0 12px 40px rgba(255,77,77,0.25),
+    0 0 80px rgba(255,77,77,0.1);
+  border-color:#ff4d4d44;
+}
+.card-veg-dot{
+  width:14px;height:14px;border-radius:3px;border:2px solid;
+  display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;
+}
+.card-veg-dot.veg{border-color:#4caf50}
+.card-veg-dot.veg::after{content:'';width:6px;height:6px;border-radius:50%;background:#4caf50;display:block}
+.card-veg-dot.nonveg{border-color:#f44336}
+.card-veg-dot.nonveg::after{content:'';width:6px;height:6px;border-radius:50%;background:#f44336;display:block}
+.card-info{padding:16px 16px 8px;flex:1}
+.card-cat-tag{
+  font-size:9px;font-weight:800;letter-spacing:2px;
+  text-transform:uppercase;color:#ff4d4d;
+  margin-bottom:7px;opacity:1;
+}
+.card-name-row{display:flex;align-items:flex-start;gap:8px;margin-bottom:6px}
+.card-info h4{margin:0;font-size:15px;font-weight:700;color:#fff;line-height:1.35;flex:1}
+.card-desc{font-size:11px;color:#555;margin:0 0 10px;line-height:1.5;
+  display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.card-footer{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 16px 16px;
+  border-top:1px solid rgba(255,255,255,0.05);
+  margin-top:auto;
+}
+.card-price{font-size:20px;font-weight:900;color:#fff;letter-spacing:-0.5px}
+.card-price small{font-size:10px;color:#444;font-weight:400}
+.card-add-btn{
+  background:linear-gradient(135deg,#ff4d4d,#ff1a1a);
+  border:none;color:#fff;padding:9px 16px;border-radius:12px;
+  font-size:13px;font-weight:700;cursor:pointer;font-family:Poppins;
+  transition:0.2s;box-shadow:0 4px 14px rgba(255,77,77,0.35);letter-spacing:0.3px;
+}
+.card-add-btn:hover{transform:scale(1.08);box-shadow:0 6px 22px rgba(255,77,77,0.55)}
+.card-add-btn.in-cart{
+  background:linear-gradient(135deg,#1a3a1a,#1e4a1e);
+  box-shadow:0 4px 14px rgba(76,175,80,0.2);
+}
+.in-cart-badge{
+  position:absolute;top:10px;right:10px;
+  background:linear-gradient(135deg,#ff4d4d,#ff1a1a);
+  color:#fff;font-size:10px;font-weight:700;
+  padding:3px 9px;border-radius:10px;
+  box-shadow:0 2px 8px rgba(255,77,77,0.4);
+}
+.spicy-dots{display:flex;gap:2px;margin-bottom:8px}
+.spicy-dot{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,0.1)}
+.spicy-dot.hot{background:#ff5722}
+
+/* POPULAR & SPICY BADGES */
+.popular-badge{
+  position:absolute;top:10px;left:10px;
+  background:linear-gradient(135deg,#ff9800,#ff5722);
+  color:#fff;font-size:9px;font-weight:800;
+  padding:3px 8px;border-radius:8px;
+  letter-spacing:0.5px;z-index:1;
+  box-shadow:0 2px 8px rgba(255,152,0,0.4);
+}
+.spicy-badge{
+  font-size:9px;color:#ff5722;font-weight:700;
+  vertical-align:middle;margin-left:4px;
+}
+
+/* FLOATING CART BUTTON (mobile) */
+.float-cart-btn{
+  display:none;
+  position:fixed;bottom:24px;right:20px;z-index:400;
+  background:linear-gradient(135deg,#ff4d4d,#ff1a1a);
+  color:#fff;border:none;border-radius:50px;
+  padding:14px 22px;font-size:14px;font-weight:700;
+  font-family:Poppins;cursor:pointer;
+  box-shadow:0 8px 28px rgba(255,77,77,0.5);
+  align-items:center;gap:8px;
+  transition:0.2s;
+}
+.float-cart-btn:hover{transform:translateY(-2px);box-shadow:0 12px 36px rgba(255,77,77,0.6)}
+@media(max-width:600px){
+  .float-cart-btn{display:flex}
+  .container{grid-template-columns:repeat(2,1fr);gap:8px;padding:0 10px 100px}
+}
+@media(max-width:600px){
+  .container{grid-template-columns:repeat(2,1fr);gap:10px;padding:0 12px 16px}
+  .hero-title{font-size:20px}
+  .nav-search-wrap{display:none}
+}
+
+/* ── PROMO STRIP ── */
+.promo-strip{
+  display:flex;align-items:center;gap:0;
+  background:linear-gradient(135deg,#1a0a0a,#0d0d0d);
+  border-top:1px solid #1a1a1a;border-bottom:1px solid #1a1a1a;
+  padding:10px 20px;overflow-x:auto;scrollbar-width:none;
+  white-space:nowrap;
+}
+.promo-strip::-webkit-scrollbar{display:none}
+.promo-item{font-size:12px;color:#888;font-weight:500;flex-shrink:0;padding:0 4px;}
+.promo-dot{width:4px;height:4px;border-radius:50%;background:#ff4d4d44;flex-shrink:0;margin:0 12px;}
+
+/* 🔔 TOAST */
+.toast{
+  position:fixed;bottom:24px;left:50%;
+  transform:translateX(-50%) translateY(20px);
+  background:#1a1a1a;border:1px solid #2a2a2a;
+  color:#fff;padding:12px 22px;border-radius:14px;
+  box-shadow:0 8px 32px rgba(0,0,0,0.5);
+  opacity:0;transition:0.35s;z-index:9999;
+  font-size:13px;font-weight:600;white-space:nowrap;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* 🆕 ENHANCED CART STYLES */
+.cart{
+  position:fixed;right:0;top:0;width:320px;height:100%;
+  background:#1a1a1a;padding:20px;overflow-y:auto;z-index:1000;
+  transform:translateX(110%);
+  visibility:hidden;
+  transition:transform 0.35s cubic-bezier(0.4,0,0.2,1), visibility 0s linear 0.35s;
+}
+.cart.panel-open{
+  transform:translateX(0);
+  visibility:visible;
+  transition:transform 0.35s cubic-bezier(0.4,0,0.2,1), visibility 0s linear 0s;
+}
+.cart h3{font-size:20px;margin-bottom:15px;color:#fff;border-bottom:1px solid #333;padding-bottom:10px}
+
+/* COUPON SECTION */
+.coupon-section{display:flex;gap:8px;margin:15px 0}
+.coupon-section input{flex:1;padding:10px;border-radius:5px;border:1px dashed #666;background:#2a2a2a;color:#fff;font-size:14px}
+.coupon-section button{padding:10px 15px;background:#ff4d4d;color:white;border:none;border-radius:5px;cursor:pointer;font-weight:600}
+.coupon-section button:hover{background:#ff3333}
+#couponMsg{font-size:12px;margin-bottom:10px;min-height:20px}
+#couponMsg.success{color:#4caf50}
+#couponMsg.error{color:#f44336}
+
+/* PRICE SUMMARY */
+.price-summary{background:#2a2a2a;padding:15px;border-radius:8px;margin:15px 0}
+.price-summary p{display:flex;justify-content:space-between;margin:8px 0;font-size:14px;color:#ccc}
+.price-summary .total-row{font-size:18px;font-weight:700;color:#fff}
+.price-summary hr{border-color:#444;margin:10px 0}
+
+/* CHECKOUT BUTTON */
+.checkout-btn{width:100%;padding:14px;background:#ff4d4d;color:white;border:none;border-radius:8px;font-size:16px;font-weight:700;cursor:pointer;margin:15px 0;transition:0.2s}
+.checkout-btn:hover{background:#ff3333;box-shadow:0 0 15px rgba(255,77,77,0.5)}
+.checkout-btn:disabled{background:#666;cursor:not-allowed}
+
+/* ASSURANCE BADGES */
+.assurance-badges{display:flex;justify-content:center;gap:15px;font-size:12px;color:#666;margin-top:10px}
+
+/* MOBILE CART RESPONSIVENESS */
+@media(max-width:600px){
+.cart,.reviews,.contact,.profile-panel{width:100% !important;height:100%;top:0;right:0;border-radius:0}
+.cart-item{padding:8px}
+.cart-item img{width:45px;height:45px}
+.cart-item-name{font-size:13px}
+.cart-item-price{font-size:13px}
+.cart-item-qty button{width:24px;height:24px;font-size:14px}
+.coupon-section{flex-direction:column}
+.coupon-section button{width:100%}
+.price-summary{padding:12px}
+.price-summary p{font-size:13px}
+.checkout-btn{padding:12px;font-size:15px}
+}
+
+@media(max-width:600px){
+  .container{grid-template-columns:repeat(2,1fr);gap:8px;padding:8px}
+  .card-thumb{height:100px}
+}
+.cart-item{display:flex;align-items:center;background:rgba(255,255,255,0.08);padding:10px;border-radius:8px;margin:8px 0}
+.cart-item img{width:50px;height:50px;border-radius:5px;object-fit:cover}
+.cart-item-info{flex:1;margin-left:10px}
+.cart-item-name{font-weight:600;font-size:14px}
+.cart-item-price{color:#00ffcc;font-size:14px}
+.cart-item-qty{display:flex;align-items:center;gap:8px}
+.cart-item-qty button{width:28px;height:28px;border-radius:50%;border:none;cursor:pointer;font-weight:700}
+ qty-minus{background:#ff4d4d;color:white}
+ qty-plus{background:#00ffcc;color:black}
+ qty-remove{background:transparent;color:#f44336;font-size:18px;margin-left:5px}
+
+/* REVIEWS & CONTACT PANELS */
+.reviews,.contact{
+  position:fixed;right:0;top:0;width:360px;height:100%;
+  background:#111;padding:0;overflow-y:auto;z-index:1000;
+  transform:translateX(110%);
+  visibility:hidden;
+  transition:transform 0.35s cubic-bezier(0.4,0,0.2,1), visibility 0s linear 0.35s;
+}
+.reviews.panel-open,.contact.panel-open{
+  transform:translateX(0);
+  visibility:visible;
+  transition:transform 0.35s cubic-bezier(0.4,0,0.2,1), visibility 0s linear 0s;
+}
+
+/* REVIEWS */
+.reviews-header{
+padding:20px 20px 16px;
+border-bottom:1px solid #222;
+background:#111;
+position:sticky;top:0;z-index:2;
+}
+.reviews-header h3{margin:0 0 12px;font-size:18px;font-weight:700;color:#fff}
+.rating-summary{display:flex;align-items:center;gap:16px;background:#1a1a1a;border-radius:14px;padding:14px 16px}
+.rating-big{font-size:42px;font-weight:800;color:#fff;line-height:1}
+.rating-big span{font-size:14px;font-weight:400;color:#888;display:block;margin-top:2px}
+.rating-bars{flex:1}
+.rating-bar-row{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.rating-bar-row .bar-label{font-size:11px;color:#888;width:8px}
+.rating-bar-row .bar-track{flex:1;height:5px;background:#2a2a2a;border-radius:3px;overflow:hidden}
+.rating-bar-row .bar-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,#ff9800,#ff5722)}
+.rating-bar-row .bar-count{font-size:11px;color:#666;width:20px;text-align:right}
+.review-filters{display:flex;gap:8px;padding:14px 20px;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid #1a1a1a}
+.review-filters::-webkit-scrollbar{display:none}
+.review-filter-btn{padding:6px 14px;border-radius:20px;border:1px solid #333;background:transparent;color:#aaa;font-size:12px;font-family:Poppins;cursor:pointer;white-space:nowrap;transition:0.2s}
+.review-filter-btn.active,.review-filter-btn:hover{background:#ff4d4d;border-color:#ff4d4d;color:#fff}
+.review-card{padding:16px 20px;border-bottom:1px solid #1a1a1a}
+.review-card:last-child{border-bottom:none}
+.reviewer-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.reviewer-avatar{width:38px;height:38px;border-radius:50%;object-fit:cover;background:#2a2a2a;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#fff;flex-shrink:0}
+.reviewer-info{flex:1}
+.reviewer-name{font-size:14px;font-weight:600;color:#fff}
+.reviewer-meta{font-size:11px;color:#666;margin-top:1px}
+.review-stars{color:#ff9800;font-size:13px;letter-spacing:1px}
+.review-badge{display:inline-block;background:#1e3a2f;color:#4caf50;font-size:10px;padding:2px 8px;border-radius:10px;margin-left:6px;font-weight:600}
+.review-badge.veg{background:#1e3a2f;color:#4caf50}
+.review-badge.nonveg{background:#3a1e1e;color:#ff5722}
+.review-text{font-size:13px;color:#ccc;line-height:1.6;margin-bottom:10px}
+.review-dish-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.review-dish-tag{background:#1a1a1a;border:1px solid #2a2a2a;color:#888;font-size:11px;padding:3px 10px;border-radius:10px}
+.review-actions{display:flex;align-items:center;gap:16px}
+.review-helpful{font-size:12px;color:#666;cursor:pointer;display:flex;align-items:center;gap:4px;transition:0.2s}
+.review-helpful:hover{color:#ff4d4d}
+.review-helpful.liked{color:#ff4d4d}
+.review-photos{display:flex;gap:6px;margin-bottom:10px}
+.review-photo{width:70px;height:70px;border-radius:8px;object-fit:cover;cursor:pointer}
+
+/* CONTACT */
+.contact-header{
+padding:20px 20px 16px;
+border-bottom:1px solid #222;
+background:#111;
+position:sticky;top:0;z-index:2;
+}
+.contact-header h3{margin:0;font-size:18px;font-weight:700;color:#fff}
+.contact-body{padding:16px 20px}
+.contact-hero{background:linear-gradient(135deg,#1a0000,#2a0a0a);border:1px solid #3a1a1a;border-radius:16px;padding:20px;margin-bottom:16px;text-align:center}
+.contact-hero .brand-icon{font-size:40px;margin-bottom:8px}
+.contact-hero h4{margin:0 0 4px;font-size:18px;font-weight:800;color:#fff}
+.contact-hero p{margin:0;font-size:12px;color:#888}
+.contact-section-title{font-size:11px;font-weight:700;color:#666;letter-spacing:1px;text-transform:uppercase;margin:20px 0 10px}
+.contact-item{display:flex;align-items:center;gap:12px;background:#1a1a1a;border-radius:12px;padding:14px;margin-bottom:8px;cursor:pointer;transition:0.2s;text-decoration:none}
+.contact-item:hover{background:#222;transform:translateX(3px)}
+.contact-item-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.contact-item-info{flex:1}
+.contact-item-label{font-size:11px;color:#666;margin-bottom:2px}
+.contact-item-value{font-size:14px;font-weight:600;color:#fff}
+.contact-item-arrow{color:#444;font-size:16px}
+.contact-hours{background:#1a1a1a;border-radius:12px;padding:14px;margin-bottom:8px}
+.contact-hours-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #222}
+.contact-hours-row:last-child{border-bottom:none}
+.contact-hours-day{font-size:13px;color:#aaa}
+.contact-hours-time{font-size:13px;font-weight:600;color:#fff}
+.contact-hours-badge{font-size:10px;padding:2px 8px;border-radius:10px;font-weight:700}
+.contact-hours-badge.open{background:#1e3a2f;color:#4caf50}
+.contact-hours-badge.closed{background:#3a1e1e;color:#ff5722}
+.contact-social{display:flex;gap:10px;margin-top:4px}
+.social-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;background:#1a1a1a;border-radius:12px;padding:12px;font-size:13px;font-weight:600;color:#fff;cursor:pointer;transition:0.2s;border:1px solid #2a2a2a;text-decoration:none}
+.social-btn:hover{background:#222;border-color:#444}
+
+/* WRITE REVIEW FORM */
+.write-review-bar{
+  display:flex;align-items:center;justify-content:space-between;
+  margin:0 20px 0;padding:12px 14px;
+  background:#1a1a1a;border:1px solid #2a2a2a;border-radius:12px;
+  cursor:pointer;transition:0.2s;
+}
+.write-review-bar:hover{background:#222;border-color:#ff4d4d44;}
+.write-review-avatar{
+  width:34px;height:34px;border-radius:50%;
+  background:linear-gradient(135deg,#ff4d4d,#ff1a1a);
+  display:flex;align-items:center;justify-content:center;
+  font-size:15px;font-weight:700;color:#fff;flex-shrink:0;
+}
+.review-form-box{
+  display:none;
+  margin:10px 20px 0;
+  background:#1a1a1a;border:1px solid #2a2a2a;border-radius:14px;
+  padding:18px;
+}
+.review-form-box.open{display:block;}
+.star-picker{display:flex;gap:6px;font-size:32px;cursor:pointer;margin-bottom:2px;}
+.star-picker span{color:#333;transition:color 0.15s;}
+.star-picker span.active{color:#ff9800;}
+.star-picker span:hover{color:#ff9800;}
+#ratingLabel{font-size:12px;color:#ff9800;font-weight:600;}
+.review-tag-picker{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;}
+.rtag{
+  padding:6px 12px;border-radius:20px;
+  border:1px solid #333;background:transparent;
+  color:#888;font-size:12px;cursor:pointer;transition:0.2s;
+  user-select:none;
+}
+.rtag.selected{background:#ff4d4d22;border-color:#ff4d4d;color:#ff4d4d;}
+.review-input{
+  width:100%;box-sizing:border-box;
+  background:#111;border:1px solid #2a2a2a;border-radius:10px;
+  color:#fff;font-family:Poppins;font-size:13px;
+  padding:10px 12px;margin-bottom:10px;outline:none;
+  transition:border-color 0.2s;resize:none;
+}
+.review-input:focus{border-color:#ff4d4d;}
+.review-input::placeholder{color:#555;}
+.review-submit-btn{
+  width:100%;padding:12px;
+  background:linear-gradient(135deg,#ff4d4d,#ff1a1a);
+  color:#fff;border:none;border-radius:10px;
+  font-size:14px;font-weight:700;font-family:Poppins;
+  cursor:pointer;transition:0.2s;
+  box-shadow:0 4px 15px rgba(255,77,77,0.3);
+}
+.review-submit-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(255,77,77,0.45);}
+.review-submit-btn:disabled{background:#333;color:#666;cursor:not-allowed;box-shadow:none;transform:none;}
+@keyframes fadeInCard{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+
+/* COUPON DROPDOWN */
+.coupon-dropdown{
+display:none;
+background:#1a1a1a;
+border:1px solid #333;
+border-radius:10px;
+margin-bottom:10px;
+overflow:hidden;
+}
+.coupon-dropdown.show{display:block}
+.coupon-dropdown-title{font-size:11px;font-weight:700;color:#888;letter-spacing:1px;text-transform:uppercase;padding:10px 14px 6px}
+.coupon-option{display:flex;align-items:center;gap:12px;padding:12px 14px;cursor:pointer;transition:0.2s;border-bottom:1px solid #222}
+.coupon-option:last-child{border-bottom:none}
+.coupon-option:hover{background:#222}
+.coupon-tag{background:#ff4d4d22;border:1px dashed #ff4d4d;color:#ff4d4d;font-size:12px;font-weight:700;padding:4px 10px;border-radius:6px;letter-spacing:1px;min-width:80px;text-align:center}
+.coupon-option-info{flex:1}
+.coupon-option-title{font-size:13px;font-weight:600;color:#fff}
+.coupon-option-desc{font-size:11px;color:#888;margin-top:1px}
+.coupon-apply-btn{font-size:12px;font-weight:700;color:#ff4d4d;background:none;border:none;cursor:pointer;font-family:Poppins;padding:0}
+
+.qr{width:150px;margin:auto}
+
+/* SCANNER FRAME */
+.scanner-frame{position:relative;width:200px;height:200px;margin:0 auto;border:3px solid #00ffcc;border-radius:10px;overflow:hidden}
+.scanner-frame img{width:100%;height:100%;object-fit:cover}
+.scanner-line{position:absolute;top:0;left:0;width:100%;height:3px;background:#00ffcc;box-shadow:0 0 10px #00ffcc;animation:scan 2s linear infinite}
+@keyframes scan{0%{top:0}50%{top:97%}100%{top:0}}
+
+/* PAYMENT SUCCESS */
+.pay-success-wrap{
+  display:flex;flex-direction:column;align-items:center;
+  padding:36px 20px 40px;
+  height:100%;
+  overflow-y:auto;
+  background:linear-gradient(180deg,#0d1f18 0%,#111 60%);
+}
+.pay-check-ring{
+  width:90px;height:90px;margin-bottom:20px;
+  filter:drop-shadow(0 0 18px rgba(0,229,160,0.45));
+}
+.pay-check-svg{width:100%;height:100%}
+.pay-check-circle{
+  stroke-dasharray:226;
+  stroke-dashoffset:226;
+  animation:drawCircle 0.7s ease forwards 0.1s;
+}
+.pay-check-tick{
+  stroke-dasharray:50;
+  stroke-dashoffset:50;
+  animation:drawTick 0.4s ease forwards 0.75s;
+}
+@keyframes drawCircle{to{stroke-dashoffset:0}}
+@keyframes drawTick{to{stroke-dashoffset:0}}
+.pay-success-title{
+  font-size:26px;font-weight:800;color:#fff;
+  margin-bottom:6px;letter-spacing:-0.5px;
+}
+.pay-success-sub{
+  font-size:13px;color:#888;margin-bottom:24px;text-align:center;line-height:1.5;
+}
+.pay-detail-card{
+  width:100%;background:#1a1a1a;
+  border:1px solid #2a2a2a;border-radius:16px;
+  overflow:hidden;margin-bottom:18px;
+}
+.pay-detail-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:14px 18px;
+}
+.pay-detail-label{font-size:12px;color:#666;font-weight:500}
+.pay-detail-value{font-size:14px;font-weight:700;color:#fff}
+.pay-amount{font-size:20px;color:#00e5a0 !important}
+.pay-detail-divider{height:1px;background:#222;margin:0 18px}
+.pay-status-badge{
+  background:#0d2e1f;color:#00e5a0;
+  font-size:12px;font-weight:700;
+  padding:4px 12px;border-radius:20px;
+  border:1px solid #00e5a033;
+}
+.pay-eta-strip{
+  display:flex;align-items:center;justify-content:center;
+  gap:0;width:100%;
+  background:#1a1a1a;border:1px solid #2a2a2a;
+  border-radius:14px;padding:16px 10px;
+  margin-bottom:18px;
+}
+.pay-eta-item{
+  display:flex;flex-direction:column;align-items:center;gap:5px;
+  font-size:11px;color:#888;font-weight:600;flex:1;
+}
+.pay-eta-icon{font-size:22px}
+.pay-eta-line{
+  flex:1;height:2px;
+  background:linear-gradient(90deg,#00e5a0,#1a3a2f);
+  border-radius:2px;max-width:40px;
+}
+.pay-sms-note{
+  font-size:12px;color:#555;text-align:center;
+  margin-bottom:24px;line-height:1.5;
+}
+.pay-order-more-btn{
+  width:100%;padding:15px;
+  background:linear-gradient(135deg,#ff4d4d,#ff1a1a);
+  color:#fff;border:none;border-radius:14px;
+  font-size:15px;font-weight:700;font-family:Poppins;
+  cursor:pointer;letter-spacing:0.3px;
+  box-shadow:0 6px 20px rgba(255,77,77,0.35);
+  transition:0.2s;
+}
+.pay-order-more-btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(255,77,77,0.5)}
+@keyframes bounce{0%,100%{transform:scale(1)}50%{transform:scale(1.2)}}
+#paymentSuccess{background:#111;height:100%}
+
+/* ===== PROFILE PANEL ===== */
+.profile-panel{
+  position:fixed;right:0;top:0;width:360px;height:100%;
+  background:#111;overflow-y:auto;z-index:1000;
+  transform:translateX(100%);
+  transition:transform 0.35s cubic-bezier(0.4,0,0.2,1);
+  display:block !important;
+}
+.profile-panel.panel-open{
+  transform:translateX(0);
+  visibility:visible;
+  transition:transform 0.35s cubic-bezier(0.4,0,0.2,1), visibility 0s linear 0s;
+}
+.profile-header{
+  padding:20px 20px 16px;border-bottom:1px solid #222;
+  background:#111;position:sticky;top:0;z-index:2;
+}
+.profile-body{padding:0 0 40px;}
+.profile-hero{
+  background:linear-gradient(135deg,#1a0000,#2a0808);
+  border-bottom:1px solid #2a1a1a;
+  padding:28px 20px 22px;text-align:center;
+}
+.profile-avatar-wrap{position:relative;display:inline-block;}
+.profile-avatar{
+  width:80px;height:80px;border-radius:50%;
+  background:linear-gradient(135deg,#ff4d4d,#ff1a1a);
+  display:flex;align-items:center;justify-content:center;
+  font-size:32px;font-weight:800;color:#fff;
+  border:3px solid #ff4d4d44;
+  overflow:hidden;
+}
+.profile-avatar img{width:100%;height:100%;object-fit:cover;}
+.profile-avatar-edit{
+  position:absolute;bottom:0;right:0;
+  width:26px;height:26px;border-radius:50%;
+  background:#ff4d4d;display:flex;align-items:center;justify-content:center;
+  font-size:12px;cursor:pointer;border:2px solid #111;
+}
+.profile-tabs{
+  display:flex;border-bottom:1px solid #1a1a1a;
+  background:#111;position:sticky;top:61px;z-index:1;
+}
+.profile-tab{
+  flex:1;padding:12px 0;background:none;border:none;
+  color:#666;font-size:13px;font-weight:600;font-family:Poppins;
+  cursor:pointer;border-bottom:2px solid transparent;transition:0.2s;
+}
+.profile-tab.active{color:#ff4d4d;border-bottom-color:#ff4d4d;}
+.profile-tab-content{padding:16px 20px;}
+.profile-section-title{
+  font-size:11px;font-weight:700;color:#555;
+  letter-spacing:1px;text-transform:uppercase;margin:0 0 12px;
+}
+.profile-info-row{
+  display:flex;align-items:center;gap:12px;
+  background:#1a1a1a;border-radius:12px;padding:14px;margin-bottom:8px;
+}
+.profile-info-icon{
+  width:38px;height:38px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;
+}
+.profile-info-body{flex:1;}
+.profile-info-label{font-size:11px;color:#555;margin-bottom:2px;}
+.profile-info-value{font-size:14px;font-weight:600;color:#fff;}
+.profile-edit-btn{
+  width:100%;padding:12px;margin-top:8px;
+  background:#1a1a1a;border:1px solid #2a2a2a;border-radius:10px;
+  color:#ff4d4d;font-size:14px;font-weight:600;font-family:Poppins;
+  cursor:pointer;transition:0.2s;
+}
+.profile-edit-btn:hover{background:#2a1a1a;border-color:#ff4d4d44;}
+.profile-field-label{font-size:12px;color:#666;display:block;margin-bottom:5px;}
+.profile-input{
+  width:100%;box-sizing:border-box;
+  background:#1a1a1a;border:1px solid #2a2a2a;border-radius:10px;
+  color:#fff;font-family:Poppins;font-size:13px;
+  padding:11px 13px;margin-bottom:12px;outline:none;transition:border-color 0.2s;
+}
+.profile-input:focus{border-color:#ff4d4d;}
+.profile-input::placeholder{color:#444;}
+.profile-save-btn{
+  flex:1;padding:12px;
+  background:linear-gradient(135deg,#ff4d4d,#ff1a1a);
+  color:#fff;border:none;border-radius:10px;
+  font-size:14px;font-weight:700;font-family:Poppins;cursor:pointer;
+  box-shadow:0 4px 15px rgba(255,77,77,0.3);transition:0.2s;
+}
+.profile-save-btn:hover{transform:translateY(-1px);}
+.profile-cancel-btn{
+  flex:1;padding:12px;
+  background:#1a1a1a;border:1px solid #333;border-radius:10px;
+  color:#aaa;font-size:14px;font-weight:600;font-family:Poppins;cursor:pointer;transition:0.2s;
+}
+.profile-cancel-btn:hover{background:#222;}
+/* ADDRESS */
+.address-card{
+  background:#1a1a1a;border-radius:12px;padding:14px;margin-bottom:8px;
+  border:1px solid #2a2a2a;position:relative;
+}
+.address-card.default-addr{border-color:#ff4d4d44;}
+.address-type-badge{
+  display:inline-flex;align-items:center;gap:4px;
+  background:#2a1a1a;color:#ff4d4d;font-size:11px;font-weight:700;
+  padding:3px 10px;border-radius:10px;margin-bottom:6px;
+}
+.address-text{font-size:13px;color:#ccc;line-height:1.5;}
+.address-actions{display:flex;gap:8px;margin-top:10px;}
+.addr-action-btn{
+  padding:5px 12px;border-radius:8px;border:1px solid #333;
+  background:transparent;color:#888;font-size:11px;font-weight:600;
+  font-family:Poppins;cursor:pointer;transition:0.2s;
+}
+.addr-action-btn:hover{background:#222;color:#fff;}
+.addr-action-btn.default-btn{color:#ff4d4d;border-color:#ff4d4d44;}
+.add-address-bar{
+  display:flex;align-items:center;gap:10px;
+  background:#1a1a1a;border:1px dashed #333;border-radius:12px;
+  padding:14px;cursor:pointer;transition:0.2s;margin-bottom:10px;
+}
+.add-address-bar:hover{border-color:#ff4d4d;background:#2a1a1a;}
+.address-form-box{
+  display:none;background:#1a1a1a;border-radius:12px;
+  padding:16px;border:1px solid #2a2a2a;margin-bottom:10px;
+}
+.address-form-box.open{display:block;}
+.addr-type-btn{
+  padding:7px 14px;border-radius:20px;border:1px solid #333;
+  background:transparent;color:#888;font-size:12px;font-family:Poppins;
+  cursor:pointer;transition:0.2s;
+}
+.addr-type-btn.active{background:#ff4d4d22;border-color:#ff4d4d;color:#ff4d4d;}
+/* ORDER HISTORY */
+.order-history-card{
+  background:#1a1a1a;border-radius:12px;padding:14px;margin-bottom:10px;
+  border:1px solid #2a2a2a;
+}
+.order-history-card:hover{border-color:#333;}
+.order-id-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.order-id{font-size:13px;font-weight:700;color:#fff;}
+.order-status-badge{
+  font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;
+}
+.order-status-badge.delivered{background:#1e3a2f;color:#4caf50;}
+.order-status-badge.pending{background:#3a2e1a;color:#ff9800;}
+.order-items-preview{font-size:12px;color:#888;margin-bottom:8px;line-height:1.5;}
+.order-footer-row{display:flex;justify-content:space-between;align-items:center;}
+.order-total-amt{font-size:15px;font-weight:700;color:#ff4d4d;}
+.order-date{font-size:11px;color:#555;}
+.order-reorder-btn{
+  padding:6px 14px;border-radius:8px;
+  background:#ff4d4d22;border:1px solid #ff4d4d44;
+  color:#ff4d4d;font-size:12px;font-weight:600;font-family:Poppins;cursor:pointer;transition:0.2s;
+}
+.order-reorder-btn:hover{background:#ff4d4d33;}
+@media(max-width:600px){
+  .profile-panel{width:100%;}
+}
+</style>
+</head>
+
+<body>
+
+<div class="login" id="loginPage">
+  <div class="login-card">
+
+    <!-- LOGO -->
+    <div class="login-logo">
+      <svg class="login-logo-img" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="100" cy="100" r="100" fill="#111"/>
+        <path d="M 38 60 Q 55 40 72 55" stroke="#f5a623" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <path d="M 128 55 Q 145 40 162 60" stroke="#f5a623" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <ellipse cx="72" cy="36" rx="14" ry="10" fill="#fff"/>
+        <rect x="62" y="36" width="20" height="8" rx="2" fill="#fff"/>
+        <ellipse cx="66" cy="30" rx="8" ry="9" fill="#fff"/>
+        <ellipse cx="78" cy="28" rx="9" ry="10" fill="#fff"/>
+        <text x="30" y="82" font-family="Arial Black,sans-serif" font-size="58" font-weight="900" fill="#fff">9</text>
+        <text x="72" y="82" font-family="Arial Black,sans-serif" font-size="58" font-weight="900" fill="#f5a623">9</text>
+        <text x="100" y="108" font-family="Arial Black,sans-serif" font-size="26" font-weight="900" fill="#fff" text-anchor="middle" letter-spacing="2">FOODIES</text>
+        <line x1="45" y1="114" x2="155" y2="114" stroke="#f5a623" stroke-width="2.5" stroke-linecap="round"/>
+        <text x="48" y="140" font-size="20">🍕</text>
+        <text x="78" y="140" font-size="20">🍔</text>
+        <text x="108" y="140" font-size="20">☕</text>
+        <text x="138" y="140" font-size="20">🍟</text>
+        <text x="100" y="162" font-family="Georgia,serif" font-size="10" fill="#f5a623" text-anchor="middle" font-style="italic">★ Good Food, Great Mood! ★</text>
+      </svg>
+      <h2>99Foodies</h2>
+      <p>Good Food, Great Mood!</p>
+    </div>
+
+    <div style="font-size:18px;font-weight:700;color:#fff;margin-bottom:4px;text-align:center;">Welcome! 👋</div>
+    <div style="font-size:13px;color:#666;margin-bottom:24px;text-align:center;">Sign in to order delicious food</div>
+
+    <!-- ERROR -->
+    <div id="loginError"></div>
+
+    <!-- GOOGLE SIGN IN BUTTON -->
+    <button class="google-signin-btn" onclick="signInWithGoogle()">
+      <svg width="20" height="20" viewBox="0 0 48 48">
+        <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+        <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+        <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+        <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+        <path fill="none" d="M0 0h48v48H0z"/>
+      </svg>
+      Continue with Google
+    </button>
+
+    <div class="login-divider-line">
+      <span></span><span style="color:#444;font-size:12px;padding:0 10px">or</span><span></span>
+    </div>
+
+    <!-- QUICK LOGIN -->
+    <div class="login-input-group">
+      <span class="lig-icon">👤</span>
+      <input id="loginName" placeholder="Your full name" type="text" onkeydown="if(event.key==='Enter')quickLogin()">
+    </div>
+    <div class="phone-row">
+      <div class="phone-code">🇮🇳 +91</div>
+      <input class="phone-input" id="loginPhone" placeholder="10-digit number" type="tel" maxlength="10" onkeydown="if(event.key==='Enter')quickLogin()">
+    </div>
+
+    <button class="login-btn" onclick="quickLogin()">
+      Continue →
+    </button>
+
+    <div class="login-footer">
+      By continuing, you agree to our<br>
+      <span style="color:#ff4d4d">Terms of Service</span> &amp; <span style="color:#ff4d4d">Privacy Policy</span>
+    </div>
+
+  </div>
+</div>
+
+<div id="main" style="display:none">
+
+<!-- ═══ NAVBAR ═══ -->
+<nav class="navbar">
+  <div class="nav-brand">
+    <svg class="nav-logo-img" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="100" cy="100" r="100" fill="#111"/>
+      <text x="30" y="82" font-family="Arial Black,sans-serif" font-size="58" font-weight="900" fill="#fff">9</text>
+      <text x="72" y="82" font-family="Arial Black,sans-serif" font-size="58" font-weight="900" fill="#f5a623">9</text>
+      <text x="100" y="108" font-family="Arial Black,sans-serif" font-size="26" font-weight="900" fill="#fff" text-anchor="middle" letter-spacing="2">FOODIES</text>
+      <text x="100" y="162" font-family="Georgia,serif" font-size="10" fill="#f5a623" text-anchor="middle" font-style="italic">★ Good Food, Great Mood! ★</text>
+    </svg>
+    <div>
+      <div class="nav-title">99Foodies</div>
+      <div class="nav-sub">Valsad, Gujarat ▾</div>
+    </div>
+  </div>
+  <div class="nav-search-wrap">
+    <span class="nav-search-icon">🔍</span>
+    <input class="search" placeholder="Search restaurants, dishes..." onkeyup="search(this.value)">
+  </div>
+  <div class="nav-actions">
+    <button id="cartBtn" onclick="toggleCart()" class="nav-btn" style="position:relative">
+      🛒
+      <span id="cartCount" class="cart-badge">0</span>
+    </button>
+    <button onclick="toggleReviews()" class="nav-btn" title="Reviews">⭐</button>
+    <button onclick="toggleContact()" class="nav-btn" title="Contact">📞</button>
+    <button id="profileNavBtn" onclick="toggleProfile()" class="nav-btn" title="Profile">👤</button>
+  </div>
+</nav>
+
+<!-- ═══ HERO BANNER ═══ -->
+<div class="hero-banner">
+  <div class="hero-content">
+    <div class="hero-tag">🔥 Up to 50% OFF today</div>
+    <h1 class="hero-title">Fresh. Hot.<br>Delivered Fast.</h1>
+    <p class="hero-sub">Pizzas, Burgers, Biryani, Snacks & more — made fresh and delivered to your door in 30 min</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><span>500+</span>Happy Orders</div>
+      <div class="hero-stat-div"></div>
+      <div class="hero-stat"><span>30 min</span>Avg Delivery</div>
+      <div class="hero-stat-div"></div>
+      <div class="hero-stat"><span>4.5★</span>Rating</div>
+    </div>
+  </div>
+  <div class="hero-img-wrap">
+    <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=500" alt="food" class="hero-img">
+    <div class="hero-badge">FREE<br>DELIVERY</div>
+  </div>
+</div>
+
+<!-- ═══ PROMO STRIP ═══ -->
+<div class="promo-strip">
+  <div class="promo-item">⚡ Express delivery in 30 min</div>
+  <div class="promo-dot"></div>
+  <div class="promo-item">🎁 Free delivery on first order</div>
+  <div class="promo-dot"></div>
+  <div class="promo-item">🌿 100% Fresh ingredients</div>
+  <div class="promo-dot"></div>
+  <div class="promo-item">💳 Safe & secure payments</div>
+  <div class="promo-dot"></div>
+  <div class="promo-item">⭐ 4.5 rated by 1200+ customers</div>
+</div>
+
+<!-- Category Cards with Images -->
+<div class="section-label">🍽️ What are you craving?</div>
+<div class="brand-grid" id="brandGrid">
+  <div class="brand-card active" onclick="filterCat(this,'pizza')">
+    <img src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=400&h=220&fit=crop" alt="Pizza" class="brand-card-img">
+    <div class="brand-card-title">Pizza</div>
+  </div>
+  <div class="brand-card" onclick="filterCat(this,'burger')">
+    <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&h=220&fit=crop" alt="Burger" class="brand-card-img">
+    <div class="brand-card-title">Burger</div>
+  </div>
+  <div class="brand-card" onclick="filterCat(this,'pasta')">
+    <img src="https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=400&h=220&fit=crop" alt="Pasta" class="brand-card-img">
+    <div class="brand-card-title">Pasta</div>
+  </div>
+  <div class="brand-card" onclick="filterCat(this,'sandwich')">
+    <img src="https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=400&h=220&fit=crop" alt="Sandwich" class="brand-card-img">
+    <div class="brand-card-title">Sandwich</div>
+  </div>
+  <div class="brand-card" onclick="filterCat(this,'dosa')">
+    <img src="https://images.unsplash.com/photo-1668236543090-82eba5ee5976?w=400&h=220&fit=crop" alt="Dosa" class="brand-card-img">
+    <div class="brand-card-title">Dosa</div>
+  </div>
+  <div class="brand-card" onclick="filterCat(this,'idli')">
+    <img src="https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=400&h=220&fit=crop" alt="Idli" class="brand-card-img">
+    <div class="brand-card-title">Idli</div>
+  </div>
+  <div class="brand-card" onclick="filterCat(this,'pavbhaji')">
+    <img src="https://images.unsplash.com/photo-1606491956689-2ea866880c84?w=400&h=220&fit=crop" alt="Pav Bhaji" class="brand-card-img">
+    <div class="brand-card-title">Pav Bhaji</div>
+  </div>
+  <div class="brand-card" onclick="filterCat(this,'samosa')">
+    <img src="https://images.unsplash.com/photo-1601050690597-df0568f70950?w=400&h=220&fit=crop" alt="Samosa" class="brand-card-img">
+    <div class="brand-card-title">Samosa</div>
+  </div>
+  <div class="brand-card" onclick="filterCat(this,'water')">
+    <img src="https://images.unsplash.com/photo-1548839140-29a749e1cf4d?w=400&h=220&fit=crop" alt="Water" class="brand-card-img">
+    <div class="brand-card-title">Water</div>
+  </div>
+  <div class="brand-card" onclick="filterCat(this,'tea')">
+    <img src="https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?w=400&h=220&fit=crop" alt="Tea" class="brand-card-img">
+    <div class="brand-card-title">Tea</div>
+  </div>
+  <div class="brand-card" onclick="filterCat(this,'coffee')">
+    <img src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=400&h=220&fit=crop" alt="Coffee" class="brand-card-img">
+    <div class="brand-card-title">Coffee</div>
+  </div>
+  <div class="brand-card" onclick="filterCat(this,'shake')">
+    <img src="https://images.unsplash.com/photo-1553361371-9b22f78e8b1d?w=400&h=220&fit=crop" alt="Shake" class="brand-card-img">
+    <div class="brand-card-title">Shake</div>
+  </div>
+  <div class="brand-card" onclick="filterCat(this,'colddrink')">
+    <img src="https://images.unsplash.com/photo-1629203851122-3726ecdf080e?w=400&h=220&fit=crop" alt="Cold Drink" class="brand-card-img">
+    <div class="brand-card-title">Cold Drink</div>
+  </div>
+</div>
+
+<!-- ═══ FILTERS ═══ -->
+<div class="filters">
+  <button class="filter-btn active" onclick="setFilter(this,'all')">All</button>
+  <button class="filter-btn" onclick="setFilter(this,'food')">🍛 Food</button>
+  <button class="filter-btn" onclick="setFilter(this,'drink')">🥤 Drinks</button>
+  <button class="filter-btn veg-filter" onclick="toggleVeg(this)">🟢 Pure Veg</button>
+</div>
+
+<!-- ═══ MENU GRID ═══ -->
+<div class="section-label" id="menuLabel">🍽️ Our Menu</div>
+<div class="container" id="menu"></div>
+
+<!-- FLOATING CART (mobile) -->
+<button class="float-cart-btn" onclick="toggleCart()" id="floatCartBtn">
+  🛒 View Cart <span id="floatCartCount" style="background:rgba(255,255,255,0.25);padding:2px 8px;border-radius:10px;font-size:12px">0</span>
+</button>
+
+<div class="cart" id="cart">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:15px">
+<h3 style="margin:0">🛒 Your Cart</h3>
+<button onclick="toggleCart()" style="background:none;border:none;color:#aaa;font-size:22px;cursor:pointer;line-height:1;padding:0">✕</button>
+</div>
+<div id="cartItems"></div>
+
+<!-- COUPON SECTION -->
+<div class="coupon-section">
+<input type="text" id="couponInput" placeholder="Enter coupon code" onfocus="showCouponDropdown()" oninput="filterCoupons(this.value)" autocomplete="off">
+<button onclick="applyCoupon()">Apply</button>
+</div>
+<!-- COUPON DROPDOWN -->
+<div class="coupon-dropdown" id="couponDropdown">
+  <div class="coupon-dropdown-title">Available Coupons</div>
+  <div class="coupon-option" onclick="selectCoupon('FREESHIP')">
+    <div class="coupon-tag" style="background:#00e5a022;border-color:#00e5a0;color:#00e5a0">FREESHIP</div>
+    <div class="coupon-option-info">
+      <div class="coupon-option-title">Free Delivery on 1st Order</div>
+      <div class="coupon-option-desc">No min order &bull; First order only</div>
+    </div>
+    <button class="coupon-apply-btn">Apply</button>
+  </div>
+  <div class="coupon-option" onclick="selectCoupon('FOOD50')">
+    <div class="coupon-tag">FOOD50</div>
+    <div class="coupon-option-info">
+      <div class="coupon-option-title">Save ₹50 on your order</div>
+      <div class="coupon-option-desc">Min order ₹200 &bull; Valid today</div>
+    </div>
+    <button class="coupon-apply-btn">Apply</button>
+  </div>
+  <div class="coupon-option" onclick="selectCoupon('FIRST20')">
+    <div class="coupon-tag">FIRST20</div>
+    <div class="coupon-option-info">
+      <div class="coupon-option-title">Flat ₹20 off for new users</div>
+      <div class="coupon-option-desc">Min order ₹100 &bull; First order only</div>
+    </div>
+    <button class="coupon-apply-btn">Apply</button>
+  </div>
+  <div class="coupon-option" onclick="selectCoupon('SAVE10')">
+    <div class="coupon-tag">SAVE10</div>
+    <div class="coupon-option-info">
+      <div class="coupon-option-title">₹10 off on any order</div>
+      <div class="coupon-option-desc">Min order ₹50 &bull; No expiry</div>
+    </div>
+    <button class="coupon-apply-btn">Apply</button>
+  </div>
+</div>
+<div id="couponMsg"></div>
+
+<!-- PRICE BREAKDOWN -->
+<div class="price-summary">
+<p>Subtotal <span id="subtotal">₹0</span></p>
+<p>Delivery Fee <span id="deliveryFee">₹39</span></p>
+<p>Platform Fee <span>₹10</span></p>
+<p>Taxes <span id="taxes">₹0</span></p>
+<p id="discountRow" style="display:none;color:#4caf50">Discount <span id="discountAmt" style="color:#4caf50">-₹0</span></p>
+<hr style="border-color:#444;margin:10px 0">
+<p class="total-row">Total <span id="total">₹0</span></p>
+</div>
+
+<!-- CHECKOUT BUTTON -->
+<button class="checkout-btn" onclick="initiatePayment()">Proceed to Checkout ₹<span id="checkoutTotal">0</span></button>
+
+<!-- ORDER ASSURANCE -->
+<div class="assurance-badges">
+<span>🔒 Secure Checkout</span>
+<span>🛡️ 100% Refund</span>
+</div>
+
+<div id="qrBox" style="display:none;text-align:center;padding:10px 0;position:relative;">
+<button onclick="closeQR()" style="position:absolute;top:0;right:0;background:none;border:none;color:#aaa;font-size:22px;cursor:pointer;line-height:1;padding:4px">✕</button>
+<h4 style="color:#00ffcc;font-size:18px;margin:0 0 4px">💳 Pay Now</h4>
+<p style="color:#999;font-size:12px;margin:0 0 14px">Tap below to open your UPI app directly</p>
+
+<!-- AMOUNT -->
+<div style="background:#0d2e1f;border:1px solid #00ffcc;border-radius:10px;padding:12px 16px;margin:0 auto 16px;max-width:270px">
+  <p style="color:#999;font-size:11px;margin:0 0 3px">Amount to Pay</p>
+  <p style="color:#00ffcc;font-weight:700;font-size:28px;margin:0">₹<span id="scanAmount">0</span></p>
+</div>
+
+<!-- QR CODE for desktop -->
+<div style="margin:16px 0 8px">
+  <p style="color:#666;font-size:11px;margin:0 0 8px">Or scan with any UPI app</p>
+  <div style="background:#fff;border-radius:12px;padding:12px;display:inline-block;box-shadow:0 0 20px rgba(0,255,204,0.3)">
+    <div id="upiQRCode"></div>
+  </div>
+</div>
+
+<!-- UPI ID -->
+<div style="background:#2a2a2a;border-radius:10px;padding:10px 16px;margin:12px auto;max-width:270px">
+  <p style="color:#999;font-size:11px;margin:0 0 3px">UPI ID</p>
+  <p style="color:#fff;font-weight:700;font-size:14px;margin:0">jahnavipatel0023@oksbi</p>
+</div>
+
+<button onclick="confirmPaymentDone()" style="background:#00ffcc;color:black;padding:13px 0;border:none;border-radius:8px;font-weight:700;font-size:15px;cursor:pointer;width:100%;max-width:270px;margin-top:4px;margin-bottom:40px">✅ I've Paid</button>
+</div>
+
+<!-- PAYMENT SUCCESS PAGE -->
+<div id="paymentSuccess" style="display:none;">
+  <div class="pay-success-wrap">
+
+    <!-- Animated checkmark -->
+    <div class="pay-check-ring">
+      <svg viewBox="0 0 80 80" class="pay-check-svg">
+        <circle cx="40" cy="40" r="36" fill="none" stroke="#00e5a0" stroke-width="4" class="pay-check-circle"/>
+        <polyline points="24,41 35,52 56,30" fill="none" stroke="#00e5a0" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" class="pay-check-tick"/>
+      </svg>
+    </div>
+
+    <div class="pay-success-title">Payment Successful!</div>
+    <div class="pay-success-sub">Your order has been placed and is being prepared 🍽️</div>
+
+    <!-- Order details card -->
+    <div class="pay-detail-card">
+      <div class="pay-detail-row">
+        <span class="pay-detail-label">Order ID</span>
+        <span class="pay-detail-value" id="successOrderId">#99F000000</span>
+      </div>
+      <div class="pay-detail-divider"></div>
+      <div class="pay-detail-row">
+        <span class="pay-detail-label">Amount Paid</span>
+        <span class="pay-detail-value pay-amount">₹<span id="paidAmount">0</span></span>
+      </div>
+      <div class="pay-detail-divider"></div>
+      <div class="pay-detail-row">
+        <span class="pay-detail-label">Payment Method</span>
+        <span class="pay-detail-value">UPI</span>
+      </div>
+      <div class="pay-detail-divider"></div>
+      <div class="pay-detail-row">
+        <span class="pay-detail-label">Status</span>
+        <span class="pay-status-badge">✔ Confirmed</span>
+      </div>
+    </div>
+
+    <!-- ETA strip -->
+    <div class="pay-eta-strip">
+      <div class="pay-eta-item">
+        <span class="pay-eta-icon">🧑‍🍳</span>
+        <span>Preparing</span>
+      </div>
+      <div class="pay-eta-line"></div>
+      <div class="pay-eta-item">
+        <span class="pay-eta-icon">🛵</span>
+        <span>On the way</span>
+      </div>
+      <div class="pay-eta-line"></div>
+      <div class="pay-eta-item">
+        <span class="pay-eta-icon">📦</span>
+        <span>Delivered</span>
+      </div>
+    </div>
+
+    <p class="pay-sms-note">📲 A confirmation SMS will be sent to your number shortly.</p>
+
+    <button class="pay-order-more-btn" onclick="closePayment()">Order More</button>
+
+  </div>
+</div>
+</div>
+
+<div class="reviews" id="reviews">
+
+  <!-- STICKY HEADER -->
+  <div class="reviews-header">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+      <h3>Ratings &amp; Reviews</h3>
+      <button onclick="toggleReviews()" style="background:none;border:none;color:#aaa;font-size:22px;cursor:pointer;line-height:1;padding:0">&#x2715;</button>
+    </div>
+    <div class="rating-summary">
+      <div>
+        <div class="rating-big">4.5<span>out of 5</span></div>
+        <div style="color:#ff9800;font-size:18px;margin-top:4px">&#9733;&#9733;&#9733;&#9733;&#189;</div>
+        <div style="font-size:11px;color:#666;margin-top:2px">1.2K ratings</div>
+      </div>
+      <div class="rating-bars">
+        <div class="rating-bar-row"><span class="bar-label">5</span><div class="bar-track"><div class="bar-fill" style="width:68%"></div></div><span class="bar-count">820</span></div>
+        <div class="rating-bar-row"><span class="bar-label">4</span><div class="bar-track"><div class="bar-fill" style="width:20%"></div></div><span class="bar-count">240</span></div>
+        <div class="rating-bar-row"><span class="bar-label">3</span><div class="bar-track"><div class="bar-fill" style="width:7%"></div></div><span class="bar-count">84</span></div>
+        <div class="rating-bar-row"><span class="bar-label">2</span><div class="bar-track"><div class="bar-fill" style="width:3%"></div></div><span class="bar-count">36</span></div>
+        <div class="rating-bar-row"><span class="bar-label">1</span><div class="bar-track"><div class="bar-fill" style="width:2%"></div></div><span class="bar-count">20</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FILTER CHIPS -->
+  <div class="review-filters">
+    <button class="review-filter-btn active" onclick="setReviewFilter(this)">All</button>
+    <button class="review-filter-btn" onclick="setReviewFilter(this)">Food Quality</button>
+    <button class="review-filter-btn" onclick="setReviewFilter(this)">Delivery</button>
+    <button class="review-filter-btn" onclick="setReviewFilter(this)">Packaging</button>
+    <button class="review-filter-btn" onclick="setReviewFilter(this)">Value</button>
+  </div>
+
+  <!-- WRITE A REVIEW -->
+  <div class="write-review-bar" onclick="toggleReviewForm()">
+    <div style="display:flex;align-items:center;gap:10px">
+      <div class="write-review-avatar" id="writeAvatar">?</div>
+      <span style="color:#888;font-size:14px">Rate &amp; write a review...</span>
+    </div>
+    <span style="color:#ff4d4d;font-size:13px;font-weight:600">+ Add ›</span>
+  </div>
+
+  <!-- REVIEW FORM (hidden by default) -->
+  <div class="review-form-box" id="reviewFormBox">
+    <div style="font-size:13px;font-weight:600;color:#aaa;margin-bottom:10px">Your Rating</div>
+
+    <!-- STAR PICKER -->
+    <div class="star-picker" id="starPicker">
+      <span onclick="setRating(1)">&#9733;</span>
+      <span onclick="setRating(2)">&#9733;</span>
+      <span onclick="setRating(3)">&#9733;</span>
+      <span onclick="setRating(4)">&#9733;</span>
+      <span onclick="setRating(5)">&#9733;</span>
+    </div>
+    <div id="ratingLabel" style="font-size:12px;color:#888;margin:6px 0 14px;min-height:16px"></div>
+
+    <!-- CATEGORY TAGS -->
+    <div style="font-size:13px;font-weight:600;color:#aaa;margin-bottom:8px">What did you like?</div>
+    <div class="review-tag-picker">
+      <span class="rtag" onclick="toggleTag(this)">&#x1F35C; Food Quality</span>
+      <span class="rtag" onclick="toggleTag(this)">&#x1F6F5; Delivery</span>
+      <span class="rtag" onclick="toggleTag(this)">&#x1F4E6; Packaging</span>
+      <span class="rtag" onclick="toggleTag(this)">&#x1F4B0; Value</span>
+    </div>
+
+    <!-- NAME -->
+    <input class="review-input" id="reviewName" type="text" placeholder="Your name (optional)" maxlength="30">
+
+    <!-- REVIEW TEXT -->
+    <textarea class="review-input" id="reviewText" placeholder="Share your experience... (optional)" rows="3" maxlength="200"></textarea>
+    <div style="text-align:right;font-size:11px;color:#555;margin-top:-8px;margin-bottom:10px"><span id="charCount">0</span>/200</div>
+
+    <!-- SUBMIT -->
+    <button class="review-submit-btn" onclick="submitReview()">Submit Review</button>
+  </div>
+
+  <!-- REVIEW CARDS -->
+  <div class="review-card" data-category="food quality delivery">
+    <div class="reviewer-row">
+      <div class="reviewer-avatar" style="background:#e91e63">P</div>
+      <div class="reviewer-info">
+        <div class="reviewer-name">Priya Sharma <span class="review-badge veg">&#x1F7E2; Veg</span></div>
+        <div class="reviewer-meta">2 days ago &middot; 14 orders</div>
+      </div>
+      <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+    </div>
+    <div class="review-text">Absolutely loved the Pav Bhaji! Perfectly spiced and the butter was generous. Delivery was super quick &mdash; under 25 minutes. Will definitely order again &#x1F525;</div>
+    <div class="review-dish-tags">
+      <span class="review-dish-tag">&#x1F35B; Pav Bhaji</span>
+      <span class="review-dish-tag">&#x1F964; Cold Coffee</span>
+    </div>
+    <div class="review-actions">
+      <span class="review-helpful" onclick="likeReview(this)">&#x1F44D; Helpful (12)</span>
+      <span style="font-size:12px;color:#555;cursor:pointer">Report</span>
+    </div>
+  </div>
+
+  <div class="review-card" data-category="food quality packaging">
+    <div class="reviewer-row">
+      <div class="reviewer-avatar" style="background:#2196f3">R</div>
+      <div class="reviewer-info">
+        <div class="reviewer-name">Rahul Mehta</div>
+        <div class="reviewer-meta">1 week ago &middot; 7 orders</div>
+      </div>
+      <div class="review-stars">&#9733;&#9733;&#9733;&#9733;<span style="color:#444">&#9733;</span></div>
+    </div>
+    <div class="review-text">Pizza was fresh and crispy. Cheese pull was real &#x1F60D; Packaging was neat and nothing spilled. Minus one star because the dip was missing, but overall great experience!</div>
+    <div class="review-dish-tags">
+      <span class="review-dish-tag">&#x1F355; Pizza</span>
+      <span class="review-dish-tag">&#x1F964; Cold Drink</span>
+    </div>
+    <div class="review-actions">
+      <span class="review-helpful" onclick="likeReview(this)">&#x1F44D; Helpful (8)</span>
+      <span style="font-size:12px;color:#555;cursor:pointer">Report</span>
+    </div>
+  </div>
+
+  <div class="review-card" data-category="food quality value">
+    <div class="reviewer-row">
+      <div class="reviewer-avatar" style="background:#ff9800">A</div>
+      <div class="reviewer-info">
+        <div class="reviewer-name">Ananya Patel <span class="review-badge veg">&#x1F7E2; Veg</span></div>
+        <div class="reviewer-meta">3 days ago &middot; 22 orders</div>
+      </div>
+      <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+    </div>
+    <div class="review-text">Dosa was crispy and the sambar was hot! Idli combo is a steal at this price. Best South Indian food I've had from a delivery app. Highly recommend &#x1F64C;</div>
+    <div class="review-dish-tags">
+      <span class="review-dish-tag">&#x1F95E; Dosa</span>
+      <span class="review-dish-tag">&#x1F35A; Idli</span>
+    </div>
+    <div class="review-actions">
+      <span class="review-helpful" onclick="likeReview(this)">&#x1F44D; Helpful (31)</span>
+      <span style="font-size:12px;color:#555;cursor:pointer">Report</span>
+    </div>
+  </div>
+
+  <div class="review-card" data-category="food quality delivery value">
+    <div class="reviewer-row">
+      <div class="reviewer-avatar" style="background:#9c27b0">K</div>
+      <div class="reviewer-info">
+        <div class="reviewer-name">Karan Joshi</div>
+        <div class="reviewer-meta">5 days ago &middot; 3 orders</div>
+      </div>
+      <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+    </div>
+    <div class="review-text">Burger was juicy and the bun was soft. Ordered for the whole office and everyone loved it. The app is super smooth too &mdash; easy to use!</div>
+    <div class="review-dish-tags">
+      <span class="review-dish-tag">&#x1F354; Burger</span>
+      <span class="review-dish-tag">&#x1F964; Pepsi</span>
+    </div>
+    <div class="review-actions">
+      <span class="review-helpful" onclick="likeReview(this)">&#x1F44D; Helpful (5)</span>
+      <span style="font-size:12px;color:#555;cursor:pointer">Report</span>
+    </div>
+  </div>
+
+  <div class="review-card" data-category="food quality packaging delivery">
+    <div class="reviewer-row">
+      <div class="reviewer-avatar" style="background:#00bcd4">S</div>
+      <div class="reviewer-info">
+        <div class="reviewer-name">Sneha Gupta <span class="review-badge veg">&#x1F7E2; Veg</span></div>
+        <div class="reviewer-meta">2 weeks ago &middot; 11 orders</div>
+      </div>
+      <div class="review-stars">&#9733;&#9733;&#9733;&#9733;<span style="color:#444">&#9733;</span></div>
+    </div>
+    <div class="review-text">Pasta was creamy and well-seasoned. Sandwich was fresh. Delivery was on time. Would love more variety in the menu but what's there is really good quality!</div>
+    <div class="review-dish-tags">
+      <span class="review-dish-tag">&#x1F35D; Pasta</span>
+      <span class="review-dish-tag">&#x1F96A; Sandwich</span>
+    </div>
+    <div class="review-actions">
+      <span class="review-helpful" onclick="likeReview(this)">&#x1F44D; Helpful (19)</span>
+      <span style="font-size:12px;color:#555;cursor:pointer">Report</span>
+    </div>
+  </div>
+
+</div>
+
+<div class="contact" id="contact">
+
+  <div class="contact-header">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <h3>Contact Us</h3>
+      <button onclick="toggleContact()" style="background:none;border:none;color:#aaa;font-size:22px;cursor:pointer;line-height:1;padding:0">&#x2715;</button>
+    </div>
+  </div>
+
+  <div class="contact-body">
+
+    <div class="contact-hero">
+      <svg style="width:70px;height:70px;border-radius:50%;margin-bottom:8px;filter:drop-shadow(0 2px 12px rgba(255,165,0,0.4))" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="100" cy="100" r="100" fill="#111"/>
+        <text x="30" y="82" font-family="Arial Black,sans-serif" font-size="58" font-weight="900" fill="#fff">9</text>
+        <text x="72" y="82" font-family="Arial Black,sans-serif" font-size="58" font-weight="900" fill="#f5a623">9</text>
+        <text x="100" y="108" font-family="Arial Black,sans-serif" font-size="26" font-weight="900" fill="#fff" text-anchor="middle" letter-spacing="2">FOODIES</text>
+        <text x="100" y="162" font-family="Georgia,serif" font-size="10" fill="#f5a623" text-anchor="middle" font-style="italic">★ Good Food, Great Mood! ★</text>
+      </svg>
+      <h4>99Foodies</h4>
+      <p>Delivering happiness, one meal at a time</p>
+      <div style="display:flex;justify-content:center;gap:20px;margin-top:12px">
+        <div style="text-align:center"><div style="font-size:18px;font-weight:800;color:#ff4d4d">500+</div><div style="font-size:10px;color:#666">Happy Orders</div></div>
+        <div style="width:1px;background:#333"></div>
+        <div style="text-align:center"><div style="font-size:18px;font-weight:800;color:#ff4d4d">4.5&#9733;</div><div style="font-size:10px;color:#666">Avg Rating</div></div>
+        <div style="width:1px;background:#333"></div>
+        <div style="text-align:center"><div style="font-size:18px;font-weight:800;color:#ff4d4d">25 min</div><div style="font-size:10px;color:#666">Avg Delivery</div></div>
+      </div>
+    </div>
+
+    <div class="contact-section-title">Get in Touch</div>
+
+    <a class="contact-item" href="tel:9998525204">
+      <div class="contact-item-icon" style="background:#1e3a2f">&#x1F4DE;</div>
+      <div class="contact-item-info">
+        <div class="contact-item-label">Phone / WhatsApp</div>
+        <div class="contact-item-value">+91 99985 25204</div>
+      </div>
+      <div class="contact-item-arrow">&#x203A;</div>
+    </a>
+
+    <a class="contact-item" href="mailto:jahnavipatel0023@gmail.com">
+      <div class="contact-item-icon" style="background:#1a1e3a">&#x1F4E7;</div>
+      <div class="contact-item-info">
+        <div class="contact-item-label">Email Support</div>
+        <div class="contact-item-value">jahnavipatel0023@gmail.com</div>
+      </div>
+      <div class="contact-item-arrow">&#x203A;</div>
+    </a>
+
+    <div class="contact-item" style="cursor:default">
+      <div class="contact-item-icon" style="background:#2a1a1a">&#x1F4CD;</div>
+      <div class="contact-item-info">
+        <div class="contact-item-label">Location</div>
+        <div class="contact-item-value">Valsad, Gujarat</div>
+      </div>
+    </div>
+
+    <div class="contact-section-title">Restaurant Owner</div>
+    <div class="contact-item" style="cursor:default">
+      <div class="reviewer-avatar" style="background:#e91e63;width:40px;height:40px;border-radius:10px;font-size:18px;display:flex;align-items:center;justify-content:center;flex-shrink:0">J</div>
+      <div class="contact-item-info">
+        <div class="contact-item-label">Owner &amp; Chef</div>
+        <div class="contact-item-value">Jahnavi Patel</div>
+      </div>
+      <div style="background:#1e3a2f;color:#4caf50;font-size:10px;padding:3px 8px;border-radius:10px;font-weight:700">Verified &#x2713;</div>
+    </div>
+
+    <div class="contact-section-title">Operating Hours</div>
+    <div class="contact-hours">
+      <div class="contact-hours-row">
+        <span class="contact-hours-day">Mon &ndash; Fri</span>
+        <span class="contact-hours-time">9:00 AM &ndash; 10:00 PM &nbsp;<span class="contact-hours-badge open">Open</span></span>
+      </div>
+      <div class="contact-hours-row">
+        <span class="contact-hours-day">Saturday</span>
+        <span class="contact-hours-time">10:00 AM &ndash; 11:00 PM &nbsp;<span class="contact-hours-badge open">Open</span></span>
+      </div>
+      <div class="contact-hours-row">
+        <span class="contact-hours-day">Sunday</span>
+        <span class="contact-hours-time">11:00 AM &ndash; 9:00 PM &nbsp;<span class="contact-hours-badge open">Open</span></span>
+      </div>
+    </div>
+
+    <div class="contact-section-title">Follow Us</div>
+    <div class="contact-social">
+      <a class="social-btn" href="https://www.instagram.com/jahnavi_.88?igsh=eXlkeGV4bWsya3lz&utm_source=qr" target="_blank" rel="noopener">&#x1F4F8; Instagram</a>
+      <a class="social-btn" href="https://wa.me/919998525204" target="_blank" rel="noopener">&#x1F4AC; WhatsApp</a>
+    </div>
+
+    <div style="background:#1a1a1a;border-radius:12px;padding:14px;margin-top:16px;text-align:center">
+      <div style="font-size:20px;margin-bottom:6px">&#x1F6E1;&#xFE0F;</div>
+      <div style="font-size:13px;font-weight:600;color:#fff;margin-bottom:4px">100% Satisfaction Guaranteed</div>
+      <div style="font-size:11px;color:#666;line-height:1.5">Not happy with your order? We'll make it right. Contact us within 30 minutes of delivery.</div>
+    </div>
+
+  </div>
+</div>
+
+</div>
+
+<!-- ===== PROFILE PANEL ===== -->
+<div class="profile-panel" id="profilePanel">
+
+  <!-- HEADER -->
+  <div class="profile-header">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <h3 style="margin:0;font-size:18px;font-weight:700">My Profile</h3>
+      <button onclick="toggleProfile()" style="background:none;border:none;color:#aaa;font-size:22px;cursor:pointer;line-height:1;padding:0">&#x2715;</button>
+    </div>
+  </div>
+
+  <!-- PROFILE BODY -->
+  <div class="profile-body">
+
+    <!-- AVATAR + NAME HERO -->
+    <div class="profile-hero">
+      <div class="profile-avatar-wrap">
+        <div class="profile-avatar" id="profileAvatar">?</div>
+        <label class="profile-avatar-edit" title="Change photo">
+          &#x1F4F7;
+          <input type="file" accept="image/*" style="display:none" onchange="changeAvatar(this)">
+        </label>
+      </div>
+      <div id="profileHeroName" style="font-size:18px;font-weight:800;color:#fff;margin-top:10px">—</div>
+      <div id="profileHeroPhone" style="font-size:13px;color:#888;margin-top:2px">—</div>
+      <div style="display:flex;gap:10px;margin-top:12px;justify-content:center">
+        <div style="text-align:center">
+          <div style="font-size:18px;font-weight:800;color:#ff4d4d" id="profileOrderCount">0</div>
+          <div style="font-size:10px;color:#666">Orders</div>
+        </div>
+        <div style="width:1px;background:#2a2a2a"></div>
+        <div style="text-align:center">
+          <div style="font-size:18px;font-weight:800;color:#ff4d4d" id="profileSavedCount">0</div>
+          <div style="font-size:10px;color:#666">Saved</div>
+        </div>
+        <div style="width:1px;background:#2a2a2a"></div>
+        <div style="text-align:center">
+          <div style="font-size:18px;font-weight:800;color:#ff4d4d">4.5&#9733;</div>
+          <div style="font-size:10px;color:#666">Rating</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TABS -->
+    <div class="profile-tabs">
+      <button class="profile-tab active" onclick="switchProfileTab(this,'info')">Info</button>
+      <button class="profile-tab" onclick="switchProfileTab(this,'addresses')">Addresses</button>
+      <button class="profile-tab" onclick="switchProfileTab(this,'orders')">Orders</button>
+    </div>
+
+    <!-- TAB: INFO -->
+    <div class="profile-tab-content" id="tab-info">
+
+      <div class="profile-section-title">Basic Information</div>
+
+      <!-- VIEW MODE -->
+      <div id="profileViewMode">
+        <div class="profile-info-row">
+          <div class="profile-info-icon" style="background:#1e2a3a">&#x1F464;</div>
+          <div class="profile-info-body">
+            <div class="profile-info-label">Full Name</div>
+            <div class="profile-info-value" id="viewName">—</div>
+          </div>
+        </div>
+        <div class="profile-info-row">
+          <div class="profile-info-icon" style="background:#1e3a2f">&#x1F4DE;</div>
+          <div class="profile-info-body">
+            <div class="profile-info-label">Phone Number</div>
+            <div class="profile-info-value" id="viewPhone">—</div>
+          </div>
+        </div>
+        <div class="profile-info-row">
+          <div class="profile-info-icon" style="background:#1a1e3a">&#x1F4E7;</div>
+          <div class="profile-info-body">
+            <div class="profile-info-label">Email Address</div>
+            <div class="profile-info-value" id="viewEmail">Not set</div>
+          </div>
+        </div>
+        <button class="profile-edit-btn" onclick="toggleEditMode(true)">&#x270F;&#xFE0F; Edit Profile</button>
+      </div>
+
+      <!-- EDIT MODE -->
+      <div id="profileEditMode" style="display:none">
+        <div class="profile-section-title">Edit Profile</div>
+        <label class="profile-field-label">Full Name</label>
+        <input class="profile-input" id="editName" type="text" placeholder="Your full name" maxlength="40">
+        <label class="profile-field-label">Phone Number</label>
+        <input class="profile-input" id="editPhone" type="tel" placeholder="10-digit mobile number" maxlength="10">
+        <label class="profile-field-label">Email Address</label>
+        <input class="profile-input" id="editEmail" type="email" placeholder="your@email.com">
+        <div style="display:flex;gap:10px;margin-top:4px">
+          <button class="profile-save-btn" onclick="saveProfile()">Save Changes</button>
+          <button class="profile-cancel-btn" onclick="toggleEditMode(false)">Cancel</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- TAB: ADDRESSES -->
+    <div class="profile-tab-content" id="tab-addresses" style="display:none">
+
+      <div class="profile-section-title">Saved Addresses</div>
+      <div id="addressList"></div>
+
+      <!-- ADD ADDRESS FORM -->
+      <div class="add-address-bar" onclick="toggleAddressForm()">
+        <span style="font-size:18px">&#x2795;</span>
+        <span style="font-size:13px;font-weight:600;color:#ff4d4d">Add New Address</span>
+      </div>
+      <div class="address-form-box" id="addressFormBox">
+        <div style="display:flex;gap:8px;margin-bottom:10px">
+          <button class="addr-type-btn active" onclick="selectAddrType(this,'Home')">&#x1F3E0; Home</button>
+          <button class="addr-type-btn" onclick="selectAddrType(this,'Work')">&#x1F4BC; Work</button>
+          <button class="addr-type-btn" onclick="selectAddrType(this,'Other')">&#x1F4CD; Other</button>
+        </div>
+        <input class="profile-input" id="addrFlat" placeholder="Flat / House No., Floor" type="text">
+        <input class="profile-input" id="addrStreet" placeholder="Street, Area, Landmark" type="text">
+        <input class="profile-input" id="addrCity" placeholder="City" type="text">
+        <input class="profile-input" id="addrPin" placeholder="PIN Code" type="tel" maxlength="6">
+        <button class="profile-save-btn" onclick="saveAddress()">Save Address</button>
+      </div>
+
+    </div>
+
+    <!-- TAB: ORDER HISTORY -->
+    <div class="profile-tab-content" id="tab-orders" style="display:none">
+      <div class="profile-section-title">Order History</div>
+      <div id="orderHistoryList">
+        <div style="text-align:center;padding:40px 20px;color:#555">
+          <div style="font-size:40px;margin-bottom:10px">&#x1F6D2;</div>
+          <div style="font-size:14px;font-weight:600;color:#666">No orders yet</div>
+          <div style="font-size:12px;color:#444;margin-top:4px">Your order history will appear here</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- BLUR OVERLAY -->
+<div id="blurOverlay" onclick="closeAllPanels()" style="display:none;position:fixed;inset:0;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);background:rgba(0,0,0,0.4);z-index:999"></div>
+
+<!-- 🔔 TOAST -->
+<div id="toast" class="toast"></div>
+
+<!-- 🔊 SOUND (Web Audio API — no external file needed) -->
+<audio id="sound" style="display:none"></audio>
+
+<script>
+// 🔊 Web Audio click sound — no external file, no 404
+function playClickSound(){
+  try {
+    let ctx = new (window.AudioContext || window.webkitAudioContext)();
+    let osc = ctx.createOscillator();
+    let gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.type = "sine";
+    osc.frequency.setValueAtTime(880, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(440, ctx.currentTime + 0.08);
+    gain.gain.setValueAtTime(0.3, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.12);
+    osc.start(ctx.currentTime);
+    osc.stop(ctx.currentTime + 0.12);
+  } catch(e){}
+}
+
+// 99Foodies menu — 130 items across 13 categories
+const items=[
+{n:"Margherita Pizza",p:199,t:"food",cat:"pizza",img:"https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=400&fit=crop",v:true,spicy:0,desc:"Classic tomato base, fresh mozzarella & basil"},
+{n:"Farmhouse Pizza",p:229,t:"food",cat:"pizza",img:"https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&fit=crop",v:true,spicy:1,desc:"Loaded with capsicum, onion, tomato & mushroom"},
+{n:"Paneer Tikka Pizza",p:249,t:"food",cat:"pizza",img:"https://images.unsplash.com/photo-1628840042765-356cda07504e?w=400&fit=crop",v:true,spicy:2,desc:"Spiced paneer tikka with peppers on cheesy base"},
+{n:"Veggie Delight Pizza",p:219,t:"food",cat:"pizza",img:"https://images.unsplash.com/photo-1604382355076-af4b0eb60143?w=400&fit=crop",v:true,spicy:1,desc:"Fresh garden veggies on herbed tomato sauce"},
+{n:"Cheese Burst Pizza",p:279,t:"food",cat:"pizza",img:"https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&fit=crop",v:true,spicy:0,desc:"Oozy cheese-filled crust with extra mozzarella"},
+{n:"Tandoori Chicken Pizza",p:299,t:"food",cat:"pizza",img:"https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=400&fit=crop",v:false,spicy:2,desc:"Tandoori chicken with onion & mint chutney drizzle"},
+{n:"BBQ Chicken Pizza",p:289,t:"food",cat:"pizza",img:"https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&fit=crop",v:false,spicy:1,desc:"Smoky BBQ chicken with caramelised onion"},
+{n:"Pepperoni Pizza",p:309,t:"food",cat:"pizza",img:"https://images.unsplash.com/photo-1628840042765-356cda07504e?w=400&fit=crop",v:false,spicy:2,desc:"Classic pepperoni slices with mozzarella"},
+{n:"Mexican Green Wave Pizza",p:259,t:"food",cat:"pizza",img:"https://images.unsplash.com/photo-1604382355076-af4b0eb60143?w=400&fit=crop",v:true,spicy:3,desc:"Jalapenos, capsicum & Mexican spice blend"},
+{n:"Mushroom Corn Pizza",p:239,t:"food",cat:"pizza",img:"https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&fit=crop",v:true,spicy:1,desc:"Sauteed mushroom & sweet corn on white sauce"},
+{n:"Veg Burger",p:99,t:"food",cat:"burger",img:"https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&fit=crop",v:true,spicy:0,desc:"Crispy veg patty with lettuce, tomato & mayo"},
+{n:"Aloo Tikki Burger",p:109,t:"food",cat:"burger",img:"https://images.unsplash.com/photo-1550547660-d9450f859349?w=400&fit=crop",v:true,spicy:1,desc:"Spiced potato tikki with mint chutney & onion"},
+{n:"Paneer Burger",p:149,t:"food",cat:"burger",img:"https://images.unsplash.com/photo-1561758033-d89a9ad46330?w=400&fit=crop",v:true,spicy:1,desc:"Grilled paneer patty with cheese & veggies"},
+{n:"Cheese Burger",p:139,t:"food",cat:"burger",img:"https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=400&fit=crop",v:true,spicy:0,desc:"Double cheese slice with crispy patty & pickles"},
+{n:"Double Patty Burger",p:229,t:"food",cat:"burger",img:"https://images.unsplash.com/photo-1586816001966-79b736744398?w=400&fit=crop",v:false,spicy:1,desc:"Two beef patties with special sauce & cheese"},
+{n:"Chicken Burger",p:169,t:"food",cat:"burger",img:"https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&fit=crop",v:false,spicy:1,desc:"Juicy chicken patty with lettuce & mayo"},
+{n:"Crispy Chicken Burger",p:179,t:"food",cat:"burger",img:"https://images.unsplash.com/photo-1550547660-d9450f859349?w=400&fit=crop",v:false,spicy:2,desc:"Crunchy fried chicken fillet with coleslaw"},
+{n:"Spicy Chicken Burger",p:189,t:"food",cat:"burger",img:"https://images.unsplash.com/photo-1561758033-d89a9ad46330?w=400&fit=crop",v:false,spicy:3,desc:"Fiery crispy chicken with sriracha mayo"},
+{n:"BBQ Burger",p:199,t:"food",cat:"burger",img:"https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=400&fit=crop",v:false,spicy:2,desc:"Smoky BBQ glazed patty with crispy onion rings"},
+{n:"Veg Supreme Burger",p:159,t:"food",cat:"burger",img:"https://images.unsplash.com/photo-1586816001966-79b736744398?w=400&fit=crop",v:true,spicy:1,desc:"Loaded veg burger with cheese, corn & peppers"},
+{n:"White Sauce Pasta",p:169,t:"food",cat:"pasta",img:"https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=400&fit=crop",v:true,spicy:0,desc:"Creamy bechamel sauce with penne & herbs"},
+{n:"Red Sauce Pasta",p:159,t:"food",cat:"pasta",img:"https://images.unsplash.com/photo-1645112411341-6c4fd023714a?w=400&fit=crop",v:true,spicy:1,desc:"Classic tomato marinara with penne"},
+{n:"Pink Sauce Pasta",p:179,t:"food",cat:"pasta",img:"https://images.unsplash.com/photo-1473093295043-cdd812d0e601?w=400&fit=crop",v:true,spicy:1,desc:"Blend of tomato & cream sauce with penne"},
+{n:"Alfredo Pasta",p:189,t:"food",cat:"pasta",img:"https://images.unsplash.com/photo-1555949258-eb67b1ef0ceb?w=400&fit=crop",v:true,spicy:0,desc:"Rich parmesan cream sauce with fettuccine"},
+{n:"Arrabbiata Pasta",p:169,t:"food",cat:"pasta",img:"https://images.unsplash.com/photo-1548940740-204726a19be3?w=400&fit=crop",v:true,spicy:3,desc:"Spicy tomato & garlic sauce with penne"},
+{n:"Cheese Pasta",p:179,t:"food",cat:"pasta",img:"https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=400&fit=crop",v:true,spicy:0,desc:"Extra cheesy pasta with herbs & butter"},
+{n:"Mushroom Pasta",p:189,t:"food",cat:"pasta",img:"https://images.unsplash.com/photo-1645112411341-6c4fd023714a?w=400&fit=crop",v:true,spicy:1,desc:"Sauteed mushrooms in garlic cream sauce"},
+{n:"Chicken Pasta",p:219,t:"food",cat:"pasta",img:"https://images.unsplash.com/photo-1473093295043-cdd812d0e601?w=400&fit=crop",v:false,spicy:1,desc:"Grilled chicken strips in tomato herb sauce"},
+{n:"Veg Loaded Pasta",p:199,t:"food",cat:"pasta",img:"https://images.unsplash.com/photo-1555949258-eb67b1ef0ceb?w=400&fit=crop",v:true,spicy:1,desc:"Seasonal veggies in rich tomato cream sauce"},
+{n:"Garlic Butter Pasta",p:159,t:"food",cat:"pasta",img:"https://images.unsplash.com/photo-1548940740-204726a19be3?w=400&fit=crop",v:true,spicy:0,desc:"Simple garlic butter tossed pasta with parsley"},
+{n:"Veg Sandwich",p:79,t:"food",cat:"sandwich",img:"https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=400&fit=crop",v:true,spicy:0,desc:"Fresh veggies with green chutney on toasted bread"},
+{n:"Grilled Cheese Sandwich",p:99,t:"food",cat:"sandwich",img:"https://images.unsplash.com/photo-1509722747041-616f39b57569?w=400&fit=crop",v:true,spicy:0,desc:"Melted cheese with butter on grilled bread"},
+{n:"Club Sandwich",p:149,t:"food",cat:"sandwich",img:"https://images.unsplash.com/photo-1553909489-cd47e0907980?w=400&fit=crop",v:false,spicy:1,desc:"Triple-decker with chicken, egg, lettuce & mayo"},
+{n:"Paneer Sandwich",p:119,t:"food",cat:"sandwich",img:"https://images.unsplash.com/photo-1481070414801-51fd0d591058?w=400&fit=crop",v:true,spicy:1,desc:"Spiced paneer with capsicum & mint chutney"},
+{n:"Corn Cheese Sandwich",p:109,t:"food",cat:"sandwich",img:"https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&fit=crop",v:true,spicy:0,desc:"Sweet corn & cheese on toasted bread"},
+{n:"Chocolate Sandwich",p:89,t:"food",cat:"sandwich",img:"https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=400&fit=crop",v:true,spicy:0,desc:"Nutella & banana on toasted bread"},
+{n:"Aloo Sandwich",p:79,t:"food",cat:"sandwich",img:"https://images.unsplash.com/photo-1509722747041-616f39b57569?w=400&fit=crop",v:true,spicy:1,desc:"Spiced potato filling with green chutney"},
+{n:"Mayo Veg Sandwich",p:99,t:"food",cat:"sandwich",img:"https://images.unsplash.com/photo-1553909489-cd47e0907980?w=400&fit=crop",v:true,spicy:0,desc:"Fresh veggies with creamy mayo"},
+{n:"Chicken Sandwich",p:149,t:"food",cat:"sandwich",img:"https://images.unsplash.com/photo-1481070414801-51fd0d591058?w=400&fit=crop",v:false,spicy:1,desc:"Grilled chicken with lettuce, tomato & mayo"},
+{n:"Cheese Chutney Sandwich",p:109,t:"food",cat:"sandwich",img:"https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&fit=crop",v:true,spicy:1,desc:"Cheese slice with spicy green chutney"},
+{n:"Plain Dosa",p:80,t:"food",cat:"dosa",img:"https://images.unsplash.com/photo-1668236543090-82eba5ee5976?w=400&fit=crop",v:true,spicy:0,desc:"Crispy thin rice crepe with sambar & chutney"},
+{n:"Masala Dosa",p:110,t:"food",cat:"dosa",img:"https://images.unsplash.com/photo-1630383249896-424e482df921?w=400&fit=crop",v:true,spicy:2,desc:"Crispy dosa with spiced potato filling"},
+{n:"Mysore Masala Dosa",p:120,t:"food",cat:"dosa",img:"https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=400&fit=crop",v:true,spicy:2,desc:"Spicy red chutney spread with masala filling"},
+{n:"Cheese Dosa",p:130,t:"food",cat:"dosa",img:"https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?w=400&fit=crop",v:true,spicy:1,desc:"Crispy dosa loaded with melted cheese"},
+{n:"Paneer Dosa",p:140,t:"food",cat:"dosa",img:"https://images.unsplash.com/photo-1574484284002-952d92456975?w=400&fit=crop",v:true,spicy:1,desc:"Dosa stuffed with spiced paneer bhurji"},
+{n:"Butter Dosa",p:90,t:"food",cat:"dosa",img:"https://images.unsplash.com/photo-1668236543090-82eba5ee5976?w=400&fit=crop",v:true,spicy:0,desc:"Crispy dosa with generous butter topping"},
+{n:"Rava Dosa",p:100,t:"food",cat:"dosa",img:"https://images.unsplash.com/photo-1630383249896-424e482df921?w=400&fit=crop",v:true,spicy:1,desc:"Crispy semolina dosa with onion & green chilli"},
+{n:"Onion Dosa",p:95,t:"food",cat:"dosa",img:"https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=400&fit=crop",v:true,spicy:1,desc:"Thin dosa topped with caramelised onion"},
+{n:"Paper Dosa",p:85,t:"food",cat:"dosa",img:"https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?w=400&fit=crop",v:true,spicy:0,desc:"Extra thin crispy paper-like dosa"},
+{n:"Chocolate Dosa",p:120,t:"food",cat:"dosa",img:"https://images.unsplash.com/photo-1574484284002-952d92456975?w=400&fit=crop",v:true,spicy:0,desc:"Sweet dosa with chocolate & banana filling"},
+{n:"Plain Idli",p:70,t:"food",cat:"idli",img:"https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=400&fit=crop",v:true,spicy:0,desc:"Soft steamed rice cakes with sambar & chutney"},
+{n:"Rava Idli",p:80,t:"food",cat:"idli",img:"https://images.unsplash.com/photo-1630383249896-424e482df921?w=400&fit=crop",v:true,spicy:0,desc:"Fluffy semolina idli with mustard & curry leaves"},
+{n:"Butter Idli",p:80,t:"food",cat:"idli",img:"https://images.unsplash.com/photo-1668236543090-82eba5ee5976?w=400&fit=crop",v:true,spicy:0,desc:"Soft idli topped with fresh butter"},
+{n:"Masala Idli",p:90,t:"food",cat:"idli",img:"https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=400&fit=crop",v:true,spicy:2,desc:"Idli tossed in spicy masala with veggies"},
+{n:"Fried Idli",p:95,t:"food",cat:"idli",img:"https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?w=400&fit=crop",v:true,spicy:2,desc:"Crispy pan-fried idli with podi & butter"},
+{n:"Podi Idli",p:85,t:"food",cat:"idli",img:"https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=400&fit=crop",v:true,spicy:2,desc:"Idli coated in spicy gunpowder podi & ghee"},
+{n:"Cheese Idli",p:100,t:"food",cat:"idli",img:"https://images.unsplash.com/photo-1630383249896-424e482df921?w=400&fit=crop",v:true,spicy:0,desc:"Soft idli topped with melted cheese"},
+{n:"Mini Idli",p:75,t:"food",cat:"idli",img:"https://images.unsplash.com/photo-1668236543090-82eba5ee5976?w=400&fit=crop",v:true,spicy:0,desc:"Bite-sized mini idlis in sambar"},
+{n:"Sambar Idli",p:80,t:"food",cat:"idli",img:"https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=400&fit=crop",v:true,spicy:1,desc:"Idli dunked in hot spiced sambar"},
+{n:"Stuffed Idli",p:110,t:"food",cat:"idli",img:"https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?w=400&fit=crop",v:true,spicy:1,desc:"Idli stuffed with spiced potato & onion"},
+{n:"Classic Pav Bhaji",p:120,t:"food",cat:"pavbhaji",img:"https://images.unsplash.com/photo-1606491956689-2ea866880c84?w=400&fit=crop",v:true,spicy:2,desc:"Mumbai-style spicy bhaji with buttered pav"},
+{n:"Butter Pav Bhaji",p:130,t:"food",cat:"pavbhaji",img:"https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=400&fit=crop",v:true,spicy:2,desc:"Extra butter loaded pav bhaji"},
+{n:"Cheese Pav Bhaji",p:149,t:"food",cat:"pavbhaji",img:"https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?w=400&fit=crop",v:true,spicy:2,desc:"Pav bhaji topped with generous cheese"},
+{n:"Jain Pav Bhaji",p:120,t:"food",cat:"pavbhaji",img:"https://images.unsplash.com/photo-1574484284002-952d92456975?w=400&fit=crop",v:true,spicy:1,desc:"No onion no garlic pav bhaji"},
+{n:"Khada Pav Bhaji",p:130,t:"food",cat:"pavbhaji",img:"https://images.unsplash.com/photo-1596797038530-2c107229654b?w=400&fit=crop",v:true,spicy:2,desc:"Chunky whole spice pav bhaji"},
+{n:"Paneer Pav Bhaji",p:149,t:"food",cat:"pavbhaji",img:"https://images.unsplash.com/photo-1606491956689-2ea866880c84?w=400&fit=crop",v:true,spicy:2,desc:"Pav bhaji with paneer chunks"},
+{n:"Mushroom Pav Bhaji",p:139,t:"food",cat:"pavbhaji",img:"https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=400&fit=crop",v:true,spicy:2,desc:"Pav bhaji with sauteed mushrooms"},
+{n:"Extra Butter Pav Bhaji",p:140,t:"food",cat:"pavbhaji",img:"https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?w=400&fit=crop",v:true,spicy:2,desc:"Drowning in butter — the real Mumbai way"},
+{n:"Tawa Pulav Bhaji Combo",p:169,t:"food",cat:"pavbhaji",img:"https://images.unsplash.com/photo-1574484284002-952d92456975?w=400&fit=crop",v:true,spicy:2,desc:"Tawa pulav + pav bhaji combo plate"},
+{n:"Masala Pav Bhaji",p:135,t:"food",cat:"pavbhaji",img:"https://images.unsplash.com/photo-1596797038530-2c107229654b?w=400&fit=crop",v:true,spicy:3,desc:"Extra spicy masala pav bhaji"},
+{n:"Aloo Samosa",p:40,t:"food",cat:"samosa",img:"https://images.unsplash.com/photo-1601050690597-df0568f70950?w=400&fit=crop",v:true,spicy:2,desc:"Classic crispy samosa with spiced potato filling"},
+{n:"Paneer Samosa",p:60,t:"food",cat:"samosa",img:"https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=400&fit=crop",v:true,spicy:1,desc:"Crispy samosa stuffed with spiced paneer"},
+{n:"Cheese Corn Samosa",p:60,t:"food",cat:"samosa",img:"https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?w=400&fit=crop",v:true,spicy:0,desc:"Samosa filled with cheese & sweet corn"},
+{n:"Chinese Noodle Samosa",p:55,t:"food",cat:"samosa",img:"https://images.unsplash.com/photo-1574484284002-952d92456975?w=400&fit=crop",v:true,spicy:2,desc:"Fusion samosa with spicy noodle filling"},
+{n:"Pizza Samosa",p:65,t:"food",cat:"samosa",img:"https://images.unsplash.com/photo-1596797038530-2c107229654b?w=400&fit=crop",v:true,spicy:1,desc:"Samosa stuffed with pizza filling & cheese"},
+{n:"Chocolate Samosa",p:55,t:"food",cat:"samosa",img:"https://images.unsplash.com/photo-1601050690597-df0568f70950?w=400&fit=crop",v:true,spicy:0,desc:"Sweet samosa with chocolate & dry fruit filling"},
+{n:"Dry Fruit Samosa",p:70,t:"food",cat:"samosa",img:"https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=400&fit=crop",v:true,spicy:0,desc:"Rich samosa filled with dry fruits & khoya"},
+{n:"Chicken Samosa",p:65,t:"food",cat:"samosa",img:"https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?w=400&fit=crop",v:false,spicy:2,desc:"Crispy samosa with spiced minced chicken"},
+{n:"Keema Samosa",p:70,t:"food",cat:"samosa",img:"https://images.unsplash.com/photo-1574484284002-952d92456975?w=400&fit=crop",v:false,spicy:3,desc:"Spicy mutton keema stuffed samosa"},
+{n:"Mini Samosa",p:30,t:"food",cat:"samosa",img:"https://images.unsplash.com/photo-1596797038530-2c107229654b?w=400&fit=crop",v:true,spicy:1,desc:"Bite-sized crispy mini samosas (4 pcs)"},
+{n:"Mineral Water",p:20,t:"drink",cat:"water",img:"https://images.unsplash.com/photo-1548839140-29a749e1cf4d?w=400&fit=crop",v:true,spicy:0,desc:"Packaged mineral water 500ml"},
+{n:"Packaged Drinking Water",p:20,t:"drink",cat:"water",img:"https://images.unsplash.com/photo-1559839914-17aae19cec71?w=400&fit=crop",v:true,spicy:0,desc:"Sealed packaged drinking water 1L"},
+{n:"Cold Water",p:20,t:"drink",cat:"water",img:"https://images.unsplash.com/photo-1523362628745-0c100150b504?w=400&fit=crop",v:true,spicy:0,desc:"Chilled water served with ice"},
+{n:"Warm Water",p:15,t:"drink",cat:"water",img:"https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&fit=crop",v:true,spicy:0,desc:"Warm water served in a glass"},
+{n:"Lemon Water",p:30,t:"drink",cat:"water",img:"https://images.unsplash.com/photo-1544145945-f90425340c7e?w=400&fit=crop",v:true,spicy:0,desc:"Fresh lemon squeezed in water with salt"},
+{n:"Mint Water",p:30,t:"drink",cat:"water",img:"https://images.unsplash.com/photo-1548839140-29a749e1cf4d?w=400&fit=crop",v:true,spicy:0,desc:"Refreshing water infused with fresh mint"},
+{n:"Detox Water",p:40,t:"drink",cat:"water",img:"https://images.unsplash.com/photo-1559839914-17aae19cec71?w=400&fit=crop",v:true,spicy:0,desc:"Cucumber, lemon & mint infused water"},
+{n:"Soda Water",p:25,t:"drink",cat:"water",img:"https://images.unsplash.com/photo-1523362628745-0c100150b504?w=400&fit=crop",v:true,spicy:0,desc:"Chilled carbonated soda water"},
+{n:"Sparkling Water",p:35,t:"drink",cat:"water",img:"https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&fit=crop",v:true,spicy:0,desc:"Chilled sparkling mineral water"},
+{n:"Flavored Water",p:35,t:"drink",cat:"water",img:"https://images.unsplash.com/photo-1544145945-f90425340c7e?w=400&fit=crop",v:true,spicy:0,desc:"Lightly flavored fruit-infused water"},
+{n:"Masala Tea",p:30,t:"drink",cat:"tea",img:"https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?w=400&fit=crop",v:true,spicy:0,desc:"Spiced Indian masala chai"},
+{n:"Ginger Tea",p:30,t:"drink",cat:"tea",img:"https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&fit=crop",v:true,spicy:0,desc:"Strong ginger-infused tea"},
+{n:"Elaichi Tea",p:30,t:"drink",cat:"tea",img:"https://images.unsplash.com/photo-1544145945-f90425340c7e?w=400&fit=crop",v:true,spicy:0,desc:"Cardamom flavored sweet tea"},
+{n:"Green Tea",p:35,t:"drink",cat:"tea",img:"https://images.unsplash.com/photo-1571091655789-405eb7a3a3a8?w=400&fit=crop",v:true,spicy:0,desc:"Light antioxidant-rich green tea"},
+{n:"Lemon Tea",p:35,t:"drink",cat:"tea",img:"https://images.unsplash.com/photo-1559839914-17aae19cec71?w=400&fit=crop",v:true,spicy:0,desc:"Refreshing lemon black tea"},
+{n:"Black Tea",p:25,t:"drink",cat:"tea",img:"https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?w=400&fit=crop",v:true,spicy:0,desc:"Strong plain black tea"},
+{n:"Cutting Chai",p:20,t:"drink",cat:"tea",img:"https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&fit=crop",v:true,spicy:0,desc:"Mumbai-style half-glass cutting chai"},
+{n:"Tulsi Tea",p:35,t:"drink",cat:"tea",img:"https://images.unsplash.com/photo-1544145945-f90425340c7e?w=400&fit=crop",v:true,spicy:0,desc:"Holy basil herbal tea"},
+{n:"Kashmiri Kahwa",p:50,t:"drink",cat:"tea",img:"https://images.unsplash.com/photo-1571091655789-405eb7a3a3a8?w=400&fit=crop",v:true,spicy:0,desc:"Saffron & almond Kashmiri green tea"},
+{n:"Iced Tea",p:50,t:"drink",cat:"tea",img:"https://images.unsplash.com/photo-1559839914-17aae19cec71?w=400&fit=crop",v:true,spicy:0,desc:"Chilled lemon iced tea with mint"},
+{n:"Black Coffee",p:40,t:"drink",cat:"coffee",img:"https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=400&fit=crop",v:true,spicy:0,desc:"Strong plain black coffee"},
+{n:"Espresso",p:50,t:"drink",cat:"coffee",img:"https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=400&fit=crop",v:true,spicy:0,desc:"Concentrated single shot espresso"},
+{n:"Cappuccino",p:80,t:"drink",cat:"coffee",img:"https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&fit=crop",v:true,spicy:0,desc:"Espresso with steamed milk foam"},
+{n:"Latte",p:90,t:"drink",cat:"coffee",img:"https://images.unsplash.com/photo-1497515114629-f71d768fd07c?w=400&fit=crop",v:true,spicy:0,desc:"Espresso with creamy steamed milk"},
+{n:"Cold Coffee",p:120,t:"drink",cat:"coffee",img:"https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=400&fit=crop",v:true,spicy:0,desc:"Blended cold coffee with ice cream"},
+{n:"Mocha",p:100,t:"drink",cat:"coffee",img:"https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=400&fit=crop",v:true,spicy:0,desc:"Espresso with chocolate & steamed milk"},
+{n:"Americano",p:60,t:"drink",cat:"coffee",img:"https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=400&fit=crop",v:true,spicy:0,desc:"Espresso diluted with hot water"},
+{n:"Filter Coffee",p:50,t:"drink",cat:"coffee",img:"https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&fit=crop",v:true,spicy:0,desc:"South Indian drip filter coffee"},
+{n:"Vanilla Coffee",p:110,t:"drink",cat:"coffee",img:"https://images.unsplash.com/photo-1497515114629-f71d768fd07c?w=400&fit=crop",v:true,spicy:0,desc:"Coffee with vanilla syrup & whipped cream"},
+{n:"Caramel Coffee",p:120,t:"drink",cat:"coffee",img:"https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=400&fit=crop",v:true,spicy:0,desc:"Coffee with caramel drizzle & cream"},
+{n:"Chocolate Shake",p:120,t:"drink",cat:"shake",img:"https://images.unsplash.com/photo-1553361371-9b22f78e8b1d?w=400&fit=crop",v:true,spicy:0,desc:"Rich creamy chocolate milkshake"},
+{n:"Oreo Shake",p:130,t:"drink",cat:"shake",img:"https://images.unsplash.com/photo-1553530666-ba11a7da3888?w=400&fit=crop",v:true,spicy:0,desc:"Blended Oreo cookies with vanilla ice cream"},
+{n:"Strawberry Shake",p:120,t:"drink",cat:"shake",img:"https://images.unsplash.com/photo-1608702846914-96b305d2aaeb?w=400&fit=crop",v:true,spicy:0,desc:"Fresh strawberry blended with milk & ice cream"},
+{n:"Mango Shake",p:110,t:"drink",cat:"shake",img:"https://images.unsplash.com/photo-1577805947697-89e18249d767?w=400&fit=crop",v:true,spicy:0,desc:"Fresh Alphonso mango milkshake"},
+{n:"Banana Shake",p:100,t:"drink",cat:"shake",img:"https://images.unsplash.com/photo-1570197788417-0e82375c9371?w=400&fit=crop",v:true,spicy:0,desc:"Creamy banana milkshake with honey"},
+{n:"KitKat Shake",p:140,t:"drink",cat:"shake",img:"https://images.unsplash.com/photo-1553361371-9b22f78e8b1d?w=400&fit=crop",v:true,spicy:0,desc:"KitKat blended with vanilla ice cream"},
+{n:"Vanilla Shake",p:110,t:"drink",cat:"shake",img:"https://images.unsplash.com/photo-1553530666-ba11a7da3888?w=400&fit=crop",v:true,spicy:0,desc:"Classic creamy vanilla milkshake"},
+{n:"Butterscotch Shake",p:120,t:"drink",cat:"shake",img:"https://images.unsplash.com/photo-1568702846914-96b305d2aaeb?w=400&fit=crop",v:true,spicy:0,desc:"Butterscotch flavored milkshake with praline"},
+{n:"Dry Fruit Shake",p:150,t:"drink",cat:"shake",img:"https://images.unsplash.com/photo-1577805947697-89e18249d767?w=400&fit=crop",v:true,spicy:0,desc:"Nutritious shake with mixed dry fruits"},
+{n:"Cold Coffee Shake",p:130,t:"drink",cat:"shake",img:"https://images.unsplash.com/photo-1570197788417-0e82375c9371?w=400&fit=crop",v:true,spicy:0,desc:"Cold coffee blended with ice cream & chocolate"},
+{n:"Coca-Cola",p:60,t:"drink",cat:"colddrink",img:"https://images.unsplash.com/photo-1629203851122-3726ecdf080e?w=400&fit=crop",v:true,spicy:0,desc:"Chilled Coca-Cola 500ml"},
+{n:"Pepsi",p:60,t:"drink",cat:"colddrink",img:"https://images.unsplash.com/photo-1581006852262-e4307cf6283a?w=400&fit=crop",v:true,spicy:0,desc:"Chilled Pepsi 500ml"},
+{n:"Sprite",p:60,t:"drink",cat:"colddrink",img:"https://images.unsplash.com/photo-1625772299848-391b6a87d7b3?w=400&fit=crop",v:true,spicy:0,desc:"Chilled Sprite lemon-lime 500ml"},
+{n:"Fanta",p:60,t:"drink",cat:"colddrink",img:"https://images.unsplash.com/photo-1527960669566-f882ba85a4c6?w=400&fit=crop",v:true,spicy:0,desc:"Chilled Fanta orange 500ml"},
+{n:"Thums Up",p:60,t:"drink",cat:"colddrink",img:"https://images.unsplash.com/photo-1560508180-03f285f67ded?w=400&fit=crop",v:true,spicy:0,desc:"Chilled Thums Up strong cola 500ml"},
+{n:"Limca",p:60,t:"drink",cat:"colddrink",img:"https://images.unsplash.com/photo-1629203851122-3726ecdf080e?w=400&fit=crop",v:true,spicy:0,desc:"Chilled Limca lemon soda 500ml"},
+{n:"Mountain Dew",p:60,t:"drink",cat:"colddrink",img:"https://images.unsplash.com/photo-1581006852262-e4307cf6283a?w=400&fit=crop",v:true,spicy:0,desc:"Chilled Mountain Dew 500ml"},
+{n:"Maaza",p:60,t:"drink",cat:"colddrink",img:"https://images.unsplash.com/photo-1625772299848-391b6a87d7b3?w=400&fit=crop",v:true,spicy:0,desc:"Chilled Maaza mango drink 250ml"},
+{n:"Slice",p:60,t:"drink",cat:"colddrink",img:"https://images.unsplash.com/photo-1527960669566-f882ba85a4c6?w=400&fit=crop",v:true,spicy:0,desc:"Chilled Slice mango drink 250ml"},
+{n:"7UP",p:60,t:"drink",cat:"colddrink",img:"https://images.unsplash.com/photo-1560508180-03f285f67ded?w=400&fit=crop",v:true,spicy:0,desc:"Chilled 7UP lemon-lime 500ml"}
+];
+
+let cart=[];
+let cartQty={};
+let current=items;
+let appliedDiscount = 0;
+let freeDelivery = false;
+
+// ===== USER PROFILE DATA =====
+let userProfile = {
+  name: "",
+  phone: "",
+  email: "",
+  avatarUrl: ""
+};
+let savedAddresses = [];
+let defaultAddressIdx = 0;
+let selectedAddrType = "Home";
+let orderHistory = [];
+let freeshippingUsed = false;
+
+// ===== GOOGLE SIGN-IN + QUICK LOGIN =====
+
+function showLoginError(msg, isSuccess){
+  let e = document.getElementById("loginError");
+  e.innerText = msg;
+  e.style.display = "block";
+  e.style.background = isSuccess ? "#0d2e1f" : "#ff4d4d18";
+  e.style.border = "1px solid " + (isSuccess ? "#1e4a2f" : "#ff4d4d44");
+  e.style.borderRadius = "10px";
+  e.style.padding = "10px 14px";
+  e.style.fontSize = "13px";
+  e.style.color = isSuccess ? "#4caf50" : "#ff6b6b";
+  e.style.marginBottom = "12px";
+  e.style.textAlign = "center";
+}
+function clearLoginError(){
+  let e = document.getElementById("loginError");
+  e.innerText = ""; e.style.display = "none";
+}
+
+// ── Google Sign-In ────────────────────────────────────────────────────────────
+async function signInWithGoogle(){
+  let btn = document.querySelector(".google-signin-btn");
+  btn.disabled = true;
+  btn.innerHTML = '<span style="display:inline-block;animation:spin 1s linear infinite">⏳</span> Signing in…';
+  try {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    const result   = await firebase.auth().signInWithPopup(provider);
+    const user     = result.user;
+    // Populate profile from Google account
+    userProfile.name     = user.displayName || "User";
+    userProfile.phone    = user.phoneNumber  || "";
+    userProfile.email    = user.email        || "";
+    userProfile.avatarUrl = user.photoURL    || "";
+    enterSite();
+  } catch(err){
+    console.error("Google sign-in error:", err);
+    btn.disabled = false;
+    btn.innerHTML = `<svg width="20" height="20" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg> Continue with Google`;
+    let msg = "❌ Sign-in failed. Try again.";
+    if(err.code === "auth/popup-blocked")       msg = "❌ Popup blocked. Allow popups for this site.";
+    if(err.code === "auth/popup-closed-by-user") msg = "❌ Sign-in cancelled.";
+    showLoginError(msg);
+  }
+}
+
+// ── Quick login (name + phone) ────────────────────────────────────────────────
+function quickLogin(){
+  let name  = document.getElementById("loginName").value.trim();
+  let phone = document.getElementById("loginPhone").value.trim();
+  if(!name){ showLoginError("⚠️ Please enter your name"); return; }
+  if(!phone || phone.length !== 10 || !/^\d{10}$/.test(phone)){
+    showLoginError("⚠️ Enter a valid 10-digit mobile number"); return;
+  }
+  userProfile.name  = name;
+  userProfile.phone = phone;
+  enterSite();
+}
+
+function enterSite(){
+  document.getElementById("loginPage").style.display = "none";
+  document.getElementById("main").style.display = "block";
+  applyFilters();
+  refreshProfileUI();
+}
+
+let vegOnly = false;
+let activeCat = "all";
+let activeType = "all";
+
+// Category background images — shown when category is selected
+const catBgImages = {
+  all:       "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1400&fit=crop",
+  pizza:     "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=1400&fit=crop",
+  burger:    "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=1400&fit=crop",
+  pasta:     "https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=1400&fit=crop",
+  sandwich:  "https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=1400&fit=crop",
+  dosa:      "https://images.unsplash.com/photo-1668236543090-82eba5ee5976?w=1400&fit=crop",
+  idli:      "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=1400&fit=crop",
+  pavbhaji:  "https://images.unsplash.com/photo-1606491956689-2ea866880c84?w=1400&fit=crop",
+  samosa:    "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=1400&fit=crop",
+  water:     "https://images.unsplash.com/photo-1548839140-29a749e1cf4d?w=1400&fit=crop",
+  tea:       "https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?w=1400&fit=crop",
+  coffee:    "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=1400&fit=crop",
+  shake:     "https://images.unsplash.com/photo-1553361371-9b22f78e8b1d?w=1400&fit=crop",
+  colddrink: "https://images.unsplash.com/photo-1629203851122-3726ecdf080e?w=1400&fit=crop",
+};
+
+function setCatBackground(cat){
+  const url = catBgImages[cat] || catBgImages.all;
+  document.body.style.backgroundImage =
+    `linear-gradient(rgba(0,0,0,0.82),rgba(0,0,0,0.82)), url('${url}')`;
+  document.body.style.backgroundSize = "cover";
+  document.body.style.backgroundAttachment = "fixed";
+  document.body.style.backgroundPosition = "center";
+  document.body.style.transition = "background-image 0.5s ease";
+}
+
+function show(list){
+  let html = "";
+  if(list.length === 0){
+    html = `<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:#555">
+      <div style="font-size:48px;margin-bottom:12px">🍽️</div>
+      <div style="font-size:16px;font-weight:600;color:#666">No items found</div>
+      <div style="font-size:12px;color:#444;margin-top:6px">Try a different filter or search</div>
+    </div>`;
+  } else {
+    list.forEach((i, idx) => {
+      let spicyHtml = [1,2,3].map(s=>`<div class="spicy-dot${i.spicy>=s?' hot':''}"></div>`).join("");
+      let inCart = cartQty[i.n] && cartQty[i.n].q > 0;
+      let qtyBadge = inCart ? `<span class="in-cart-badge">${cartQty[i.n].q} in cart</span>` : "";
+      let popularBadge = idx < 3 ? `<span class="popular-badge">🔥 Popular</span>` : "";
+      let spicyLevel = i.spicy >= 3 ? `<span class="spicy-badge">🌶️ Spicy</span>` : "";
+      html += `
+      <div class="card">
+        ${qtyBadge}
+        ${popularBadge}
+        <div class="card-info">
+          <div class="card-cat-tag">${i.cat} ${spicyLevel}</div>
+          <div class="card-name-row">
+            <h4>${i.n}</h4>
+            <div class="card-veg-dot ${i.v?'veg':'nonveg'}"></div>
+          </div>
+          <div class="spicy-dots">${spicyHtml}</div>
+          <p class="card-desc">${i.desc||''}</p>
+        </div>
+        <div class="card-footer">
+          <div>
+            <div class="card-price">&#x20B9;${i.p}</div>
+            <div style="font-size:10px;color:#444;margin-top:1px">onwards</div>
+          </div>
+          <button class="card-add-btn${inCart?' in-cart':''}" onclick="add('${i.n}',${i.p})">${inCart?'✓ Added':'Add +'}</button>
+        </div>
+      </div>`;
+    });
+  }
+  document.getElementById("menu").innerHTML = html;
+}
+
+function applyFilters(){
+  let list = items;
+  if(activeCat !== "all") list = list.filter(i => i.cat === activeCat || i.t === activeCat);
+  if(activeType !== "all") list = list.filter(i => i.t === activeType);
+  if(vegOnly) list = list.filter(i => i.v);
+  show(list);
+  const catLabels = {all:"🍽️ Our Menu",pizza:"🍕 Pizzas",burger:"🍔 Burgers",pasta:"🍝 Pasta",sandwich:"🥪 Sandwiches",dosa:"🥞 Dosa",idli:"🍚 Idli",pavbhaji:"🍲 Pav Bhaji",samosa:"🥟 Samosa",water:"💧 Water",tea:"☕ Tea",coffee:"☕ Coffee",shake:"🥤 Shakes",colddrink:"🥤 Cold Drinks"};
+  document.getElementById("menuLabel").innerText = catLabels[activeCat] || "🍽️ Our Menu";
+}
+
+function filterCat(el, cat){
+  activeCat = cat;
+  activeType = "all";
+  // sync brand-chip active
+  document.querySelectorAll(".brand-chip").forEach(b => b.classList.remove("active"));
+  // sync brand-card active
+  document.querySelectorAll(".brand-card").forEach(b => b.classList.remove("active"));
+  // mark the clicked element and its sibling in the other list
+  el.classList.add("active");
+  // also activate the matching card/chip in the other list
+  const allCards = document.querySelectorAll(".brand-card");
+  const allChips = document.querySelectorAll(".brand-chip");
+  allCards.forEach(b => { if(b.getAttribute("onclick") === el.getAttribute("onclick")) b.classList.add("active"); });
+  allChips.forEach(b => { if(b.getAttribute("onclick") === el.getAttribute("onclick")) b.classList.add("active"); });
+  document.querySelectorAll(".filter-btn:not(.veg-filter)").forEach(b => b.classList.remove("active"));
+  document.querySelector(".filter-btn").classList.add("active");
+  setCatBackground(cat);
+  applyFilters();
+  // scroll menu into view
+  document.getElementById("menu").scrollIntoView({behavior:"smooth", block:"start"});
+}
+
+function setFilter(el, type){
+  activeType = type;
+  activeCat = "all";
+  document.querySelectorAll(".filter-btn:not(.veg-filter)").forEach(b => b.classList.remove("active"));
+  el.classList.add("active");
+  document.querySelectorAll(".brand-chip").forEach(b => b.classList.remove("active"));
+  document.querySelector(".brand-chip").classList.add("active");
+  applyFilters();
+}
+
+function toggleVeg(el){
+  vegOnly = !vegOnly;
+  el.classList.toggle("active", vegOnly);
+  applyFilters();
+}
+
+function showAll(){activeCat="all";activeType="all";vegOnly=false;applyFilters();}
+function showFood(){activeType="food";activeCat="all";applyFilters();}
+function showDrinks(){activeType="drink";activeCat="all";applyFilters();}
+
+function search(v){
+  let f = items.filter(i => i.n.toLowerCase().includes(v.toLowerCase()) || (i.desc||"").toLowerCase().includes(v.toLowerCase()));
+  show(f);
+}
+
+function toggleCart(){
+let c=document.getElementById("cart");
+let open=c.classList.contains("panel-open");
+closeAllPanels();
+if(!open){
+  c.classList.add("panel-open");
+  document.getElementById("blurOverlay").style.display="block";
+}
+}
+
+function add(n,p){
+let itemData = items.find(i => i.n === n);
+let img = itemData ? itemData.img : "";
+
+if(!cartQty[n]){cartQty[n]={p:p,q:0,img:img};cart.push({n,p,img})}
+cartQty[n].q++;
+update();
+applyFilters(); // refresh card buttons
+
+/* 🔊 SOUND */
+playClickSound();
+
+/* 🛒 SHAKE */
+let cartBtn=document.getElementById("cartBtn");
+cartBtn.classList.add("shake");
+setTimeout(()=>cartBtn.classList.remove("shake"),400);
+
+/* 🔔 TOAST */
+let t=document.getElementById("toast");
+t.innerText = "🛒 " + n + " added — ₹" + p;
+t.classList.add("show");
+setTimeout(()=>t.classList.remove("show"),2000);
+}
+
+function update(){
+let html="",sum=0;
+cart.forEach((i,ind)=>{
+let q=cartQty[i.n]?cartQty[i.n].q:1;
+sum+=i.p*q;
+html+=`
+<div class="cart-item">
+<img src="${i.img || 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=100'}" alt="${i.n}">
+<div class="cart-item-info">
+<div class="cart-item-name">${i.n}</div>
+<div class="cart-item-price">₹${i.p}</div>
+</div>
+<div class="cart-item-qty">
+<button class="qty-minus" onclick="changeQty('${i.n}',-1)">−</button>
+<span>${q}</span>
+<button class="qty-plus" onclick="changeQty('${i.n}',1)">+</button>
+<button class="qty-remove" onclick="removeItem('${i.n}')">🗑️</button>
+</div>
+</div>`;
+});
+cartItems.innerHTML=html;
+
+// Calculate totals
+let subtotal = sum;
+let deliveryFee = sum > 0 ? (freeDelivery ? 0 : 39) : 0;
+let platformFee = sum > 0 ? 10 : 0;
+let taxes = Math.round(subtotal * 0.09); // 9% tax
+let total = subtotal + deliveryFee + platformFee + taxes - appliedDiscount;
+if(total < 0) total = 0;
+
+// Update all price elements
+document.getElementById("subtotal").innerText = "₹" + subtotal;
+document.getElementById("deliveryFee").innerText = freeDelivery && sum > 0 ? "FREE 🎉" : "₹" + deliveryFee;
+document.getElementById("taxes").innerText = "₹" + taxes;
+document.getElementById("total").innerText = "₹" + total;
+document.getElementById("checkoutTotal").innerText = total;
+document.getElementById("cartCount").innerText = cart.length;
+let floatCount = document.getElementById("floatCartCount");
+if(floatCount) floatCount.innerText = cart.length;
+
+// Show/hide discount row
+let discountRow = document.getElementById("discountRow");
+let discountAmt = document.getElementById("discountAmt");
+if(appliedDiscount > 0 && sum > 0){
+  discountRow.style.display = "flex";
+  discountAmt.innerText = "-₹" + appliedDiscount;
+} else {
+  discountRow.style.display = "none";
+}
+}
+
+function changeQty(n,delta){
+cartQty[n].q+=delta;
+if(cartQty[n].q<=0){
+delete cartQty[n];
+cart=cart.filter(i=>i.n!==n);
+}
+update();
+applyFilters();
+}
+
+// 🆕 REMOVE ITEM FUNCTION
+function removeItem(n){
+if(cartQty[n]){
+delete cartQty[n];
+cart=cart.filter(i=>i.n!==n);
+if(cart.length === 0){
+  appliedDiscount = 0;
+  freeDelivery = false;
+  document.getElementById("couponInput").value = "";
+  document.getElementById("couponMsg").innerText = "";
+}
+update();
+applyFilters();
+showToast(n + " removed from cart");
+}
+}
+
+// 🆕 COUPON DROPDOWN
+function showCouponDropdown(){
+  document.getElementById("couponDropdown").classList.add("show");
+}
+function hideCouponDropdown(){
+  document.getElementById("couponDropdown").classList.remove("show");
+}
+function selectCoupon(code){
+  document.getElementById("couponInput").value = code;
+  hideCouponDropdown();
+  applyCoupon();
+}
+function filterCoupons(val){
+  let opts = document.querySelectorAll(".coupon-option");
+  opts.forEach(opt => {
+    let tag = opt.querySelector(".coupon-tag").innerText;
+    opt.style.display = tag.includes(val.toUpperCase()) ? "" : "none";
+  });
+}
+
+// 🆕 COUPON FUNCTION
+function applyCoupon(){
+let code = document.getElementById("couponInput").value.trim().toUpperCase();
+let msg = document.getElementById("couponMsg");
+hideCouponDropdown();
+
+// Valid coupons
+const coupons = {
+"FOOD50":   {discount: 50,  min: 200},
+"FIRST20":  {discount: 20,  min: 100},
+"SAVE10":   {discount: 10,  min: 50},
+"FREESHIP": {discount: 0,   min: 0, freeDelivery: true}
+};
+
+if(coupons[code]){
+  // Block FREESHIP if already used
+  if(code === "FREESHIP" && freeshippingUsed){
+    appliedDiscount = 0;
+    freeDelivery = false;
+    msg.className = "error";
+    msg.innerText = "❌ FREESHIP can only be used on your 1st order";
+    update();
+    return;
+  }
+  let subtotal = parseInt(document.getElementById("subtotal").innerText.replace("₹",""));
+  if(subtotal >= coupons[code].min){
+    appliedDiscount = coupons[code].discount;
+    freeDelivery = !!coupons[code].freeDelivery;
+    msg.className = "success";
+    msg.innerText = freeDelivery
+      ? "✅ Free delivery applied! Save ₹39"
+      : "✅ Coupon applied! You save ₹" + coupons[code].discount;
+    update();
+  } else {
+    appliedDiscount = 0;
+    freeDelivery = false;
+    msg.className = "error";
+    msg.innerText = "❌ Min order ₹" + coupons[code].min + " required";
+    update();
+  }
+} else if(code) {
+  appliedDiscount = 0;
+  freeDelivery = false;
+  msg.className = "error";
+  msg.innerText = "❌ Invalid coupon code";
+  update();
+} else {
+  appliedDiscount = 0;
+  freeDelivery = false;
+  msg.innerText = "";
+  update();
+}
+}
+
+function showQR(){
+document.getElementById("qrBox").style.display="block";
+}
+
+// 🆕 PAYMENT FLOW
+let qrInstance = null;
+function initiatePayment(){
+let total = parseInt(document.getElementById("total").innerText.replace("₹",""));
+if(total <= 0){
+showToast("Add items to cart first!");
+return;
+}
+document.getElementById("scanAmount").innerText = total;
+document.getElementById("qrBox").style.display="block";
+document.getElementById("paymentSuccess").style.display="none";
+
+// Scroll to QR box smoothly
+setTimeout(()=>{
+  document.getElementById("qrBox").scrollIntoView({behavior:"smooth", block:"start"});
+}, 100);
+
+// Set UPI base link
+let upiBase = "upi://pay?pa=jahnavipatel0023@oksbi&pn=Jahnavi%20Patel&am=" + total + "&cu=INR&tn=99Foodies%20Order";
+
+// Generate QR
+let qrDiv = document.getElementById("upiQRCode");
+qrDiv.innerHTML = "";
+new QRCode(qrDiv, {
+text: upiBase,
+width: 200,
+height: 200,
+colorDark: "#000000",
+colorLight: "#ffffff",
+correctLevel: QRCode.CorrectLevel.H
+});
+}
+
+function confirmPaymentDone(){
+showToast("Confirming payment...");
+setTimeout(()=>{
+let paidAmt = document.getElementById("scanAmount").innerText;
+addToOrderHistory(paidAmt);
+document.getElementById("qrBox").style.display="none";
+document.getElementById("paymentSuccess").style.display="block";
+document.getElementById("paidAmount").innerText = paidAmt;
+document.getElementById("successOrderId").innerText = "#99F" + Date.now().toString().slice(-6);
+showToast("Thank you for your payment!");
+},800);
+}
+
+function closeQR(){
+document.getElementById("qrBox").style.display="none";
+}
+
+function closePayment(){
+cart = [];
+cartQty = {};
+appliedDiscount = 0;
+freeDelivery = false;
+update();
+applyFilters();
+document.getElementById("paymentSuccess").style.display="none";
+toggleCart();
+showToast("🎉 Order placed! Thank you!");
+}
+
+function toggleReviews(){
+let r=document.getElementById("reviews");
+let open=r.classList.contains("panel-open");
+closeAllPanels();
+if(!open){r.classList.add("panel-open");document.getElementById("blurOverlay").style.display="block";}
+}
+
+function toggleContact(){
+let c=document.getElementById("contact");
+let open=c.classList.contains("panel-open");
+closeAllPanels();
+if(!open){c.classList.add("panel-open");document.getElementById("blurOverlay").style.display="block";}
+}
+
+function closeAllPanels(){
+document.getElementById("cart").classList.remove("panel-open");
+document.getElementById("reviews").classList.remove("panel-open");
+document.getElementById("contact").classList.remove("panel-open");
+document.getElementById("profilePanel").classList.remove("panel-open");
+document.getElementById("blurOverlay").style.display="none";
+}
+
+// 🆕 TOAST HELPER
+function showToast(msg){
+let t=document.getElementById("toast");
+t.innerText = msg;
+t.classList.add("show");
+setTimeout(()=>t.classList.remove("show"),2000);
+}
+
+// REVIEW HELPERS
+let selectedRating = 0;
+
+function toggleReviewForm(){
+  let box = document.getElementById("reviewFormBox");
+  box.classList.toggle("open");
+  // set avatar initial from login name
+  let name = document.getElementById("loginName");
+  if(name && name.value){
+    document.getElementById("writeAvatar").innerText = name.value.charAt(0).toUpperCase();
+  }
+}
+
+function setRating(val){
+  selectedRating = val;
+  const labels = ["","Terrible 😞","Poor 😕","Okay 😐","Good 😊","Excellent 🤩"];
+  document.getElementById("ratingLabel").innerText = labels[val];
+  document.querySelectorAll("#starPicker span").forEach((s,i)=>{
+    s.classList.toggle("active", i < val);
+  });
+}
+
+function toggleTag(el){
+  el.classList.toggle("selected");
+}
+
+function submitReview(){
+  if(selectedRating === 0){
+    showToast("Please select a star rating!");
+    return;
+  }
+
+  let name = document.getElementById("reviewName").value.trim() ||
+             (document.getElementById("loginName") ? document.getElementById("loginName").value.trim() : "") ||
+             "Anonymous";
+  let text = document.getElementById("reviewText").value.trim() || "Great experience!";
+  let stars = "★".repeat(selectedRating) + (selectedRating < 5 ? '<span style="color:#444">' + "★".repeat(5 - selectedRating) + '</span>' : "");
+
+  // collect selected tags
+  let tags = [];
+  document.querySelectorAll(".rtag.selected").forEach(t => tags.push(t.innerText));
+  let tagsHtml = tags.map(t => `<span class="review-dish-tag">${t}</span>`).join("");
+
+  // build category string for filtering
+  let catStr = tags.map(t => t.replace(/[^\w\s]/g,"").trim().toLowerCase()).join(" ");
+  if(!catStr) catStr = "food quality";
+
+  // avatar color
+  const colors = ["#e91e63","#2196f3","#ff9800","#9c27b0","#00bcd4","#4caf50","#ff5722"];
+  let color = colors[Math.floor(Math.random() * colors.length)];
+  let initial = name.charAt(0).toUpperCase();
+
+  let newCard = `
+  <div class="review-card" data-category="${catStr}" style="animation:fadeInCard 0.4s ease">
+    <div class="reviewer-row">
+      <div class="reviewer-avatar" style="background:${color}">${initial}</div>
+      <div class="reviewer-info">
+        <div class="reviewer-name">${name} <span style="background:#1a2e3a;color:#00bcd4;font-size:10px;padding:2px 8px;border-radius:10px;font-weight:600;margin-left:6px">New ✨</span></div>
+        <div class="reviewer-meta">Just now</div>
+      </div>
+      <div class="review-stars">${stars}</div>
+    </div>
+    <div class="review-text">${text}</div>
+    ${tagsHtml ? `<div class="review-dish-tags">${tagsHtml}</div>` : ""}
+    <div class="review-actions">
+      <span class="review-helpful" onclick="likeReview(this)">👍 Helpful (0)</span>
+    </div>
+  </div>`;
+
+  // insert after the form box
+  let formBox = document.getElementById("reviewFormBox");
+  formBox.insertAdjacentHTML("afterend", newCard);
+
+  // reset form
+  selectedRating = 0;
+  document.getElementById("ratingLabel").innerText = "";
+  document.querySelectorAll("#starPicker span").forEach(s => s.classList.remove("active"));
+  document.querySelectorAll(".rtag").forEach(t => t.classList.remove("selected"));
+  document.getElementById("reviewName").value = "";
+  document.getElementById("reviewText").value = "";
+  document.getElementById("charCount").innerText = "0";
+  document.getElementById("reviewFormBox").classList.remove("open");
+
+  showToast("✅ Review submitted! Thank you.");
+}
+
+// char counter for review textarea
+document.addEventListener("DOMContentLoaded", function(){
+  let ta = document.getElementById("reviewText");
+  if(ta){
+    ta.addEventListener("input", function(){
+      document.getElementById("charCount").innerText = this.value.length;
+    });
+  }
+});
+
+function likeReview(el){
+  el.classList.toggle("liked");
+  let text = el.innerText;
+  let match = text.match(/\((\d+)\)/);
+  if(match){
+    let count = parseInt(match[1]);
+    el.classList.contains("liked") ? count++ : count--;
+    el.innerText = "👍 Helpful (" + count + ")";
+    if(el.classList.contains("liked")) el.classList.add("liked");
+  }
+}
+function setReviewFilter(btn){
+  document.querySelectorAll(".review-filter-btn").forEach(b=>b.classList.remove("active"));
+  btn.classList.add("active");
+
+  let filter = btn.innerText.trim().toLowerCase();
+  document.querySelectorAll(".review-card").forEach(card => {
+    if(filter === "all"){
+      card.style.display = "";
+    } else {
+      let cats = card.getAttribute("data-category") || "";
+      card.style.display = cats.includes(filter) ? "" : "none";
+    }
+  });
+}
+
+// Close coupon dropdown on outside click
+document.addEventListener("click", function(e){
+  let dropdown = document.getElementById("couponDropdown");
+  let input = document.getElementById("couponInput");
+  if(dropdown && input && !dropdown.contains(e.target) && e.target !== input){
+    hideCouponDropdown();
+  }
+});
+
+// ===== PROFILE FUNCTIONS =====
+
+function toggleProfile(){
+  let p = document.getElementById("profilePanel");
+  let open = p.classList.contains("panel-open");
+  closeAllPanels();
+  if(!open){
+    p.classList.add("panel-open");
+    document.getElementById("blurOverlay").style.display = "block";
+    refreshProfileUI();
+  }
+}
+
+function refreshProfileUI(){
+  // Avatar
+  let av = document.getElementById("profileAvatar");
+  if(userProfile.avatarUrl){
+    av.innerHTML = `<img src="${userProfile.avatarUrl}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
+  } else {
+    av.innerText = userProfile.name ? userProfile.name.charAt(0).toUpperCase() : "?";
+  }
+  // Nav button avatar
+  let navBtn = document.getElementById("profileNavBtn");
+  if(navBtn){
+    if(userProfile.avatarUrl){
+      navBtn.innerHTML = `<img src="${userProfile.avatarUrl}" style="width:100%;height:100%;object-fit:cover;border-radius:10px;">`;
+      navBtn.style.padding = "0";
+      navBtn.style.overflow = "hidden";
+    } else if(userProfile.name){
+      navBtn.innerHTML = userProfile.name.charAt(0).toUpperCase();
+      navBtn.style.background = "linear-gradient(135deg,#ff4d4d,#ff1a1a)";
+      navBtn.style.color = "#fff";
+      navBtn.style.fontWeight = "800";
+      navBtn.style.fontSize = "16px";
+    } else {
+      navBtn.innerHTML = "👤";
+    }
+  }
+  // Hero
+  document.getElementById("profileHeroName").innerText = userProfile.name || "—";
+  document.getElementById("profileHeroPhone").innerText = userProfile.phone ? "+91 " + userProfile.phone : "—";
+  // View fields
+  document.getElementById("viewName").innerText = userProfile.name || "—";
+  document.getElementById("viewPhone").innerText = userProfile.phone ? "+91 " + userProfile.phone : "—";
+  document.getElementById("viewEmail").innerText = userProfile.email || "Not set";
+  // Stats
+  document.getElementById("profileOrderCount").innerText = orderHistory.length;
+  document.getElementById("profileSavedCount").innerText = savedAddresses.length;
+  // Render addresses & orders
+  renderAddresses();
+  renderOrderHistory();
+}
+
+function switchProfileTab(btn, tab){
+  document.querySelectorAll(".profile-tab").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+  document.querySelectorAll(".profile-tab-content").forEach(c => c.style.display = "none");
+  document.getElementById("tab-" + tab).style.display = "block";
+}
+
+function toggleEditMode(on){
+  document.getElementById("profileViewMode").style.display = on ? "none" : "block";
+  document.getElementById("profileEditMode").style.display = on ? "block" : "none";
+  if(on){
+    document.getElementById("editName").value = userProfile.name;
+    document.getElementById("editPhone").value = userProfile.phone;
+    document.getElementById("editEmail").value = userProfile.email;
+  }
+}
+
+function saveProfile(){
+  let name = document.getElementById("editName").value.trim();
+  let phone = document.getElementById("editPhone").value.trim();
+  let email = document.getElementById("editEmail").value.trim();
+  if(!name){ showToast("Name cannot be empty"); return; }
+  if(phone && phone.length !== 10){ showToast("Enter a valid 10-digit number"); return; }
+  userProfile.name = name;
+  userProfile.phone = phone || userProfile.phone;
+  userProfile.email = email;
+  toggleEditMode(false);
+  refreshProfileUI();
+  showToast("✅ Profile updated!");
+}
+
+function changeAvatar(input){
+  let file = input.files[0];
+  if(!file) return;
+  let reader = new FileReader();
+  reader.onload = function(e){
+    userProfile.avatarUrl = e.target.result;
+    refreshProfileUI();
+    showToast("Profile photo updated!");
+  };
+  reader.readAsDataURL(file);
+}
+
+// --- ADDRESSES ---
+function toggleAddressForm(){
+  document.getElementById("addressFormBox").classList.toggle("open");
+}
+
+function selectAddrType(btn, type){
+  selectedAddrType = type;
+  document.querySelectorAll(".addr-type-btn").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+}
+
+function saveAddress(){
+  let flat = document.getElementById("addrFlat").value.trim();
+  let street = document.getElementById("addrStreet").value.trim();
+  let city = document.getElementById("addrCity").value.trim();
+  let pin = document.getElementById("addrPin").value.trim();
+  if(!flat || !street || !city){ showToast("Please fill all address fields"); return; }
+  savedAddresses.push({ type: selectedAddrType, flat, street, city, pin });
+  document.getElementById("addrFlat").value = "";
+  document.getElementById("addrStreet").value = "";
+  document.getElementById("addrCity").value = "";
+  document.getElementById("addrPin").value = "";
+  document.getElementById("addressFormBox").classList.remove("open");
+  if(savedAddresses.length === 1) defaultAddressIdx = 0;
+  refreshProfileUI();
+  showToast("✅ Address saved!");
+}
+
+function renderAddresses(){
+  let list = document.getElementById("addressList");
+  if(!list) return;
+  if(savedAddresses.length === 0){
+    list.innerHTML = `<div style="text-align:center;padding:30px 0;color:#555">
+      <div style="font-size:36px;margin-bottom:8px">&#x1F4CD;</div>
+      <div style="font-size:13px;font-weight:600;color:#555">No saved addresses</div>
+      <div style="font-size:11px;color:#444;margin-top:4px">Add your home or work address</div>
+    </div>`;
+    return;
+  }
+  let icons = { Home:"&#x1F3E0;", Work:"&#x1F4BC;", Other:"&#x1F4CD;" };
+  list.innerHTML = savedAddresses.map((a, i) => `
+    <div class="address-card ${i === defaultAddressIdx ? 'default-addr' : ''}">
+      <div class="address-type-badge">${icons[a.type]||'📍'} ${a.type} ${i === defaultAddressIdx ? '&nbsp;&#x2713; Default' : ''}</div>
+      <div class="address-text">${a.flat}, ${a.street}<br>${a.city}${a.pin ? ' - ' + a.pin : ''}</div>
+      <div class="address-actions">
+        ${i !== defaultAddressIdx ? `<button class="addr-action-btn default-btn" onclick="setDefaultAddress(${i})">Set Default</button>` : ''}
+        <button class="addr-action-btn" onclick="deleteAddress(${i})">&#x1F5D1; Remove</button>
+      </div>
+    </div>`).join("");
+  document.getElementById("profileSavedCount").innerText = savedAddresses.length;
+}
+
+function setDefaultAddress(i){
+  defaultAddressIdx = i;
+  renderAddresses();
+  showToast("Default address updated!");
+}
+
+function deleteAddress(i){
+  savedAddresses.splice(i, 1);
+  if(defaultAddressIdx >= savedAddresses.length) defaultAddressIdx = 0;
+  renderAddresses();
+  document.getElementById("profileSavedCount").innerText = savedAddresses.length;
+  showToast("Address removed");
+}
+
+// --- ORDER HISTORY ---
+function addToOrderHistory(total){
+  let items_snapshot = cart.map(i => `${i.n} x${cartQty[i.n]?cartQty[i.n].q:1}`).join(", ");
+  orderHistory.unshift({
+    id: "#99F" + Date.now().toString().slice(-6),
+    items: items_snapshot,
+    total: total,
+    date: new Date().toLocaleDateString("en-IN", {day:"numeric",month:"short",year:"numeric"}),
+    status: "Delivered"
+  });
+  // Mark free shipping coupon as used after first order
+  freeshippingUsed = true;
+  document.getElementById("profileOrderCount").innerText = orderHistory.length;
+}
+
+function renderOrderHistory(){
+  let list = document.getElementById("orderHistoryList");
+  if(!list) return;
+  if(orderHistory.length === 0){
+    list.innerHTML = `<div style="text-align:center;padding:40px 20px;color:#555">
+      <div style="font-size:40px;margin-bottom:10px">&#x1F6D2;</div>
+      <div style="font-size:14px;font-weight:600;color:#666">No orders yet</div>
+      <div style="font-size:12px;color:#444;margin-top:4px">Your order history will appear here</div>
+    </div>`;
+    return;
+  }
+  list.innerHTML = orderHistory.map(o => `
+    <div class="order-history-card">
+      <div class="order-id-row">
+        <span class="order-id">${o.id}</span>
+        <span class="order-status-badge delivered">${o.status}</span>
+      </div>
+      <div class="order-items-preview">${o.items}</div>
+      <div class="order-footer-row">
+        <div>
+          <div class="order-total-amt">&#x20B9;${o.total}</div>
+          <div class="order-date">${o.date}</div>
+        </div>
+        <button class="order-reorder-btn" onclick="reorder('${o.id}')">&#x1F504; Reorder</button>
+      </div>
+    </div>`).join("");
+}
+
+function reorder(id){
+  showToast("Items added to cart!");
+  toggleProfile();
+  toggleCart();
+}
+</script>
+
+<!-- ══ PWA: SERVICE WORKER + INSTALL PROMPT ══ -->
+<script>
+// ── Register Service Worker ───────────────────────────────────────────────────
+if("serviceWorker" in navigator && location.protocol !== "file:"){
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("/sw.js")
+      .then(reg => console.log("✅ SW registered:", reg.scope))
+      .catch(err => console.log("SW error:", err));
+  });
+}
+
+// ── Install Prompt Banner ─────────────────────────────────────────────────────
+let deferredPrompt = null;
+
+window.addEventListener("beforeinstallprompt", e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  // Show install banner after 3 seconds
+  setTimeout(showInstallBanner, 3000);
+});
+
+function showInstallBanner(){
+  if(!deferredPrompt) return;
+  let banner = document.getElementById("installBanner");
+  if(banner) banner.style.display = "flex";
+}
+
+function installApp(){
+  if(!deferredPrompt) return;
+  deferredPrompt.prompt();
+  deferredPrompt.userChoice.then(result => {
+    if(result.outcome === "accepted"){
+      showToast("🎉 99Foodies installed successfully!");
+    }
+    deferredPrompt = null;
+    document.getElementById("installBanner").style.display = "none";
+  });
+}
+
+function dismissInstall(){
+  document.getElementById("installBanner").style.display = "none";
+}
+
+// ── Detect if already installed ───────────────────────────────────────────────
+window.addEventListener("appinstalled", () => {
+  showToast("✅ App installed! Open from your home screen.");
+  deferredPrompt = null;
+});
+</script>
+
+<!-- ══ INSTALL BANNER ══ -->
+<div id="installBanner" style="
+  display:none;position:fixed;bottom:0;left:0;right:0;z-index:9998;
+  background:linear-gradient(135deg,#1a0a0a,#111);
+  border-top:1px solid #ff4d4d44;
+  padding:16px 20px;
+  flex-direction:row;align-items:center;gap:12px;
+  box-shadow:0 -8px 32px rgba(0,0,0,0.5);
+">
+  <div style="width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,#ff4d4d,#ff1a1a);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;">🍕</div>
+  <div style="flex:1;">
+    <div style="font-size:14px;font-weight:700;color:#fff;">Install 99Foodies App</div>
+    <div style="font-size:12px;color:#888;margin-top:2px;">Add to home screen for the best experience</div>
+  </div>
+  <button onclick="installApp()" style="
+    background:linear-gradient(135deg,#ff4d4d,#ff1a1a);
+    color:#fff;border:none;border-radius:10px;
+    padding:10px 18px;font-size:13px;font-weight:700;
+    font-family:Poppins;cursor:pointer;flex-shrink:0;
+    box-shadow:0 4px 14px rgba(255,77,77,0.4);
+  ">Install</button>
+  <button onclick="dismissInstall()" style="
+    background:none;border:none;color:#555;
+    font-size:20px;cursor:pointer;padding:4px;flex-shrink:0;
+  ">✕</button>
+</div>
+
+</body>
+</html>
