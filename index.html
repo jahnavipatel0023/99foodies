@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <title>99Foodies — Good Food, Great Mood!</title>
 
 <!-- ══ PWA META TAGS ══ -->
@@ -605,54 +608,177 @@ box-shadow:0 30px 80px rgba(0,0,0,0.6);
 }
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
-/* 🆕 ENHANCED CART STYLES */
+/* CART PAYMENT OPTIONS */
+.cart-pay-option{
+  display:flex;align-items:center;gap:10px;
+  padding:12px;border-radius:12px;
+  border:1.5px solid #2a2a2a;background:#111;
+  cursor:pointer;transition:0.2s;
+}
+.cart-pay-option.selected{border-color:#ff4d4d;background:#1a0a0a;}
+.cart-pay-radio{
+  width:18px;height:18px;border-radius:50%;
+  border:2px solid #333;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  transition:0.2s;
+}
+.cart-pay-radio.checked{border-color:#ff4d4d;background:#ff4d4d;box-shadow:0 0 0 3px rgba(255,77,77,0.2);}
+.cart-pay-radio.checked::after{content:'';width:6px;height:6px;border-radius:50%;background:#fff;}
+
+/* ══ PROFESSIONAL CART ══ */
 .cart{
-  position:fixed;right:0;top:0;width:320px;height:100%;
-  background:#1a1a1a;padding:20px;overflow-y:auto;z-index:1000;
-  transform:translateX(110%);
-  visibility:hidden;
-  transition:transform 0.35s cubic-bezier(0.4,0,0.2,1), visibility 0s linear 0.35s;
+  position:fixed;right:0;top:0;width:360px;height:100%;
+  background:#0d0d0d;overflow-y:auto;z-index:1000;
+  transform:translateX(110%);visibility:hidden;
+  transition:transform 0.35s cubic-bezier(0.4,0,0.2,1),visibility 0s linear 0.35s;
+}
+#qrBox, #paymentSuccess {
+  position:fixed;right:0;top:0;width:360px;height:100%;
+  background:#0d0d0d;overflow-y:auto;z-index:1001;
+  display:none;
+}
+@media(max-width:600px){
+  #qrBox, #paymentSuccess { width:92%; }
 }
 .cart.panel-open{
-  transform:translateX(0);
-  visibility:visible;
-  transition:transform 0.35s cubic-bezier(0.4,0,0.2,1), visibility 0s linear 0s;
+  transform:translateX(0);visibility:visible;
+  transition:transform 0.35s cubic-bezier(0.4,0,0.2,1),visibility 0s linear 0s;
 }
-.cart h3{font-size:20px;margin-bottom:15px;color:#fff;border-bottom:1px solid #333;padding-bottom:10px}
+.cart-header{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:18px 20px 14px;
+  background:#0d0d0d;
+  border-bottom:1px solid #1a1a1a;
+  position:sticky;top:0;z-index:2;
+}
+.cart-header-title{font-size:18px;font-weight:800;color:#fff;letter-spacing:-0.3px;}
+.cart-header-sub{font-size:11px;color:#555;margin-top:2px;}
+.cart-close-btn{
+  background:#1a1a1a;border:1px solid #222;color:#666;
+  width:32px;height:32px;border-radius:10px;
+  font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:0.2s;
+}
+.cart-close-btn:hover{color:#fff;border-color:#333;}
 
-/* COUPON SECTION */
-.coupon-section{display:flex;gap:8px;margin:15px 0}
-.coupon-section input{flex:1;padding:10px;border-radius:5px;border:1px dashed #666;background:#2a2a2a;color:#fff;font-size:14px}
-.coupon-section button{padding:10px 15px;background:#ff4d4d;color:white;border:none;border-radius:5px;cursor:pointer;font-weight:600}
-.coupon-section button:hover{background:#ff3333}
-#couponMsg{font-size:12px;margin-bottom:10px;min-height:20px}
-#couponMsg.success{color:#4caf50}
-#couponMsg.error{color:#f44336}
+/* DELIVERY TOGGLE */
+.cart-delivery-toggle{
+  display:flex;gap:0;margin:14px 20px 0;
+  background:#1a1a1a;border-radius:12px;padding:4px;
+}
+.cart-del-btn{
+  flex:1;padding:9px;border:none;border-radius:9px;
+  background:transparent;color:#666;font-size:13px;font-weight:600;
+  font-family:Poppins;cursor:pointer;transition:0.2s;
+}
+.cart-del-btn.active{background:#ff4d4d;color:#fff;box-shadow:0 2px 8px rgba(255,77,77,0.3);}
 
-/* PRICE SUMMARY */
-.price-summary{background:#2a2a2a;padding:15px;border-radius:8px;margin:15px 0}
-.price-summary p{display:flex;justify-content:space-between;margin:8px 0;font-size:14px;color:#ccc}
-.price-summary .total-row{font-size:18px;font-weight:700;color:#fff}
-.price-summary hr{border-color:#444;margin:10px 0}
+/* ADDRESS BAR */
+.cart-addr-bar{
+  display:flex;align-items:center;gap:10px;
+  margin:12px 16px 0;padding:12px 14px;
+  background:#1a1a1a;border-radius:12px;border:1.5px solid #222;
+  cursor:pointer;transition:0.2s;
+}
+.cart-addr-bar:hover{border-color:#ff4d4d44;}
+#cartAddrForm{
+  margin:10px 16px 0;
+  background:#1a1a1a;
+  border:1px solid #2a2a2a;
+  border-radius:16px;
+  padding:16px;
+  box-sizing:border-box;
+}
 
-/* CHECKOUT BUTTON */
-.checkout-btn{width:100%;padding:14px;background:#ff4d4d;color:white;border:none;border-radius:8px;font-size:16px;font-weight:700;cursor:pointer;margin:15px 0;transition:0.2s}
-.checkout-btn:hover{background:#ff3333;box-shadow:0 0 15px rgba(255,77,77,0.5)}
-.checkout-btn:disabled{background:#666;cursor:not-allowed}
+/* ADD MORE */
+.cart-add-more{
+  display:flex;align-items:center;gap:8px;
+  margin:0 20px;padding:12px 0;
+  border-bottom:1px dashed #1a1a1a;
+  cursor:pointer;
+}
 
-/* ASSURANCE BADGES */
-.assurance-badges{display:flex;justify-content:center;gap:15px;font-size:12px;color:#666;margin-top:10px}
+/* COUPON */
+.cart-coupon-wrap{padding:14px 20px 0;}
+.cart-coupon-row{
+  display:flex;align-items:center;gap:10px;
+  background:#1a1a1a;border-radius:12px;padding:10px 14px;
+  border:1px solid #222;
+}
+.cart-coupon-input{
+  flex:1;background:transparent;border:none;outline:none;
+  color:#fff;font-size:13px;font-family:Poppins;
+}
+.cart-coupon-input::placeholder{color:#444;}
+.cart-coupon-apply{
+  background:transparent;border:none;color:#ff4d4d;
+  font-size:13px;font-weight:700;cursor:pointer;font-family:Poppins;
+  padding:0;white-space:nowrap;
+}
+
+/* BILL */
+.cart-bill{
+  margin:14px 20px 0;
+  background:#1a1a1a;border-radius:16px;padding:16px;
+  border:1px solid #222;
+}
+.cart-bill-title{
+  font-size:12px;font-weight:800;color:#666;
+  letter-spacing:1px;text-transform:uppercase;margin-bottom:12px;
+}
+.cart-bill-row{
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:13px;color:#aaa;padding:5px 0;
+}
+.cart-bill-divider{height:1px;background:#2a2a2a;margin:10px 0;}
+.cart-bill-total{font-size:16px;font-weight:800;color:#fff;}
+
+/* SAVINGS */
+.cart-savings{
+  margin:10px 20px 0;padding:10px 14px;
+  background:#0d2e1f;border:1px solid #1e4a2f;border-radius:10px;
+  font-size:12px;color:#4caf50;text-align:center;
+}
+
+/* CHECKOUT BTN */
+.checkout-btn{
+  margin:14px 20px;
+  padding:16px 20px;
+  background:linear-gradient(135deg,#ff4d4d,#ff1a1a);
+  color:white;border:none;border-radius:14px;
+  font-size:15px;font-weight:800;cursor:pointer;
+  display:flex;justify-content:space-between;align-items:center;
+  box-shadow:0 6px 24px rgba(255,77,77,0.4);
+  transition:0.2s;font-family:Poppins;
+  width:calc(100% - 40px);box-sizing:border-box;
+}
+.checkout-btn:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(255,77,77,0.5);}
+.checkout-btn:disabled{background:#333;color:#666;cursor:not-allowed;box-shadow:none;transform:none;}
+.checkout-btn-amt{
+  background:rgba(0,0,0,0.2);padding:4px 12px;
+  border-radius:8px;font-size:15px;font-weight:800;
+}
+
+/* ASSURANCE */
+.cart-assurance{
+  display:flex;justify-content:space-around;
+  padding:0 20px 24px;margin-top:4px;
+}
+.cart-assurance-item{
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  font-size:10px;color:#444;font-weight:600;
+}
+.cart-assurance-item span:first-child{font-size:18px;}
 
 /* MOBILE CART RESPONSIVENESS */
 @media(max-width:600px){
 .cart,.reviews,.contact,.profile-panel{
-  width:88% !important;
+  width:92% !important;
   height:100%;
   top:0;right:0;
   border-radius:20px 0 0 20px;
   box-shadow:-8px 0 40px rgba(0,0,0,0.6);
 }
-.cart{padding:20px 16px 20px 20px !important;}
 .cart-item{padding:8px}
 .cart-item img{width:45px;height:45px}
 .cart-item-name{font-size:13px}
@@ -663,6 +789,7 @@ box-shadow:0 30px 80px rgba(0,0,0,0.6);
 .price-summary{padding:12px}
 .price-summary p{font-size:13px}
 .checkout-btn{padding:12px;font-size:15px}
+#cartAddrForm input{font-size:16px !important;} /* prevent iOS zoom */
 }
 
 @media(max-width:600px){
@@ -851,6 +978,40 @@ overflow:hidden;
 .scanner-frame img{width:100%;height:100%;object-fit:cover}
 .scanner-line{position:absolute;top:0;left:0;width:100%;height:3px;background:#00ffcc;box-shadow:0 0 10px #00ffcc;animation:scan 2s linear infinite}
 @keyframes scan{0%{top:0}50%{top:97%}100%{top:0}}
+
+/* ── PAYMENT METHODS ── */
+.pay-tab{
+  padding:8px 16px;border-radius:20px;border:1.5px solid #2a2a2a;
+  background:transparent;color:#666;font-size:12px;font-weight:600;
+  font-family:Poppins;cursor:pointer;white-space:nowrap;transition:0.2s;flex-shrink:0;
+}
+.pay-tab.active{background:#ff4d4d;border-color:#ff4d4d;color:#fff;}
+.pay-panel{animation:fadeInCard 0.2s ease;}
+.pay-section-title{
+  font-size:10px;font-weight:800;color:#555;
+  letter-spacing:1.5px;text-transform:uppercase;
+  margin-bottom:10px;margin-top:4px;
+}
+.upi-app-btn{
+  background:#1a1a1a;border:1.5px solid #2a2a2a;border-radius:14px;
+  padding:14px 8px;display:flex;flex-direction:column;align-items:center;gap:8px;
+  cursor:pointer;transition:0.2s;
+}
+.upi-app-btn:hover,.upi-app-btn.active{border-color:#ff4d4d;background:#1e1010;transform:translateY(-2px);box-shadow:0 4px 14px rgba(255,77,77,0.2);}
+.upi-app-btn span{font-size:11px;color:#aaa;font-weight:600;}
+.bank-btn{
+  background:#111;border:1.5px solid #1a1a1a;border-radius:12px;
+  padding:12px;font-size:13px;font-weight:600;color:#aaa;
+  cursor:pointer;transition:0.2s;
+  display:flex;align-items:center;gap:8px;
+}
+.bank-btn:hover,.bank-btn.active{border-color:#ff4d4d;color:#fff;background:#1a0a0a;}
+.wallet-btn{
+  background:#1a1a1a;border:1.5px solid #2a2a2a;border-radius:12px;
+  padding:12px;display:flex;align-items:center;gap:8px;
+  cursor:pointer;transition:0.2s;font-size:13px;font-weight:600;color:#aaa;
+}
+.wallet-btn:hover,.wallet-btn.active{border-color:#ff4d4d;color:#fff;background:#2a1a1a;}
 
 /* PAYMENT SUCCESS */
 .pay-success-wrap{
@@ -1311,108 +1472,382 @@ overflow:hidden;
 </button>
 
 <div class="cart" id="cart">
-<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:15px">
-<h3 style="margin:0">🛒 Your Cart</h3>
-<button onclick="toggleCart()" style="background:none;border:none;color:#aaa;font-size:22px;cursor:pointer;line-height:1;padding:0">✕</button>
+
+<!-- CART HEADER -->
+<div class="cart-header">
+  <div>
+    <div class="cart-header-title">🛒 Your Order</div>
+    <div class="cart-header-sub" id="cartRestaurant">99Foodies · Valsad</div>
+  </div>
+  <button onclick="toggleCart()" class="cart-close-btn">✕</button>
 </div>
+
+<!-- CART MAIN BODY (hidden when payment page is shown) -->
+<div id="cartMainBody">
+
+<!-- DELIVERY TYPE TOGGLE -->
+<div class="cart-delivery-toggle">
+  <button class="cart-del-btn active" id="delBtn" onclick="setDeliveryType('delivery',this)">🛵 Delivery</button>
+  <button class="cart-del-btn" id="pickBtn" onclick="setDeliveryType('pickup',this)">🏃 Pickup</button>
+</div>
+
+<!-- DELIVERY ADDRESS BAR -->
+<div class="cart-addr-bar" id="cartAddrBar" onclick="toggleAddrForm()">
+  <span style="font-size:16px;">📍</span>
+  <div style="flex:1;">
+    <div style="font-size:11px;color:#666;margin-bottom:1px;">Delivering to</div>
+    <div style="font-size:13px;font-weight:600;color:#fff;" id="cartAddrText">Tap to add address</div>
+  </div>
+  <span style="color:#ff4d4d;font-size:12px;font-weight:700;">Change ›</span>
+</div>
+
+<!-- ADDRESS FORM (inline, shown on tap) -->
+<div id="cartAddrForm" style="display:none;">
+  <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:12px;">📍 Delivery Address</div>
+
+  <input id="addrName" type="text" placeholder="Full Name *" maxlength="50"
+    style="width:100%;box-sizing:border-box;padding:11px 13px;background:#111;border:1.5px solid #2a2a2a;border-radius:10px;color:#fff;font-family:Poppins;font-size:13px;outline:none;margin-bottom:8px;"
+    onfocus="this.style.borderColor='#ff4d4d'" onblur="this.style.borderColor='#2a2a2a'">
+
+  <input id="addrPhone" type="tel" placeholder="Phone Number *" maxlength="10"
+    style="width:100%;box-sizing:border-box;padding:11px 13px;background:#111;border:1.5px solid #2a2a2a;border-radius:10px;color:#fff;font-family:Poppins;font-size:13px;outline:none;margin-bottom:8px;"
+    onfocus="this.style.borderColor='#ff4d4d'" onblur="this.style.borderColor='#2a2a2a'">
+
+  <input id="addrFlat2" type="text" placeholder="Flat / House No., Floor *" maxlength="80"
+    style="width:100%;box-sizing:border-box;padding:11px 13px;background:#111;border:1.5px solid #2a2a2a;border-radius:10px;color:#fff;font-family:Poppins;font-size:13px;outline:none;margin-bottom:8px;"
+    onfocus="this.style.borderColor='#ff4d4d'" onblur="this.style.borderColor='#2a2a2a'">
+
+  <input id="addrStreet2" type="text" placeholder="Street, Area, Landmark *" maxlength="100"
+    style="width:100%;box-sizing:border-box;padding:11px 13px;background:#111;border:1.5px solid #2a2a2a;border-radius:10px;color:#fff;font-family:Poppins;font-size:13px;outline:none;margin-bottom:8px;"
+    onfocus="this.style.borderColor='#ff4d4d'" onblur="this.style.borderColor='#2a2a2a'">
+
+  <div style="display:flex;gap:8px;margin-bottom:12px;">
+    <input id="addrCity2" type="text" placeholder="City *" maxlength="40"
+      style="flex:1;padding:11px 13px;background:#111;border:1.5px solid #2a2a2a;border-radius:10px;color:#fff;font-family:Poppins;font-size:13px;outline:none;box-sizing:border-box;"
+      onfocus="this.style.borderColor='#ff4d4d'" onblur="this.style.borderColor='#2a2a2a'">
+    <input id="addrPin2" type="tel" placeholder="PIN *" maxlength="6"
+      style="width:100px;padding:11px 13px;background:#111;border:1.5px solid #2a2a2a;border-radius:10px;color:#fff;font-family:Poppins;font-size:13px;outline:none;box-sizing:border-box;"
+      onfocus="this.style.borderColor='#ff4d4d'" onblur="this.style.borderColor='#2a2a2a'">
+  </div>
+
+  <div id="addrFormError" style="display:none;font-size:12px;color:#ff6b6b;margin-bottom:8px;padding:8px 12px;background:#ff4d4d18;border-radius:8px;"></div>
+
+  <div style="display:flex;gap:8px;">
+    <button onclick="saveDeliveryAddr()"
+      style="flex:1;padding:12px;background:linear-gradient(135deg,#ff4d4d,#ff1a1a);color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;font-family:Poppins;cursor:pointer;box-shadow:0 4px 14px rgba(255,77,77,0.3);">
+      Save Address
+    </button>
+    <button onclick="toggleAddrForm()"
+      style="padding:12px 16px;background:#111;border:1px solid #333;color:#888;border-radius:10px;font-size:13px;font-weight:600;font-family:Poppins;cursor:pointer;">
+      Cancel
+    </button>
+  </div>
+</div>
+
+<!-- CART ITEMS -->
 <div id="cartItems"></div>
 
+<!-- ADD MORE ITEMS -->
+<div class="cart-add-more" onclick="toggleCart()">
+  <span style="color:#ff4d4d;font-size:18px;">+</span>
+  <span style="font-size:13px;font-weight:600;color:#ff4d4d;">Add more items</span>
+</div>
+
 <!-- COUPON SECTION -->
-<div class="coupon-section">
-<input type="text" id="couponInput" placeholder="Enter coupon code" onfocus="showCouponDropdown()" oninput="filterCoupons(this.value)" autocomplete="off">
-<button onclick="applyCoupon()">Apply</button>
+<div class="cart-coupon-wrap">
+  <div class="cart-coupon-row">
+    <span style="font-size:18px;">🏷️</span>
+    <input type="text" id="couponInput" placeholder="Enter promo code" onfocus="showCouponDropdown()" oninput="filterCoupons(this.value)" autocomplete="off" class="cart-coupon-input">
+    <button onclick="applyCoupon()" class="cart-coupon-apply">Apply</button>
+  </div>
+  <!-- COUPON DROPDOWN -->
+  <div class="coupon-dropdown" id="couponDropdown">
+    <div class="coupon-dropdown-title">🎁 Available Offers</div>
+    <div class="coupon-option" onclick="selectCoupon('FREESHIP')">
+      <div class="coupon-tag" style="background:#00e5a022;border-color:#00e5a0;color:#00e5a0">FREESHIP</div>
+      <div class="coupon-option-info">
+        <div class="coupon-option-title">Free Delivery on 1st Order</div>
+        <div class="coupon-option-desc">No min order · First order only</div>
+      </div>
+      <button class="coupon-apply-btn">Apply</button>
+    </div>
+    <div class="coupon-option" onclick="selectCoupon('FOOD50')">
+      <div class="coupon-tag">FOOD50</div>
+      <div class="coupon-option-info">
+        <div class="coupon-option-title">Save ₹50 on your order</div>
+        <div class="coupon-option-desc">Min order ₹200 · Valid today</div>
+      </div>
+      <button class="coupon-apply-btn">Apply</button>
+    </div>
+    <div class="coupon-option" onclick="selectCoupon('FIRST20')">
+      <div class="coupon-tag">FIRST20</div>
+      <div class="coupon-option-info">
+        <div class="coupon-option-title">Flat ₹20 off for new users</div>
+        <div class="coupon-option-desc">Min order ₹100 · First order only</div>
+      </div>
+      <button class="coupon-apply-btn">Apply</button>
+    </div>
+    <div class="coupon-option" onclick="selectCoupon('SAVE10')">
+      <div class="coupon-tag">SAVE10</div>
+      <div class="coupon-option-info">
+        <div class="coupon-option-title">₹10 off on any order</div>
+        <div class="coupon-option-desc">Min order ₹50 · No expiry</div>
+      </div>
+      <button class="coupon-apply-btn">Apply</button>
+    </div>
+  </div>
+  <div id="couponMsg"></div>
 </div>
-<!-- COUPON DROPDOWN -->
-<div class="coupon-dropdown" id="couponDropdown">
-  <div class="coupon-dropdown-title">Available Coupons</div>
-  <div class="coupon-option" onclick="selectCoupon('FREESHIP')">
-    <div class="coupon-tag" style="background:#00e5a022;border-color:#00e5a0;color:#00e5a0">FREESHIP</div>
-    <div class="coupon-option-info">
-      <div class="coupon-option-title">Free Delivery on 1st Order</div>
-      <div class="coupon-option-desc">No min order &bull; First order only</div>
-    </div>
-    <button class="coupon-apply-btn">Apply</button>
-  </div>
-  <div class="coupon-option" onclick="selectCoupon('FOOD50')">
-    <div class="coupon-tag">FOOD50</div>
-    <div class="coupon-option-info">
-      <div class="coupon-option-title">Save ₹50 on your order</div>
-      <div class="coupon-option-desc">Min order ₹200 &bull; Valid today</div>
-    </div>
-    <button class="coupon-apply-btn">Apply</button>
-  </div>
-  <div class="coupon-option" onclick="selectCoupon('FIRST20')">
-    <div class="coupon-tag">FIRST20</div>
-    <div class="coupon-option-info">
-      <div class="coupon-option-title">Flat ₹20 off for new users</div>
-      <div class="coupon-option-desc">Min order ₹100 &bull; First order only</div>
-    </div>
-    <button class="coupon-apply-btn">Apply</button>
-  </div>
-  <div class="coupon-option" onclick="selectCoupon('SAVE10')">
-    <div class="coupon-tag">SAVE10</div>
-    <div class="coupon-option-info">
-      <div class="coupon-option-title">₹10 off on any order</div>
-      <div class="coupon-option-desc">Min order ₹50 &bull; No expiry</div>
-    </div>
-    <button class="coupon-apply-btn">Apply</button>
-  </div>
-</div>
-<div id="couponMsg"></div>
 
 <!-- PRICE BREAKDOWN -->
-<div class="price-summary">
-<p>Subtotal <span id="subtotal">₹0</span></p>
-<p>Delivery Fee <span id="deliveryFee">₹39</span></p>
-<p>Platform Fee <span>₹10</span></p>
-<p>Taxes <span id="taxes">₹0</span></p>
-<p id="discountRow" style="display:none;color:#4caf50">Discount <span id="discountAmt" style="color:#4caf50">-₹0</span></p>
-<hr style="border-color:#444;margin:10px 0">
-<p class="total-row">Total <span id="total">₹0</span></p>
+<div class="cart-bill">
+  <div class="cart-bill-title">Bill Details</div>
+  <div class="cart-bill-row"><span>Item Total</span><span id="subtotal">₹0</span></div>
+  <div class="cart-bill-row"><span>Delivery Fee</span><span id="deliveryFee">₹39</span></div>
+  <div class="cart-bill-row"><span>Platform Fee</span><span>₹10</span></div>
+  <div class="cart-bill-row"><span>GST & Charges</span><span id="taxes">₹0</span></div>
+  <div class="cart-bill-row" id="discountRow" style="display:none;color:#4caf50;"><span>🎉 Discount</span><span id="discountAmt">-₹0</span></div>
+  <div class="cart-bill-divider"></div>
+  <div class="cart-bill-row cart-bill-total"><span>To Pay</span><span id="total">₹0</span></div>
+</div>
+
+<!-- SAVINGS BADGE -->
+<div class="cart-savings" id="cartSavings" style="display:none;">
+  🎉 You're saving <strong id="savingsAmt">₹0</strong> on this order!
+</div>
+
+<!-- PAYMENT METHOD SELECTOR IN CART -->
+<div style="margin:14px 20px 0;background:#1a1a1a;border-radius:16px;padding:14px;border:1px solid #222;">
+  <div style="font-size:11px;font-weight:800;color:#555;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;">Payment Method</div>
+  <div style="display:flex;flex-direction:column;gap:8px;">
+
+    <label class="cart-pay-option" onclick="selectCartPay('upi')">
+      <input type="radio" name="cartPayMethod" value="upi" checked style="display:none;">
+      <div class="cart-pay-radio" id="radio-upi"></div>
+      <span style="font-size:18px;">📱</span>
+      <div style="flex:1;">
+        <div style="font-size:13px;font-weight:700;color:#fff;">UPI / QR Code</div>
+        <div style="font-size:11px;color:#555;">GPay, PhonePe, Paytm & more</div>
+      </div>
+      <div style="display:flex;gap:4px;">
+        <div style="width:20px;height:14px;border-radius:3px;background:linear-gradient(135deg,#4285f4,#34a853);display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:900;color:#fff;">G</div>
+        <div style="width:20px;height:14px;border-radius:3px;background:linear-gradient(135deg,#5f259f,#7b2ff7);display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:900;color:#fff;">P</div>
+      </div>
+    </label>
+
+    <label class="cart-pay-option" onclick="selectCartPay('cards')">
+      <input type="radio" name="cartPayMethod" value="cards" style="display:none;">
+      <div class="cart-pay-radio" id="radio-cards"></div>
+      <span style="font-size:18px;">💳</span>
+      <div style="flex:1;">
+        <div style="font-size:13px;font-weight:700;color:#fff;">Credit / Debit Card</div>
+        <div style="font-size:11px;color:#555;">Visa, Mastercard, RuPay</div>
+      </div>
+    </label>
+
+    <label class="cart-pay-option" onclick="selectCartPay('netbanking')">
+      <input type="radio" name="cartPayMethod" value="netbanking" style="display:none;">
+      <div class="cart-pay-radio" id="radio-netbanking"></div>
+      <span style="font-size:18px;">🏦</span>
+      <div style="flex:1;">
+        <div style="font-size:13px;font-weight:700;color:#fff;">Net Banking</div>
+        <div style="font-size:11px;color:#555;">SBI, HDFC, ICICI & more</div>
+      </div>
+    </label>
+
+    <label class="cart-pay-option" onclick="selectCartPay('cod')" id="codOption">
+      <input type="radio" name="cartPayMethod" value="cod" style="display:none;">
+      <div class="cart-pay-radio" id="radio-cod"></div>
+      <span style="font-size:18px;">🛵</span>
+      <div style="flex:1;">
+        <div style="font-size:13px;font-weight:700;color:#fff;">Cash on Delivery</div>
+        <div style="font-size:11px;color:#ff9800;">+₹20 COD charge · Pay when delivered</div>
+      </div>
+    </label>
+
+  </div>
 </div>
 
 <!-- CHECKOUT BUTTON -->
-<button class="checkout-btn" onclick="initiatePayment()">Proceed to Checkout ₹<span id="checkoutTotal">0</span></button>
+<button class="checkout-btn" onclick="initiatePayment()">
+  <span>Proceed to Pay</span>
+  <span class="checkout-btn-amt">₹<span id="checkoutTotal">0</span></span>
+</button>
 
-<!-- ORDER ASSURANCE -->
-<div class="assurance-badges">
-<span>🔒 Secure Checkout</span>
-<span>🛡️ 100% Refund</span>
+<!-- ASSURANCE -->
+<div class="cart-assurance">
+  <div class="cart-assurance-item"><span>🔒</span><span>Secure</span></div>
+  <div class="cart-assurance-item"><span>⚡</span><span>Fast Delivery</span></div>
+  <div class="cart-assurance-item"><span>🛡️</span><span>100% Refund</span></div>
+  <div class="cart-assurance-item"><span>🌿</span><span>Fresh Food</span></div>
 </div>
 
-<div id="qrBox" style="display:none;text-align:center;padding:10px 0;position:relative;">
-<button onclick="closeQR()" style="position:absolute;top:0;right:0;background:none;border:none;color:#aaa;font-size:22px;cursor:pointer;line-height:1;padding:4px">✕</button>
-<h4 style="color:#00ffcc;font-size:18px;margin:0 0 4px">💳 Pay Now</h4>
-<p style="color:#999;font-size:12px;margin:0 0 14px">Tap below to open your UPI app directly</p>
+</div><!-- end #cartMainBody -->
+
+</div><!-- end #cart -->
+
+<!-- ══ PAYMENT PAGE (fixed panel, same position as cart) ══ -->
+<div id="qrBox" style="display:none;padding:0 20px 20px;box-sizing:border-box;">
+
+<!-- HEADER -->
+<div style="display:flex;justify-content:space-between;align-items:center;padding:16px 0 14px;border-bottom:1px solid #1a1a1a;margin-bottom:16px;position:sticky;top:0;background:#0d0d0d;z-index:2;">
+  <div style="display:flex;align-items:center;gap:10px;">
+    <button onclick="closeQR()" style="background:#1a1a1a;border:1px solid #222;color:#aaa;font-size:14px;cursor:pointer;width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">←</button>
+    <div>
+      <div style="font-size:17px;font-weight:800;color:#fff;">💳 Payment</div>
+      <div style="font-size:11px;color:#555;margin-top:1px;">🔒 256-bit SSL encrypted</div>
+    </div>
+  </div>
+  <button onclick="closeQR()" style="background:#1a1a1a;border:1px solid #222;color:#666;font-size:16px;cursor:pointer;width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;">✕</button>
+</div>
 
 <!-- AMOUNT -->
-<div style="background:#0d2e1f;border:1px solid #00ffcc;border-radius:10px;padding:12px 16px;margin:0 auto 16px;max-width:270px">
-  <p style="color:#999;font-size:11px;margin:0 0 3px">Amount to Pay</p>
-  <p style="color:#00ffcc;font-weight:700;font-size:28px;margin:0">₹<span id="scanAmount">0</span></p>
-</div>
-
-<!-- QR CODE for desktop -->
-<div style="margin:16px 0 8px">
-  <p style="color:#666;font-size:11px;margin:0 0 8px">Or scan with any UPI app</p>
-  <div style="background:#fff;border-radius:12px;padding:12px;display:inline-block;box-shadow:0 0 20px rgba(0,255,204,0.3)">
-    <div id="upiQRCode"></div>
+<div style="background:linear-gradient(135deg,#0f1f16,#0a1a10);border:1px solid #1e4a2f;border-radius:16px;padding:16px 18px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;">
+  <div>
+    <div style="color:#555;font-size:11px;font-weight:600;letter-spacing:0.5px;margin-bottom:4px;">TOTAL PAYABLE</div>
+    <div style="color:#00e5a0;font-weight:900;font-size:28px;letter-spacing:-1px;">₹<span id="scanAmount">0</span></div>
+  </div>
+  <div style="text-align:right;">
+    <div style="font-size:10px;color:#555;margin-bottom:4px;">Secured by</div>
+    <div style="font-size:12px;font-weight:700;color:#00e5a0;">99Foodies Pay</div>
   </div>
 </div>
 
-<!-- UPI ID -->
-<div style="background:#2a2a2a;border-radius:10px;padding:10px 16px;margin:12px auto;max-width:270px">
-  <p style="color:#999;font-size:11px;margin:0 0 3px">UPI ID</p>
-  <p style="color:#fff;font-weight:700;font-size:14px;margin:0">jahnavipatel0023@oksbi</p>
+<!-- PAYMENT METHOD TABS -->
+<div style="display:flex;gap:6px;margin-bottom:16px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px;">
+  <button class="pay-tab active" onclick="selectPayTab(this,'upi')">📱 UPI</button>
+  <button class="pay-tab" onclick="selectPayTab(this,'cards')">💳 Cards</button>
+  <button class="pay-tab" onclick="selectPayTab(this,'netbanking')">🏦 Net Banking</button>
+  <button class="pay-tab" onclick="selectPayTab(this,'wallet')">👛 Wallet</button>
+  <button class="pay-tab" onclick="selectPayTab(this,'cod')">� COD</button>
 </div>
 
-<button onclick="confirmPaymentDone()" style="background:#00ffcc;color:black;padding:13px 0;border:none;border-radius:8px;font-weight:700;font-size:15px;cursor:pointer;width:100%;max-width:270px;margin-top:4px;margin-bottom:40px">✅ I've Paid</button>
+<!-- UPI PANEL -->
+<div id="payPanel-upi" class="pay-panel">
+  <div class="pay-section-title">Pay with UPI App</div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;">
+    <div class="upi-app-btn" onclick="openUPIApp('gpay')">
+      <div style="width:44px;height:44px;border-radius:14px;background:linear-gradient(135deg,#4285f4,#34a853);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:900;color:#fff;box-shadow:0 4px 12px rgba(66,133,244,0.35);">G</div>
+      <span>Google Pay</span>
+    </div>
+    <div class="upi-app-btn" onclick="openUPIApp('phonepe')">
+      <div style="width:44px;height:44px;border-radius:14px;background:linear-gradient(135deg,#5f259f,#7b2ff7);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:900;color:#fff;box-shadow:0 4px 12px rgba(95,37,159,0.35);">P</div>
+      <span>PhonePe</span>
+    </div>
+    <div class="upi-app-btn" onclick="openUPIApp('paytm')">
+      <div style="width:44px;height:44px;border-radius:14px;background:linear-gradient(135deg,#00baf2,#0070ba);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:900;color:#fff;box-shadow:0 4px 12px rgba(0,186,242,0.35);">P</div>
+      <span>Paytm</span>
+    </div>
+  </div>
+
+  <div class="pay-section-title">Enter UPI ID</div>
+  <div style="display:flex;gap:8px;margin-bottom:16px;">
+    <input id="upiIdInput" type="text" placeholder="yourname@upi" style="flex:1;padding:13px 14px;background:#111;border:1.5px solid #222;border-radius:12px;color:#fff;font-size:14px;font-family:Poppins;outline:none;" onfocus="this.style.borderColor='#ff4d4d'" onblur="this.style.borderColor='#222'">
+    <button onclick="payWithUPIId()" style="padding:13px 18px;background:linear-gradient(135deg,#ff4d4d,#ff1a1a);border:none;border-radius:12px;color:#fff;font-weight:700;font-size:13px;cursor:pointer;font-family:Poppins;white-space:nowrap;">Pay Now</button>
+  </div>
+
+  <div class="pay-section-title">Scan & Pay</div>
+  <div style="display:flex;justify-content:center;background:#111;border-radius:14px;padding:16px;margin-bottom:4px;border:1px solid #1a1a1a;">
+    <div style="background:#fff;border-radius:10px;padding:8px;">
+      <div id="upiQRCode"></div>
+    </div>
+  </div>
 </div>
 
-<!-- PAYMENT SUCCESS PAGE -->
+<!-- CARDS PANEL -->
+<div id="payPanel-cards" class="pay-panel" style="display:none;">
+  <div class="pay-section-title">Credit / Debit Card</div>
+  <div style="background:#111;border-radius:16px;padding:16px;margin-bottom:12px;border:1px solid #1a1a1a;">
+    <div style="display:flex;gap:6px;margin-bottom:12px;">
+      <div style="background:#fff;border-radius:5px;padding:3px 7px;font-size:11px;font-weight:900;color:#1a1f71;">VISA</div>
+      <div style="background:#fff;border-radius:5px;padding:3px 6px;display:flex;align-items:center;">
+        <div style="width:14px;height:14px;border-radius:50%;background:#eb001b;"></div>
+        <div style="width:14px;height:14px;border-radius:50%;background:#f79e1b;margin-left:-5px;"></div>
+      </div>
+      <div style="background:#fff;border-radius:5px;padding:3px 7px;font-size:10px;font-weight:800;color:#0066b2;">RUPAY</div>
+      <div style="background:#097939;border-radius:5px;padding:3px 7px;font-size:10px;font-weight:800;color:#fff;">UPI</div>
+    </div>
+    <input type="text" placeholder="1234  5678  9012  3456" maxlength="19" style="width:100%;box-sizing:border-box;padding:13px 14px;background:#0a0a0a;border:1.5px solid #222;border-radius:12px;color:#fff;font-size:15px;font-family:Poppins;outline:none;margin-bottom:10px;letter-spacing:2px;" oninput="this.value=this.value.replace(/\D/g,'').replace(/(.{4})/g,'$1 ').trim()" onfocus="this.style.borderColor='#ff4d4d'" onblur="this.style.borderColor='#222'">
+    <input type="text" placeholder="Card Holder Name" style="width:100%;box-sizing:border-box;padding:13px 14px;background:#0a0a0a;border:1.5px solid #222;border-radius:12px;color:#fff;font-size:14px;font-family:Poppins;outline:none;margin-bottom:10px;" onfocus="this.style.borderColor='#ff4d4d'" onblur="this.style.borderColor='#222'">
+    <div style="display:flex;gap:10px;">
+      <input type="text" placeholder="MM / YY" maxlength="5" style="flex:1;padding:13px 14px;background:#0a0a0a;border:1.5px solid #222;border-radius:12px;color:#fff;font-size:14px;font-family:Poppins;outline:none;" onfocus="this.style.borderColor='#ff4d4d'" onblur="this.style.borderColor='#222'">
+      <input type="password" placeholder="CVV" maxlength="3" style="flex:1;padding:13px 14px;background:#0a0a0a;border:1.5px solid #222;border-radius:12px;color:#fff;font-size:14px;font-family:Poppins;outline:none;" onfocus="this.style.borderColor='#ff4d4d'" onblur="this.style.borderColor='#222'">
+    </div>
+  </div>
+  <div style="font-size:11px;color:#444;margin-bottom:14px;">🔒 Card info is encrypted & never stored</div>
+</div>
+
+<!-- NET BANKING PANEL -->
+<div id="payPanel-netbanking" class="pay-panel" style="display:none;">
+  <div class="pay-section-title">Select Your Bank</div>
+  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:14px;">
+    <div class="bank-btn" onclick="selectBank(this,'SBI')"><span>🏦</span><span>State Bank</span></div>
+    <div class="bank-btn" onclick="selectBank(this,'HDFC')"><span>🏦</span><span>HDFC Bank</span></div>
+    <div class="bank-btn" onclick="selectBank(this,'ICICI')"><span>🏦</span><span>ICICI Bank</span></div>
+    <div class="bank-btn" onclick="selectBank(this,'Axis')"><span>🏦</span><span>Axis Bank</span></div>
+    <div class="bank-btn" onclick="selectBank(this,'Kotak')"><span>🏦</span><span>Kotak Bank</span></div>
+    <div class="bank-btn" onclick="selectBank(this,'PNB')"><span>🏦</span><span>Punjab National</span></div>
+  </div>
+</div>
+
+<!-- WALLET PANEL -->
+<div id="payPanel-wallet" class="pay-panel" style="display:none;">
+  <div style="font-size:11px;color:#666;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:12px;">Select Wallet</div>
+  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:14px;">
+    <div class="wallet-btn" onclick="selectWallet(this,'Paytm Wallet')">
+      <div style="width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,#00baf2,#0070ba);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:#fff;flex-shrink:0;">P</div>
+      <span>Paytm</span>
+    </div>
+    <div class="wallet-btn" onclick="selectWallet(this,'Amazon Pay')">
+      <div style="width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,#ff9900,#e47911);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;">🛒</div>
+      <span>Amazon Pay</span>
+    </div>
+    <div class="wallet-btn" onclick="selectWallet(this,'Mobikwik')">
+      <div style="width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,#1b75bc,#0d4f8c);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:#fff;flex-shrink:0;">M</div>
+      <span>Mobikwik</span>
+    </div>
+    <div class="wallet-btn" onclick="selectWallet(this,'Freecharge')">
+      <div style="width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,#f7941d,#e5621a);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;">⚡</div>
+      <span>Freecharge</span>
+    </div>
+  </div>
+</div>
+
+<!-- CASH ON DELIVERY PANEL -->
+<div id="payPanel-cod" class="pay-panel" style="display:none;">
+  <div style="background:linear-gradient(135deg,#1a1500,#111);border:1px solid #ff980033;border-radius:16px;padding:20px;text-align:center;margin-bottom:14px;">
+    <div style="font-size:52px;margin-bottom:10px;">�</div>
+    <div style="font-size:17px;font-weight:800;color:#fff;margin-bottom:6px;">Cash on Delivery</div>
+    <div style="font-size:13px;color:#888;line-height:1.6;">Pay <strong style="color:#ff9800;">₹<span class="cod-amount">0</span></strong> in cash when your order arrives</div>
+  </div>
+  <div style="background:#111;border-radius:14px;padding:14px;margin-bottom:14px;border:1px solid #1a1a1a;">
+    <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #1a1a1a;">
+      <div style="width:28px;height:28px;border-radius:50%;background:#1e3a1e;display:flex;align-items:center;justify-content:center;color:#4caf50;font-size:14px;flex-shrink:0;">✓</div>
+      <span style="font-size:13px;color:#ccc;">No advance payment needed</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #1a1a1a;">
+      <div style="width:28px;height:28px;border-radius:50%;background:#1e3a1e;display:flex;align-items:center;justify-content:center;color:#4caf50;font-size:14px;flex-shrink:0;">✓</div>
+      <span style="font-size:13px;color:#ccc;">Pay when you receive your order</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;padding:8px 0;">
+      <div style="width:28px;height:28px;border-radius:50%;background:#2a1e00;display:flex;align-items:center;justify-content:center;color:#ff9800;font-size:14px;flex-shrink:0;">⚠</div>
+      <span style="font-size:13px;color:#888;">₹20 extra COD handling charge</span>
+    </div>
+  </div>
+</div>
+
+<!-- PAY BUTTON -->
+<button id="payNowBtn" onclick="processPayment()" style="width:100%;padding:16px;background:linear-gradient(135deg,#ff4d4d,#ff1a1a);color:#fff;border:none;border-radius:14px;font-size:16px;font-weight:800;cursor:pointer;font-family:Poppins;box-shadow:0 6px 24px rgba(255,77,77,0.4);margin-top:8px;margin-bottom:6px;letter-spacing:0.3px;">
+  Pay ₹<span id="payBtnAmount">0</span> Securely →
+</button>
+<div style="text-align:center;font-size:11px;color:#333;padding-bottom:8px;">🔒 Encrypted · Safe · Instant Confirmation</div>
+
+</div>
+
+<!-- ══ PAYMENT SUCCESS (fixed panel, same position as cart) ══ -->
 <div id="paymentSuccess" style="display:none;">
   <div class="pay-success-wrap">
 
-    <!-- Animated checkmark -->
     <div class="pay-check-ring">
       <svg viewBox="0 0 80 80" class="pay-check-svg">
         <circle cx="40" cy="40" r="36" fill="none" stroke="#00e5a0" stroke-width="4" class="pay-check-circle"/>
@@ -1423,7 +1858,6 @@ overflow:hidden;
     <div class="pay-success-title">Payment Successful!</div>
     <div class="pay-success-sub">Your order has been placed and is being prepared 🍽️</div>
 
-    <!-- Order details card -->
     <div class="pay-detail-card">
       <div class="pay-detail-row">
         <span class="pay-detail-label">Order ID</span>
@@ -1437,7 +1871,7 @@ overflow:hidden;
       <div class="pay-detail-divider"></div>
       <div class="pay-detail-row">
         <span class="pay-detail-label">Payment Method</span>
-        <span class="pay-detail-value">UPI</span>
+        <span class="pay-detail-value" id="successPayMethod">UPI</span>
       </div>
       <div class="pay-detail-divider"></div>
       <div class="pay-detail-row">
@@ -1446,30 +1880,18 @@ overflow:hidden;
       </div>
     </div>
 
-    <!-- ETA strip -->
     <div class="pay-eta-strip">
-      <div class="pay-eta-item">
-        <span class="pay-eta-icon">🧑‍🍳</span>
-        <span>Preparing</span>
-      </div>
+      <div class="pay-eta-item"><span class="pay-eta-icon">🧑‍🍳</span><span>Preparing</span></div>
       <div class="pay-eta-line"></div>
-      <div class="pay-eta-item">
-        <span class="pay-eta-icon">🛵</span>
-        <span>On the way</span>
-      </div>
+      <div class="pay-eta-item"><span class="pay-eta-icon">🛵</span><span>On the way</span></div>
       <div class="pay-eta-line"></div>
-      <div class="pay-eta-item">
-        <span class="pay-eta-icon">📦</span>
-        <span>Delivered</span>
-      </div>
+      <div class="pay-eta-item"><span class="pay-eta-icon">📦</span><span>Delivered</span></div>
     </div>
 
     <p class="pay-sms-note">📲 A confirmation SMS will be sent to your number shortly.</p>
-
-    <button class="pay-order-more-btn" onclick="closePayment()">Order More</button>
+    <button class="pay-order-more-btn" onclick="closePayment()">🛒 Order More</button>
 
   </div>
-</div>
 </div>
 
 <div class="reviews" id="reviews">
@@ -2282,8 +2704,9 @@ if(!open){
 function add(n,p){
 let itemData = items.find(i => i.n === n);
 let img = itemData ? itemData.img : "";
+let isVeg = itemData ? itemData.v : false;
 
-if(!cartQty[n]){cartQty[n]={p:p,q:0,img:img};cart.push({n,p,img})}
+if(!cartQty[n]){cartQty[n]={p:p,q:0,img:img};cart.push({n,p,img,v:isVeg})}
 cartQty[n].q++;
 update();
 applyFilters(); // refresh card buttons
@@ -2305,24 +2728,40 @@ setTimeout(()=>t.classList.remove("show"),2000);
 
 function update(){
 let html="",sum=0;
-cart.forEach((i,ind)=>{
-let q=cartQty[i.n]?cartQty[i.n].q:1;
-sum+=i.p*q;
-html+=`
-<div class="cart-item">
-<img src="${i.img || 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=100'}" alt="${i.n}">
-<div class="cart-item-info">
-<div class="cart-item-name">${i.n}</div>
-<div class="cart-item-price">₹${i.p}</div>
-</div>
-<div class="cart-item-qty">
-<button class="qty-minus" onclick="changeQty('${i.n}',-1)">−</button>
-<span>${q}</span>
-<button class="qty-plus" onclick="changeQty('${i.n}',1)">+</button>
-<button class="qty-remove" onclick="removeItem('${i.n}')">🗑️</button>
-</div>
-</div>`;
-});
+if(cart.length === 0){
+  html = `<div style="text-align:center;padding:40px 20px;">
+    <div style="font-size:56px;margin-bottom:12px;">🛒</div>
+    <div style="font-size:16px;font-weight:700;color:#444;margin-bottom:6px;">Your cart is empty</div>
+    <div style="font-size:13px;color:#333;">Add items to get started</div>
+  </div>`;
+} else {
+  html = `<div style="padding:0 20px;">`;
+  cart.forEach((i,ind)=>{
+    let q=cartQty[i.n]?cartQty[i.n].q:1;
+    sum+=i.p*q;
+    let vegDot = i.v
+      ? `<div style="width:12px;height:12px;border-radius:3px;border:2px solid #4caf50;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;"><div style="width:5px;height:5px;border-radius:50%;background:#4caf50;"></div></div>`
+      : `<div style="width:12px;height:12px;border-radius:3px;border:2px solid #f44336;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;"><div style="width:5px;height:5px;border-radius:50%;background:#f44336;"></div></div>`;
+    html+=`
+    <div style="display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid #1a1a1a;">
+      <img src="${i.img || 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=100'}" alt="${i.n}" style="width:56px;height:56px;border-radius:12px;object-fit:cover;flex-shrink:0;">
+      <div style="flex:1;min-width:0;">
+        <div style="display:flex;align-items:center;gap:5px;margin-bottom:3px;">
+          ${vegDot}
+          <div style="font-size:13px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${i.n}</div>
+        </div>
+        <div style="font-size:13px;font-weight:800;color:#ff4d4d;">₹${i.p * q}</div>
+        ${q > 1 ? `<div style="font-size:10px;color:#555;">₹${i.p} × ${q}</div>` : ''}
+      </div>
+      <div style="display:flex;align-items:center;gap:0;background:#1a1a1a;border-radius:10px;border:1px solid #2a2a2a;overflow:hidden;flex-shrink:0;">
+        <button onclick="changeQty('${i.n}',-1)" style="width:32px;height:32px;background:transparent;border:none;color:#ff4d4d;font-size:18px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;">−</button>
+        <span style="min-width:24px;text-align:center;font-size:14px;font-weight:700;color:#fff;">${q}</span>
+        <button onclick="changeQty('${i.n}',1)" style="width:32px;height:32px;background:#ff4d4d;border:none;color:#fff;font-size:18px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;">+</button>
+      </div>
+    </div>`;
+  });
+  html += `</div>`;
+}
 cartItems.innerHTML=html;
 
 // Calculate totals
@@ -2338,7 +2777,7 @@ document.getElementById("subtotal").innerText = "₹" + subtotal;
 document.getElementById("deliveryFee").innerText = freeDelivery && sum > 0 ? "FREE 🎉" : "₹" + deliveryFee;
 document.getElementById("taxes").innerText = "₹" + taxes;
 document.getElementById("total").innerText = "₹" + total;
-document.getElementById("checkoutTotal").innerText = total;
+document.getElementById("checkoutTotal").innerText = cartPayMethod === "cod" ? total + 20 : total;
 document.getElementById("cartCount").innerText = cart.length;
 let floatCount = document.getElementById("floatCartCount");
 if(floatCount) floatCount.innerText = cart.length;
@@ -2351,6 +2790,17 @@ if(appliedDiscount > 0 && sum > 0){
   discountAmt.innerText = "-₹" + appliedDiscount;
 } else {
   discountRow.style.display = "none";
+}
+
+// Savings badge
+let savings = appliedDiscount + (freeDelivery && sum > 0 ? 39 : 0);
+let savingsEl = document.getElementById("cartSavings");
+let savingsAmt = document.getElementById("savingsAmt");
+if(savingsEl && savings > 0 && sum > 0){
+  savingsEl.style.display = "block";
+  if(savingsAmt) savingsAmt.innerText = "₹" + savings;
+} else if(savingsEl){
+  savingsEl.style.display = "none";
 }
 }
 
@@ -2459,22 +2909,264 @@ function showQR(){
 document.getElementById("qrBox").style.display="block";
 }
 
+// ── Cart Payment Method Selector ─────────────────────────────────────────────
+let cartPayMethod = "upi";
+function selectCartPay(method){
+  cartPayMethod = method;
+  ["upi","cards","netbanking","cod"].forEach(m => {
+    let radio = document.getElementById("radio-" + m);
+    let option = radio ? radio.closest(".cart-pay-option") : null;
+    if(radio) radio.classList.remove("checked");
+    if(option) option.classList.remove("selected");
+  });
+  let radio = document.getElementById("radio-" + method);
+  let option = radio ? radio.closest(".cart-pay-option") : null;
+  if(radio) radio.classList.add("checked");
+  if(option) option.classList.add("selected");
+
+  // Update checkout button amount — COD adds ₹20
+  let totalEl = document.getElementById("total");
+  let checkoutTotalEl = document.getElementById("checkoutTotal");
+  let checkoutBtn = document.querySelector(".checkout-btn");
+  if(totalEl && checkoutTotalEl){
+    let baseTotal = parseInt(totalEl.innerText.replace("₹","")) || 0;
+    if(method === "cod"){
+      checkoutTotalEl.innerText = baseTotal + 20;
+      checkoutBtn.querySelector("span:first-child").innerText = "Pay on Delivery";
+      // Show COD badge on button
+      let existing = checkoutBtn.querySelector(".cod-badge");
+      if(!existing){
+        let badge = document.createElement("span");
+        badge.className = "cod-badge";
+        badge.style.cssText = "font-size:10px;background:rgba(255,152,0,0.25);color:#ff9800;padding:2px 8px;border-radius:6px;margin-left:4px;";
+        badge.innerText = "+₹20 COD";
+        checkoutBtn.querySelector("span:first-child").appendChild(badge);
+      }
+    } else {
+      checkoutTotalEl.innerText = baseTotal;
+      checkoutBtn.querySelector("span:first-child").innerText = "Proceed to Pay";
+      let badge = checkoutBtn.querySelector(".cod-badge");
+      if(badge) badge.remove();
+    }
+  }
+}
+
+// ── Delivery Type Toggle ──────────────────────────────────────────────────────
+// Set UPI as default selected on load
+document.addEventListener("DOMContentLoaded", () => selectCartPay("upi"));
+
+// ── DELIVERY ADDRESS ──────────────────────────────────────────────────────────
+let savedDeliveryAddr = null;
+
+function toggleAddrForm(){
+  let form = document.getElementById("cartAddrForm");
+  let isOpen = form.style.display !== "none";
+  form.style.display = isOpen ? "none" : "block";
+  if(!isOpen && savedDeliveryAddr){
+    document.getElementById("addrName").value    = savedDeliveryAddr.name   || "";
+    document.getElementById("addrPhone").value   = savedDeliveryAddr.phone  || "";
+    document.getElementById("addrFlat2").value   = savedDeliveryAddr.flat   || "";
+    document.getElementById("addrStreet2").value = savedDeliveryAddr.street || "";
+    document.getElementById("addrCity2").value   = savedDeliveryAddr.city   || "";
+    document.getElementById("addrPin2").value    = savedDeliveryAddr.pin    || "";
+  }
+}
+
+function saveDeliveryAddr(){
+  let name   = document.getElementById("addrName").value.trim();
+  let phone  = document.getElementById("addrPhone").value.trim();
+  let flat   = document.getElementById("addrFlat2").value.trim();
+  let street = document.getElementById("addrStreet2").value.trim();
+  let city   = document.getElementById("addrCity2").value.trim();
+  let pin    = document.getElementById("addrPin2").value.trim();
+
+  if(!name)                         { showAddrError("Please enter your full name"); return; }
+  if(!phone || phone.length !== 10) { showAddrError("Please enter a valid 10-digit phone number"); return; }
+  if(!flat)                         { showAddrError("Please enter flat / house number"); return; }
+  if(!street)                       { showAddrError("Please enter street / area"); return; }
+  if(!city)                         { showAddrError("Please enter city"); return; }
+  if(!pin || pin.length !== 6)      { showAddrError("Please enter a valid 6-digit PIN code"); return; }
+
+  document.getElementById("addrFormError").style.display = "none";
+  savedDeliveryAddr = { name, phone, flat, street, city, pin };
+
+  // ── Also save to profile Addresses (avoid duplicates) ──
+  let alreadySaved = savedAddresses.some(a =>
+    a.flat === flat && a.street === street && a.city === city && a.pin === pin
+  );
+  if(!alreadySaved){
+    savedAddresses.push({ type:"Home", flat, street, city, pin });
+    if(savedAddresses.length === 1) defaultAddressIdx = 0;
+    renderAddresses();
+  }
+
+  document.getElementById("cartAddrText").innerText = flat + ", " + street + ", " + city + " - " + pin;
+  document.getElementById("cartAddrBar").style.border = "1.5px solid #4caf5044";
+  document.getElementById("cartAddrForm").style.display = "none";
+  showToast("✅ Address saved!");
+}
+
+function showAddrError(msg){
+  let errEl = document.getElementById("addrFormError");
+  errEl.innerText = "⚠️ " + msg;
+  errEl.style.display = "block";
+}
+
+function setDeliveryType(type, el){
+  document.querySelectorAll(".cart-del-btn").forEach(b => b.classList.remove("active"));
+  el.classList.add("active");
+  let addrBar = document.getElementById("cartAddrBar");
+  let addrForm = document.getElementById("cartAddrForm");
+  if(type === "pickup"){
+    if(addrBar) addrBar.style.display = "none";
+    if(addrForm) addrForm.style.display = "none";
+    showToast("🏃 Pickup selected — collect from store");
+  } else {
+    if(addrBar) addrBar.style.display = "flex";
+  }
+}
+
+// ── PAYMENT METHOD LOGIC ──────────────────────────────────────────────────────
+let selectedPayMethod = "upi";
+
+function selectPayTab(el, method){
+  selectedPayMethod = method;
+  document.querySelectorAll(".pay-tab").forEach(t => t.classList.remove("active"));
+  el.classList.add("active");
+  document.querySelectorAll(".pay-panel").forEach(p => p.style.display = "none");
+  document.getElementById("payPanel-" + method).style.display = "block";
+}
+
+function openUPIApp(app){
+  let total = document.getElementById("scanAmount").innerText;
+  let upiBase = "upi://pay?pa=jahnavipatel0023@oksbi&pn=99Foodies&am=" + total + "&cu=INR&tn=99Foodies%20Order";
+  // Use a hidden link to avoid navigating away from the page
+  let link = document.createElement("a");
+  link.href = upiBase;
+  link.style.display = "none";
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  // Show confirm button after 2 seconds
+  setTimeout(()=>{
+    if(confirm("Have you completed the payment of ₹" + total + "?")){
+      confirmPaymentDone();
+    }
+  }, 2500);
+}
+
+function payWithUPIId(){
+  let upiId = document.getElementById("upiIdInput").value.trim();
+  if(!upiId || !upiId.includes("@")){
+    showToast("⚠️ Enter a valid UPI ID");
+    return;
+  }
+  let total = document.getElementById("scanAmount").innerText;
+  let upiBase = "upi://pay?pa=" + upiId + "&pn=99Foodies&am=" + total + "&cu=INR&tn=99Foodies%20Order";
+  // Use a hidden link to avoid navigating away from the page
+  let link = document.createElement("a");
+  link.href = upiBase;
+  link.style.display = "none";
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  setTimeout(()=>{
+    if(confirm("Have you completed the payment of ₹" + total + "?")){
+      confirmPaymentDone();
+    }
+  }, 2500);
+}
+
+function selectBank(el, bank){
+  document.querySelectorAll(".bank-btn").forEach(b => b.classList.remove("active"));
+  el.classList.add("active");
+  showToast("🏦 " + bank + " selected");
+}
+
+function selectWallet(el, wallet){
+  document.querySelectorAll(".wallet-btn").forEach(w => w.classList.remove("active"));
+  el.classList.add("active");
+  showToast("👛 " + wallet + " selected");
+}
+
+function processPayment(){
+  let total = document.getElementById("scanAmount").innerText;
+  if(selectedPayMethod === "cod"){
+    // Cash on delivery — confirm directly
+    if(confirm("Confirm Cash on Delivery order of ₹" + (parseInt(total)+20) + " (includes ₹20 COD charge)?")){
+      confirmPaymentDone();
+    }
+  } else if(selectedPayMethod === "upi"){
+    let total = document.getElementById("scanAmount").innerText;
+    let upiBase = "upi://pay?pa=jahnavipatel0023@oksbi&pn=99Foodies&am=" + total + "&cu=INR&tn=99Foodies%20Order";
+    // Use a hidden link to avoid navigating away from the page
+    let link = document.createElement("a");
+    link.href = upiBase;
+    link.style.display = "none";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    setTimeout(()=>{
+      if(confirm("Have you completed the UPI payment of ₹" + total + "?")){
+        confirmPaymentDone();
+      }
+    }, 2500);
+  } else {
+    // Cards / Net Banking / Wallet — simulate
+    showToast("⏳ Processing payment...");
+    setTimeout(confirmPaymentDone, 1500);
+  }
+}
+
 // 🆕 PAYMENT FLOW
 let qrInstance = null;
 function initiatePayment(){
 let total = parseInt(document.getElementById("total").innerText.replace("₹",""));
 if(total <= 0){
-showToast("Add items to cart first!");
-return;
+  showToast("Add items to cart first!");
+  return;
 }
+
+// Check delivery address (only for delivery mode, not pickup)
+let isPickup = document.getElementById("pickBtn") && document.getElementById("pickBtn").classList.contains("active");
+if(!isPickup && !savedDeliveryAddr){
+  document.getElementById("cartAddrForm").style.display = "block";
+  document.getElementById("cartAddrBar").style.border = "1.5px solid #ff4d4d";
+  // Scroll the cart panel to top so address form is visible
+  let cartPanel = document.getElementById("cart");
+  if(cartPanel) cartPanel.scrollTo({top: 0, behavior:"smooth"});
+  showToast("⚠️ Please add a delivery address first");
+  return;
+}
+
+// Handle COD directly — no payment page needed
+if(cartPayMethod === "cod"){
+  let codTotal = total + 20;
+  if(confirm("Confirm Cash on Delivery order?\n\nOrder Total: ₹" + total + "\nCOD Charge: ₹20\nTotal Payable: ₹" + codTotal)){
+    let paidAmt = codTotal;
+    addToOrderHistory(paidAmt);
+    document.getElementById("paymentSuccess").style.display = "block";
+    document.getElementById("paidAmount").innerText = paidAmt;
+    document.getElementById("successOrderId").innerText = "#99F" + Date.now().toString().slice(-6);
+    showToast("🛵 COD order placed! Pay ₹" + codTotal + " on delivery.");
+  }
+  return;
+}
+
+// Handle other payment methods — open payment page
 document.getElementById("scanAmount").innerText = total;
 document.getElementById("qrBox").style.display="block";
 document.getElementById("paymentSuccess").style.display="none";
-
-// Scroll to QR box smoothly
-setTimeout(()=>{
-  document.getElementById("qrBox").scrollIntoView({behavior:"smooth", block:"start"});
-}, 100);
+// Update pay button amount
+let payBtn = document.getElementById("payBtnAmount");
+if(payBtn) payBtn.innerText = total;
+// Update COD amount display
+document.querySelectorAll(".cod-amount").forEach(el => el.innerText = total);
+// Pre-select the tab matching cart selection
+if(cartPayMethod){
+  let tab = document.querySelector(`.pay-tab[onclick*="${cartPayMethod}"]`);
+  if(tab) selectPayTab(tab, cartPayMethod);
+}
 
 // Set UPI base link
 let upiBase = "upi://pay?pa=jahnavipatel0023@oksbi&pn=Jahnavi%20Patel&am=" + total + "&cu=INR&tn=99Foodies%20Order";
@@ -2484,8 +3176,8 @@ let qrDiv = document.getElementById("upiQRCode");
 qrDiv.innerHTML = "";
 new QRCode(qrDiv, {
 text: upiBase,
-width: 200,
-height: 200,
+width: 240,
+height: 240,
 colorDark: "#000000",
 colorLight: "#ffffff",
 correctLevel: QRCode.CorrectLevel.H
@@ -2517,7 +3209,7 @@ freeDelivery = false;
 update();
 applyFilters();
 document.getElementById("paymentSuccess").style.display="none";
-toggleCart();
+document.getElementById("qrBox").style.display="none";
 showToast("🎉 Order placed! Thank you!");
 }
 
@@ -2541,6 +3233,8 @@ document.getElementById("reviews").classList.remove("panel-open");
 document.getElementById("contact").classList.remove("panel-open");
 document.getElementById("profilePanel").classList.remove("panel-open");
 document.getElementById("blurOverlay").style.display="none";
+document.getElementById("qrBox").style.display="none";
+document.getElementById("paymentSuccess").style.display="none";
 }
 
 // 🆕 TOAST HELPER
@@ -2823,11 +3517,30 @@ function renderAddresses(){
       <div class="address-type-badge">${icons[a.type]||'📍'} ${a.type} ${i === defaultAddressIdx ? '&nbsp;&#x2713; Default' : ''}</div>
       <div class="address-text">${a.flat}, ${a.street}<br>${a.city}${a.pin ? ' - ' + a.pin : ''}</div>
       <div class="address-actions">
+        <button class="addr-action-btn" style="color:#00e5a0;border-color:#00e5a033;" onclick="useAddressForDelivery(${i})">🛵 Deliver here</button>
         ${i !== defaultAddressIdx ? `<button class="addr-action-btn default-btn" onclick="setDefaultAddress(${i})">Set Default</button>` : ''}
         <button class="addr-action-btn" onclick="deleteAddress(${i})">&#x1F5D1; Remove</button>
       </div>
     </div>`).join("");
   document.getElementById("profileSavedCount").innerText = savedAddresses.length;
+}
+
+function useAddressForDelivery(i){
+  let a = savedAddresses[i];
+  if(!a) return;
+  // Set as active delivery address in cart
+  savedDeliveryAddr = { name:"", phone:"", flat:a.flat, street:a.street, city:a.city, pin:a.pin };
+  document.getElementById("cartAddrText").innerText = a.flat + ", " + a.street + ", " + a.city + " - " + a.pin;
+  document.getElementById("cartAddrBar").style.border = "1.5px solid #4caf5044";
+  showToast("✅ Delivering to " + a.city);
+  // Close profile and open cart
+  toggleProfile();
+  setTimeout(()=> {
+    let c = document.getElementById("cart");
+    if(!c.classList.contains("panel-open")){
+      toggleCart();
+    }
+  }, 400);
 }
 
 function setDefaultAddress(i){
