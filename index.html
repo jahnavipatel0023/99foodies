@@ -47,6 +47,9 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-analytics-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-messaging-compat.js"></script>
+<!-- ══ RAZORPAY SDK ══ -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
   const firebaseConfig = {
     apiKey:            "AIzaSyAZCz1vhVC77twHwA7wxpyMu3lwodIw3Ek",
@@ -61,12 +64,22 @@
   window._fbAuth      = firebase.auth();
   window._fbAnalytics = firebase.analytics();
   window._fbDb        = firebase.firestore();
-  console.log("✅ Firebase + Firestore loaded");
+  window._fbMsg       = firebase.messaging();
+  console.log("✅ Firebase + Firestore + FCM loaded");
 
   // ── Analytics helper ───────────────────────────────────────────────────────
   function logEvent(name, params){
     try { window._fbAnalytics.logEvent(name, params || {}); } catch(e){}
   }
+
+  // ── FCM: handle foreground messages (app is open) ─────────────────────────
+  window._fbMsg.onMessage(payload => {
+    console.log("[FCM] Foreground message:", payload);
+    const n = payload.notification || {};
+    const d = payload.data || {};
+    // Show as in-app toast + browser notification
+    showFCMNotification(n.title || "99Foodies", n.body || "", d);
+  });
 </script>
 
 <style>
@@ -1115,6 +1128,80 @@ overflow:hidden;
 @keyframes bounce{0%,100%{transform:scale(1)}50%{transform:scale(1.2)}}
 #paymentSuccess{background:#111;height:100%}
 
+/* ── LIVE ORDER TRACKING ─────────────────────────────── */
+.track-page{
+  position:fixed;inset:0;z-index:1100;
+  background:#0a0a0a;overflow-y:auto;
+  transform:translateX(100%);
+  transition:transform 0.38s cubic-bezier(0.4,0,0.15,1);
+  visibility:hidden;
+}
+.track-page.open{transform:translateX(0);visibility:visible;}
+.track-timeline{padding:0 20px;margin-bottom:24px;}
+.track-step{
+  display:flex;align-items:flex-start;gap:14px;
+  padding-bottom:0;position:relative;
+}
+.track-step:not(:last-child)::after{
+  content:'';position:absolute;left:19px;top:40px;
+  width:2px;height:calc(100% - 8px);background:#1a1a1a;
+  transition:background 0.5s ease;
+}
+.track-step.done:not(:last-child)::after{background:linear-gradient(180deg,#00e5a0,#00e5a044);}
+.track-step.active:not(:last-child)::after{background:linear-gradient(180deg,#ff9800,#1a1a1a);}
+.track-dot{
+  width:40px;height:40px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;flex-shrink:0;
+  background:#1a1a1a;border:2px solid #2a2a2a;
+  transition:all 0.4s cubic-bezier(0.34,1.3,0.64,1);
+  position:relative;z-index:1;
+}
+.track-step.done .track-dot{background:#0d2e1f;border-color:#00e5a0;box-shadow:0 0 16px rgba(0,229,160,0.3);}
+.track-step.active .track-dot{background:#2e1f0d;border-color:#ff9800;box-shadow:0 0 16px rgba(255,152,0,0.4);animation:trackPulse 1.5s ease infinite;}
+@keyframes trackPulse{0%,100%{box-shadow:0 0 0 0 rgba(255,152,0,0.4)}50%{box-shadow:0 0 0 8px rgba(255,152,0,0)}}
+.track-info{flex:1;padding:8px 0 28px;}
+.track-label{font-size:14px;font-weight:700;color:#555;transition:color 0.3s;}
+.track-step.done .track-label{color:#00e5a0;}
+.track-step.active .track-label{color:#fff;}
+.track-sublabel{font-size:12px;color:#444;margin-top:3px;line-height:1.5;}
+.track-step.active .track-sublabel{color:#888;}
+.track-time{font-size:11px;color:#333;margin-top:4px;font-weight:600;}
+.track-step.done .track-time,.track-step.active .track-time{color:#555;}
+.eta-bar{
+  background:linear-gradient(135deg,#0d2e1f,#111);
+  border:1px solid #00e5a033;border-radius:16px;
+  padding:16px 20px;margin:0 20px 20px;
+  display:flex;align-items:center;gap:14px;
+}
+.eta-icon{font-size:32px;}
+.eta-val{font-size:28px;font-weight:900;color:#00e5a0;letter-spacing:-1px;}
+.eta-lbl{font-size:11px;color:#555;font-weight:600;margin-top:2px;}
+.track-map{
+  margin:0 20px 20px;border-radius:16px;overflow:hidden;
+  border:1px solid #1a1a1a;position:relative;height:180px;
+  background:linear-gradient(135deg,#0a1a0a,#0d0d0d);
+}
+.map-grid{
+  position:absolute;inset:0;
+  background-image:linear-gradient(rgba(0,229,160,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,160,0.04) 1px,transparent 1px);
+  background-size:24px 24px;
+}
+.map-store{position:absolute;left:20px;top:50%;transform:translateY(-50%);width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#ff4d4d,#ff1a1a);display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:0 4px 16px rgba(255,77,77,0.4);z-index:2;}
+.map-dest{position:absolute;right:20px;top:50%;transform:translateY(-50%);width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#4caf50,#2e7d32);display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:0 4px 16px rgba(76,175,80,0.4);z-index:2;}
+.map-rider{position:absolute;top:50%;transform:translateY(-50%);width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#ff9800,#ff5722);display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 4px 14px rgba(255,152,0,0.5);z-index:3;transition:left 4s cubic-bezier(0.4,0,0.2,1);}
+.map-path{position:absolute;top:50%;left:56px;right:56px;height:2px;background:linear-gradient(90deg,#ff4d4d44,#ff980088,#4caf5044);border-radius:2px;transform:translateY(-50%);}
+.map-label{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);font-size:10px;color:#555;font-weight:600;white-space:nowrap;background:#0a0a0a;padding:3px 10px;border-radius:10px;border:1px solid #1a1a1a;}
+.rider-card{margin:0 20px 20px;background:#111;border:1px solid #1a1a1a;border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:14px;}
+.rider-avatar{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#ff9800,#ff5722);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.rider-name{font-size:14px;font-weight:700;color:#fff;}
+.rider-sub{font-size:12px;color:#555;margin-top:2px;}
+.rider-call{margin-left:auto;width:40px;height:40px;border-radius:50%;background:#1e3a2f;border:1px solid #00e5a033;display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;transition:0.2s;flex-shrink:0;}
+.rider-call:hover{background:#2a4a3f;transform:scale(1.1);}
+.track-progress-wrap{margin:0 20px 20px;}
+.track-progress-bar{height:6px;background:#1a1a1a;border-radius:6px;overflow:hidden;}
+.track-progress-fill{height:100%;border-radius:6px;background:linear-gradient(90deg,#ff4d4d,#ff9800,#00e5a0);transition:width 1s cubic-bezier(0.4,0,0.2,1);width:0%;}
+
 /* ===== PROFILE PANEL ===== */
 .profile-panel{
   position:fixed;right:0;top:0;width:360px;height:100%;
@@ -1567,6 +1654,151 @@ html{scroll-behavior:smooth;}
 @media(prefers-reduced-motion:reduce){
   *{animation-duration:0.01ms !important;transition-duration:0.01ms !important;}
 }
+
+/* ── FCM NOTIFICATION BANNER ─────────────────────────── */
+@keyframes slideUp{
+  from{transform:translateX(-50%) translateY(40px);opacity:0}
+  to{transform:translateX(-50%) translateY(0);opacity:1}
+}
+
+/* ── AI FOOD RECOMMENDATION ──────────────────────────── */
+/* Floating button */
+.ai-fab{
+  position:fixed;bottom:90px;right:20px;z-index:1050;
+  width:52px;height:52px;border-radius:50%;
+  background:linear-gradient(135deg,#7c3aed,#4f46e5);
+  border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;
+  box-shadow:0 6px 24px rgba(124,58,237,0.5);
+  transition:transform 0.25s cubic-bezier(0.34,1.4,0.64,1),box-shadow 0.2s;
+  animation:aiFabPulse 3s ease infinite;
+}
+.ai-fab:hover{transform:scale(1.12);box-shadow:0 8px 32px rgba(124,58,237,0.7);}
+.ai-fab:active{transform:scale(0.94);}
+@keyframes aiFabPulse{
+  0%,100%{box-shadow:0 6px 24px rgba(124,58,237,0.5)}
+  50%{box-shadow:0 6px 32px rgba(124,58,237,0.8),0 0 0 8px rgba(124,58,237,0.1)}
+}
+/* Panel */
+.ai-panel{
+  position:fixed;right:0;top:0;width:380px;height:100%;
+  background:#0d0d0d;z-index:1051;
+  transform:translateX(110%);visibility:hidden;
+  transition:transform 0.38s cubic-bezier(0.4,0,0.15,1),visibility 0s linear 0.38s;
+  display:flex;flex-direction:column;
+  border-left:1px solid #1a1a1a;
+}
+.ai-panel.open{transform:translateX(0);visibility:visible;transition:transform 0.38s cubic-bezier(0.4,0,0.15,1),visibility 0s linear 0s;}
+@media(max-width:600px){.ai-panel{width:100%;}}
+/* Header */
+.ai-header{
+  padding:18px 20px 14px;
+  background:linear-gradient(135deg,#1a0d2e,#0d0d1a);
+  border-bottom:1px solid #2a1a4a;
+  flex-shrink:0;
+}
+.ai-header-title{
+  font-size:16px;font-weight:800;color:#fff;
+  display:flex;align-items:center;gap:8px;
+}
+.ai-header-sub{font-size:11px;color:#7c3aed;margin-top:2px;font-weight:600;}
+/* Chat area */
+.ai-chat{
+  flex:1;overflow-y:auto;padding:16px;
+  display:flex;flex-direction:column;gap:12px;
+  scroll-behavior:smooth;
+}
+.ai-chat::-webkit-scrollbar{width:3px;}
+.ai-chat::-webkit-scrollbar-thumb{background:#2a1a4a;border-radius:3px;}
+/* Messages */
+.ai-msg{
+  display:flex;gap:10px;align-items:flex-start;
+  animation:aiMsgIn 0.3s cubic-bezier(0.34,1.2,0.64,1) both;
+}
+@keyframes aiMsgIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.ai-msg.user{flex-direction:row-reverse;}
+.ai-avatar{
+  width:32px;height:32px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:16px;
+  background:linear-gradient(135deg,#7c3aed,#4f46e5);
+}
+.ai-msg.user .ai-avatar{background:linear-gradient(135deg,#ff4d4d,#ff1a1a);}
+.ai-bubble{
+  max-width:78%;padding:12px 14px;border-radius:16px;
+  font-size:13px;line-height:1.6;color:#fff;
+  background:#1a1a2e;border:1px solid #2a1a4a;
+}
+.ai-msg.user .ai-bubble{
+  background:linear-gradient(135deg,#ff4d4d22,#ff1a1a11);
+  border-color:#ff4d4d33;text-align:right;
+}
+/* Typing indicator */
+.ai-typing{display:flex;gap:4px;align-items:center;padding:4px 0;}
+.ai-typing span{
+  width:7px;height:7px;border-radius:50%;background:#7c3aed;
+  animation:aiTyping 1.2s ease infinite;
+}
+.ai-typing span:nth-child(2){animation-delay:0.2s;}
+.ai-typing span:nth-child(3){animation-delay:0.4s;}
+@keyframes aiTyping{0%,60%,100%{transform:translateY(0);opacity:0.4}30%{transform:translateY(-6px);opacity:1}}
+/* Suggestion chips */
+.ai-chips{display:flex;flex-wrap:wrap;gap:8px;padding:0 16px 12px;}
+.ai-chip{
+  padding:8px 14px;border-radius:20px;
+  background:#1a1a2e;border:1px solid #2a1a4a;
+  color:#a78bfa;font-size:12px;font-weight:600;
+  font-family:Poppins;cursor:pointer;transition:0.2s;
+}
+.ai-chip:hover{background:#2a1a4a;border-color:#7c3aed;color:#fff;transform:translateY(-1px);}
+/* Food card in chat */
+.ai-food-card{
+  background:#111;border:1px solid #2a1a4a;border-radius:14px;
+  overflow:hidden;cursor:pointer;transition:0.2s;
+  margin-top:4px;
+}
+.ai-food-card:hover{border-color:#7c3aed;transform:translateY(-2px);box-shadow:0 6px 20px rgba(124,58,237,0.2);}
+.ai-food-card img{width:100%;height:90px;object-fit:cover;}
+.ai-food-card-body{padding:10px 12px;}
+.ai-food-card-name{font-size:13px;font-weight:700;color:#fff;margin-bottom:2px;}
+.ai-food-card-desc{font-size:11px;color:#666;margin-bottom:8px;line-height:1.4;}
+.ai-food-card-footer{display:flex;align-items:center;justify-content:space-between;}
+.ai-food-card-price{font-size:14px;font-weight:800;color:#a78bfa;}
+.ai-food-card-add{
+  padding:5px 12px;background:linear-gradient(135deg,#7c3aed,#4f46e5);
+  color:#fff;border:none;border-radius:8px;font-size:11px;font-weight:700;
+  font-family:Poppins;cursor:pointer;transition:0.2s;
+}
+.ai-food-card-add:hover{transform:scale(1.05);}
+/* Input area */
+.ai-input-wrap{
+  padding:12px 16px;border-top:1px solid #1a1a1a;
+  background:#0d0d0d;flex-shrink:0;
+}
+.ai-input-row{display:flex;gap:8px;align-items:center;}
+.ai-input{
+  flex:1;padding:11px 14px;background:#1a1a1a;
+  border:1.5px solid #2a1a4a;border-radius:12px;
+  color:#fff;font-family:Poppins;font-size:13px;
+  outline:none;transition:0.2s;
+}
+.ai-input:focus{border-color:#7c3aed;background:#1a1a2e;}
+.ai-input::placeholder{color:#444;}
+.ai-send-btn{
+  width:40px;height:40px;border-radius:12px;
+  background:linear-gradient(135deg,#7c3aed,#4f46e5);
+  border:none;color:#fff;font-size:18px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:0.2s;flex-shrink:0;
+}
+.ai-send-btn:hover{transform:scale(1.08);}
+.ai-send-btn:disabled{background:#2a2a2a;cursor:not-allowed;transform:none;}
+/* Key notice */
+.ai-key-notice{
+  margin:8px 16px;padding:10px 12px;
+  background:#1a1000;border:1px solid #ff980033;border-radius:10px;
+  font-size:11px;color:#ff9800;line-height:1.5;
+}
 </style>
 </head>
 
@@ -1720,6 +1952,7 @@ html{scroll-behavior:smooth;}
       🛒
       <span id="cartCount" class="cart-badge">0</span>
     </button>
+    <button onclick="toggleAIPanel()" class="nav-btn" title="AI Recommendations" style="background:linear-gradient(135deg,#1a0d2e,#0d0d1a);border-color:#2a1a4a;" id="aiNavBtn">🤖</button>
     <button onclick="toggleReviews()" class="nav-btn" title="Reviews">⭐</button>
     <button onclick="toggleContact()" class="nav-btn" title="Contact">📞</button>
     <button id="profileNavBtn" onclick="toggleProfile()" class="nav-btn" title="Profile">👤</button>
@@ -2347,8 +2580,111 @@ html{scroll-behavior:smooth;}
 
     <p class="pay-sms-note">📲 A confirmation SMS will be sent to your number shortly.</p>
     <button class="pay-order-more-btn" onclick="closePayment()">🛒 Order More</button>
+    <button class="pay-order-more-btn" onclick="openTracking(currentTrackingOrderId)"
+      style="margin-top:10px;background:linear-gradient(135deg,#0d2e1f,#1a3a2f);color:#00e5a0;box-shadow:0 4px 16px rgba(0,229,160,0.2);">
+      📍 Track My Order
+    </button>
 
   </div>
+</div>
+
+<!-- ══ LIVE ORDER TRACKING PAGE ══ -->
+<div class="track-page" id="trackPage">
+
+  <!-- HEADER -->
+  <div style="position:sticky;top:0;z-index:10;background:rgba(10,10,10,0.97);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid #1a1a1a;padding:16px 20px 14px;">
+    <div style="display:flex;align-items:center;gap:12px;">
+      <button onclick="closeTracking()" style="width:36px;height:36px;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:12px;color:#aaa;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:0.2s;">←</button>
+      <div style="flex:1;">
+        <div style="font-size:17px;font-weight:800;color:#fff;">Live Tracking</div>
+        <div style="font-size:11px;color:#555;margin-top:1px;" id="trackOrderId">Order #—</div>
+      </div>
+      <div style="background:#0d2e1f;border:1px solid #00e5a033;border-radius:20px;padding:5px 12px;display:flex;align-items:center;gap:6px;">
+        <div style="width:7px;height:7px;border-radius:50%;background:#00e5a0;animation:trackPulse 1.5s ease infinite;"></div>
+        <span style="font-size:11px;color:#00e5a0;font-weight:700;" id="trackStatusLabel">Live</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ETA BAR -->
+  <div class="eta-bar" id="etaBar" style="margin-top:20px;">
+    <div class="eta-icon">🛵</div>
+    <div>
+      <div class="eta-val"><span id="etaMinutes">30</span> min</div>
+      <div class="eta-lbl">Estimated delivery time</div>
+    </div>
+    <div style="margin-left:auto;text-align:right;">
+      <div style="font-size:12px;color:#555;margin-bottom:2px;">Arriving by</div>
+      <div style="font-size:14px;font-weight:700;color:#fff;" id="etaTime">—</div>
+    </div>
+  </div>
+
+  <!-- PROGRESS BAR -->
+  <div class="track-progress-wrap">
+    <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+      <span style="font-size:11px;color:#555;font-weight:600;">Progress</span>
+      <span style="font-size:11px;color:#ff9800;font-weight:700;" id="trackProgressPct">0%</span>
+    </div>
+    <div class="track-progress-bar">
+      <div class="track-progress-fill" id="trackProgressFill"></div>
+    </div>
+  </div>
+
+  <!-- FAKE MAP -->
+  <div class="track-map" id="trackMap">
+    <div class="map-grid"></div>
+    <!-- Roads -->
+    <div style="position:absolute;top:50%;left:56px;right:56px;height:12px;background:rgba(0,229,160,0.06);border-radius:4px;transform:translateY(-50%);"></div>
+    <div style="position:absolute;top:30%;left:30%;width:1px;height:40%;background:rgba(0,229,160,0.06);"></div>
+    <div style="position:absolute;top:30%;left:60%;width:1px;height:40%;background:rgba(0,229,160,0.06);"></div>
+    <div class="map-path"></div>
+    <div class="map-store">🍕</div>
+    <div class="map-dest">📍</div>
+    <div class="map-rider" id="mapRider" style="left:20px;">🛵</div>
+    <div class="map-label" id="mapLabel">Rider heading to you</div>
+  </div>
+
+  <!-- RIDER CARD -->
+  <div class="rider-card" id="riderCard">
+    <div class="rider-avatar">🧑‍🍳</div>
+    <div>
+      <div class="rider-name" id="riderName">Preparing your order</div>
+      <div class="rider-sub" id="riderSub">Your food is being freshly made</div>
+    </div>
+    <div class="rider-call" id="riderCallBtn" style="display:none;" onclick="showToast('📞 Calling rider...')">📞</div>
+  </div>
+
+  <!-- TIMELINE -->
+  <div style="padding:0 20px 8px;font-size:11px;font-weight:700;color:#555;letter-spacing:1px;text-transform:uppercase;">Order Timeline</div>
+  <div class="track-timeline" id="trackTimeline">
+    <!-- Rendered by JS -->
+  </div>
+
+  <!-- ORDER SUMMARY -->
+  <div style="margin:0 20px 20px;background:#111;border:1px solid #1a1a1a;border-radius:16px;padding:16px;">
+    <div style="font-size:11px;font-weight:700;color:#555;letter-spacing:1px;text-transform:uppercase;margin-bottom:12px;">Order Summary</div>
+    <div id="trackOrderItems" style="font-size:13px;color:#888;line-height:1.8;"></div>
+    <div style="height:1px;background:#1a1a1a;margin:10px 0;"></div>
+    <div style="display:flex;justify-content:space-between;font-size:14px;font-weight:800;color:#fff;">
+      <span>Total Paid</span>
+      <span style="color:#ff4d4d;" id="trackOrderTotal">₹0</span>
+    </div>
+  </div>
+
+  <!-- HELP -->
+  <div style="margin:0 20px 40px;display:flex;gap:10px;">
+    <button onclick="showToast('📞 Calling support...')"
+      style="flex:1;padding:12px;background:#1a1a1a;border:1px solid #2a2a2a;color:#aaa;border-radius:12px;font-size:13px;font-weight:600;font-family:Poppins;cursor:pointer;transition:0.2s;"
+      onmouseover="this.style.borderColor='#ff4d4d44'" onmouseout="this.style.borderColor='#2a2a2a'">
+      📞 Call Support
+    </button>
+    <button onclick="showToast('✅ Issue reported')"
+      style="flex:1;padding:12px;background:#1a1a1a;border:1px solid #2a2a2a;color:#aaa;border-radius:12px;font-size:13px;font-weight:600;font-family:Poppins;cursor:pointer;transition:0.2s;"
+      onmouseover="this.style.borderColor='#ff4d4d44'" onmouseout="this.style.borderColor='#2a2a2a'">
+      ⚠️ Report Issue
+    </button>
+  </div>
+
 </div>
 
 <div class="reviews" id="reviews">
@@ -2827,6 +3163,51 @@ html{scroll-behavior:smooth;}
 
 </div>
 
+<!-- ══ AI FOOD RECOMMENDATION PANEL ══ -->
+<div class="ai-panel" id="aiPanel">
+
+  <!-- HEADER -->
+  <div class="ai-header">
+    <div style="display:flex;align-items:center;justify-content:space-between;">
+      <div>
+        <div class="ai-header-title">🤖 AI Food Assistant</div>
+        <div class="ai-header-sub">✨ Powered by GPT-4o · Personalised for you</div>
+      </div>
+      <button onclick="toggleAIPanel()" style="background:none;border:none;color:#555;font-size:20px;cursor:pointer;padding:4px;line-height:1;">✕</button>
+    </div>
+  </div>
+
+  <!-- CHAT MESSAGES -->
+  <div class="ai-chat" id="aiChat"></div>
+
+  <!-- QUICK SUGGESTION CHIPS -->
+  <div class="ai-chips" id="aiChips">
+    <button class="ai-chip" onclick="sendAIMessage('Recommend something for me')">✨ Recommend for me</button>
+    <button class="ai-chip" onclick="sendAIMessage('What is popular today?')">🔥 Popular today</button>
+    <button class="ai-chip" onclick="sendAIMessage('I want something spicy')">🌶️ Spicy food</button>
+    <button class="ai-chip" onclick="sendAIMessage('Suggest a combo under ₹300')">💰 Under ₹300</button>
+    <button class="ai-chip" onclick="sendAIMessage('I am vegetarian, what should I order?')">🟢 Veg options</button>
+    <button class="ai-chip" onclick="sendAIMessage('What goes well with pizza?')">🍕 Pizza combos</button>
+  </div>
+
+  <!-- API KEY NOTICE (shown when no key set) -->
+  <div class="ai-key-notice" id="aiKeyNotice" style="display:none;">
+    ⚠️ Add your OpenAI API key in the code to enable real AI.<br>
+    Find: <code style="color:#ff9800;">OPENAI_API_KEY = "YOUR_KEY"</code>
+  </div>
+
+  <!-- INPUT -->
+  <div class="ai-input-wrap">
+    <div class="ai-input-row">
+      <input class="ai-input" id="aiInput" placeholder="Ask me anything about food..." maxlength="200"
+        onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendAIMessage()}">
+      <button class="ai-send-btn" id="aiSendBtn" onclick="sendAIMessage()">➤</button>
+    </div>
+    <div style="text-align:center;font-size:10px;color:#333;margin-top:6px;">AI may make mistakes · Always check allergens</div>
+  </div>
+
+</div>
+
 <!-- DIM OVERLAY — sits above #main, below panels -->
 <div id="blurOverlay" onclick="closeAllPanels()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:1000;transition:opacity 0.3s ease;"></div>
 
@@ -3300,7 +3681,10 @@ function enterSite(){
   let guestBanner = document.getElementById("guestBanner");
   if(guestBanner) guestBanner.style.display = userProfile.isGuest ? "flex" : "none";
 
-  // 🔄 Silently pre-fetch orders from Firestore in background
+  // � Request notification permission after login
+  if(!userProfile.isGuest) requestNotificationPermission();
+
+  // �🔄 Silently pre-fetch orders from Firestore in background
   // so the order history page is instant when the user opens it
   let user = firebase.auth().currentUser;
   if(user && !userProfile.isGuest){
@@ -4127,105 +4511,232 @@ function processPayment(){
 }
 
 // 🆕 PAYMENT FLOW
+// ══════════════════════════════════════════════════════════════
+//  💳 RAZORPAY PAYMENT INTEGRATION
+//  Replace YOUR_RAZORPAY_KEY_ID with your actual key from:
+//  https://dashboard.razorpay.com → Settings → API Keys
+// ══════════════════════════════════════════════════════════════
+const RAZORPAY_KEY = "rzp_test_Sk9oYANSZtNNKs"; // ← Razorpay Test Key
+
 let qrInstance = null;
+
 function initiatePayment(){
-let total = parseInt(document.getElementById("total").innerText.replace("₹",""));
-if(total <= 0){
-  showToast("🛒 Add items to cart first!");
-  return;
-}
-
-// Guest checkout — prompt to sign in or continue
-if(userProfile.isGuest){
-  let proceed = confirm("You're browsing as Guest.\n\nSign in to save your order history, or tap OK to continue as guest.");
-  if(!proceed) return;
-}
-
-// Check delivery address (only for delivery mode, not pickup)
-let isPickup = document.getElementById("pickBtn") && document.getElementById("pickBtn").classList.contains("active");
-if(!isPickup && !savedDeliveryAddr){
-  showNewAddrForm();
-  document.getElementById("cartAddrBar").style.border = "1.5px solid #ff4d4d";
-  // Scroll the cart panel to top so address form is visible
-  let cartPanel = document.getElementById("cart");
-  if(cartPanel) cartPanel.scrollTo({top: 0, behavior:"smooth"});
-  showToast("⚠️ Please add a delivery address first");
-  return;
-}
-
-// Handle COD directly — no payment page needed
-if(cartPayMethod === "cod"){
-  let codTotal = total + 20;
-  if(confirm("Confirm Cash on Delivery order?\n\nOrder Total: ₹" + total + "\nCOD Charge: ₹20\nTotal Payable: ₹" + codTotal)){
-    let paidAmt = codTotal;
-    addToOrderHistory(paidAmt);
-    let latestOrder = orderHistory[0];
-    document.getElementById("paymentSuccess").style.display = "block";
-    document.getElementById("paidAmount").innerText = paidAmt;
-    document.getElementById("successOrderId").innerText = latestOrder ? latestOrder.id : "#99F-???";
-    let dtEl = document.getElementById("successDateTime");
-    if(dtEl && latestOrder) dtEl.innerText = latestOrder.date + " · " + latestOrder.time;
-    let pmEl = document.getElementById("successPayMethod");
-    if(pmEl) pmEl.innerText = "Cash on Delivery";
-    showToast("🛵 COD order placed! Pay ₹" + codTotal + " on delivery.");
+  let total = parseInt(document.getElementById("total").innerText.replace("₹",""));
+  if(total <= 0){
+    showToast("🛒 Add items to cart first!");
+    return;
   }
-  return;
+
+  // Guest checkout — prompt to sign in or continue
+  if(userProfile.isGuest){
+    let proceed = confirm("You're browsing as Guest.\n\nSign in to save your order history, or tap OK to continue as guest.");
+    if(!proceed) return;
+  }
+
+  // Check delivery address (only for delivery mode, not pickup)
+  let isPickup = document.getElementById("pickBtn") && document.getElementById("pickBtn").classList.contains("active");
+  if(!isPickup && !savedDeliveryAddr){
+    showNewAddrForm();
+    document.getElementById("cartAddrBar").style.border = "1.5px solid #ff4d4d";
+    let cartPanel = document.getElementById("cart");
+    if(cartPanel) cartPanel.scrollTo({top: 0, behavior:"smooth"});
+    showToast("⚠️ Please add a delivery address first");
+    return;
+  }
+
+  // ── COD: no Razorpay needed ───────────────────────────────────────────────
+  if(cartPayMethod === "cod"){
+    let codTotal = total + 20;
+    if(confirm("Confirm Cash on Delivery order?\n\nOrder Total: ₹" + total + "\nCOD Charge: ₹20\nTotal Payable: ₹" + codTotal)){
+      onPaymentSuccess(codTotal, "COD-" + Date.now(), "Cash on Delivery");
+    }
+    return;
+  }
+
+  // ── RAZORPAY CHECKOUT ─────────────────────────────────────────────────────
+  let user    = firebase.auth().currentUser;
+  let name    = userProfile.name  || (user ? user.displayName : "") || "Customer";
+  let email   = userProfile.email || (user ? user.email : "")       || "";
+  let phone   = userProfile.phone || "";
+
+  // Map our payment method to Razorpay method
+  let rzpMethod = { upi:"upi", cards:"card", netbanking:"netbanking", wallet:"wallet" };
+
+  let options = {
+    key:         RAZORPAY_KEY,
+    amount:      total * 100,          // Razorpay takes paise (₹1 = 100 paise)
+    currency:    "INR",
+    name:        "99Foodies",
+    description: cart.map(i => i.n).join(", ").substring(0, 255),
+    image:       "https://via.placeholder.com/80x80/ff4d4d/ffffff?text=99F",
+
+    // Pre-fill customer details
+    prefill: {
+      name:    name,
+      email:   email,
+      contact: phone ? "+91" + phone : ""
+    },
+
+    // Theme matching app
+    theme: {
+      color:        "#ff4d4d",
+      backdrop_color: "rgba(0,0,0,0.85)"
+    },
+
+    // Notes saved with payment in Razorpay dashboard
+    notes: {
+      order_id:    "pending",          // updated after order is created
+      customer:    name,
+      address:     savedDeliveryAddr
+                     ? [savedDeliveryAddr.flat, savedDeliveryAddr.street, savedDeliveryAddr.city].filter(Boolean).join(", ")
+                     : "Pickup",
+      items:       cart.map(i => `${i.n} x${cartQty[i.n]?cartQty[i.n].q:1}`).join(", ").substring(0, 255)
+    },
+
+    // ── SUCCESS HANDLER ───────────────────────────────────────────────────
+    handler: function(response){
+      // response.razorpay_payment_id  — unique payment ID from Razorpay
+      // response.razorpay_order_id    — if you create server-side orders
+      // response.razorpay_signature   — for server-side verification
+      let payId  = response.razorpay_payment_id || "rzp_" + Date.now();
+      let method = getRazorpayMethodLabel();
+      onPaymentSuccess(total, payId, method);
+    },
+
+    // ── FAILURE / DISMISS ─────────────────────────────────────────────────
+    modal: {
+      ondismiss: function(){
+        showToast("Payment cancelled");
+      }
+    }
+  };
+
+  // Pre-select payment method if user already chose one in cart
+  if(rzpMethod[cartPayMethod]){
+    options.method = rzpMethod[cartPayMethod];
+  }
+
+  // Check if Razorpay key is set
+  if(!RAZORPAY_KEY || RAZORPAY_KEY === "YOUR_RAZORPAY_KEY_ID"){
+    // ── DEMO MODE: no real key yet — simulate payment ─────────────────────
+    showRazorpayDemoModal(total);
+    return;
+  }
+
+  try {
+    let rzp = new Razorpay(options);
+    rzp.on("payment.failed", function(resp){
+      showToast("❌ Payment failed: " + (resp.error.description || "Try again"));
+      logEvent("payment_failed", { reason: resp.error.code });
+    });
+    rzp.open();
+  } catch(e){
+    console.error("Razorpay error:", e);
+    showToast("❌ Payment gateway error. Try again.");
+  }
 }
 
-// Handle other payment methods — open payment page
-document.getElementById("scanAmount").innerText = total;
-document.getElementById("qrBox").style.display="block";
-document.getElementById("paymentSuccess").style.display="none";
-// Update pay button amount
-let payBtn = document.getElementById("payBtnAmount");
-if(payBtn) payBtn.innerText = total;
-// Update COD amount display
-document.querySelectorAll(".cod-amount").forEach(el => el.innerText = total);
-// Pre-select the tab matching cart selection
-if(cartPayMethod){
-  let tab = document.querySelector(`.pay-tab[onclick*="${cartPayMethod}"]`);
-  if(tab) selectPayTab(tab, cartPayMethod);
+// ── GET PAYMENT METHOD LABEL FROM RAZORPAY RESPONSE ──────────────────────────
+function getRazorpayMethodLabel(){
+  let map = { upi:"UPI", cards:"Credit/Debit Card", netbanking:"Net Banking", wallet:"Wallet", cod:"Cash on Delivery" };
+  return map[cartPayMethod] || "Razorpay";
 }
 
-// Set UPI base link
-let upiBase = "upi://pay?pa=jahnavipatel0023@oksbi&pn=Jahnavi%20Patel&am=" + total + "&cu=INR&tn=99Foodies%20Order";
-
-// Generate QR
-let qrDiv = document.getElementById("upiQRCode");
-qrDiv.innerHTML = "";
-new QRCode(qrDiv, {
-text: upiBase,
-width: 240,
-height: 240,
-colorDark: "#000000",
-colorLight: "#ffffff",
-correctLevel: QRCode.CorrectLevel.H
-});
+// ── DEMO MODAL (shown when no Razorpay key is set yet) ───────────────────────
+function showRazorpayDemoModal(total){
+  let modal = document.createElement("div");
+  modal.id = "rzpDemoModal";
+  modal.style.cssText = `
+    position:fixed;inset:0;z-index:99998;
+    background:rgba(0,0,0,0.85);
+    display:flex;align-items:center;justify-content:center;
+    padding:20px;
+  `;
+  modal.innerHTML = `
+    <div style="background:#111;border:1px solid #2a2a2a;border-radius:24px;padding:28px 24px;max-width:360px;width:100%;text-align:center;">
+      <div style="font-size:48px;margin-bottom:12px;">💳</div>
+      <div style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px;">Razorpay Demo Mode</div>
+      <div style="font-size:13px;color:#888;margin-bottom:20px;line-height:1.6;">
+        Add your Razorpay Key ID in the code to enable real payments.<br><br>
+        <span style="color:#ff9800;font-weight:600;">Amount: ₹${total}</span>
+      </div>
+      <div style="background:#1a1a1a;border-radius:12px;padding:14px;margin-bottom:20px;text-align:left;">
+        <div style="font-size:11px;color:#555;font-weight:700;letter-spacing:1px;margin-bottom:8px;">HOW TO ENABLE</div>
+        <div style="font-size:12px;color:#aaa;line-height:1.8;">
+          1. Go to <span style="color:#ff4d4d;">razorpay.com</span> → Sign up<br>
+          2. Dashboard → Settings → API Keys<br>
+          3. Copy your <span style="color:#ff4d4d;">Key ID</span><br>
+          4. Paste in code: <code style="color:#ff9800;font-size:11px;">RAZORPAY_KEY = "rzp_test_..."</code>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;">
+        <button onclick="document.getElementById('rzpDemoModal').remove();showToast('Payment cancelled')"
+          style="flex:1;padding:12px;background:#1a1a1a;border:1px solid #333;color:#888;border-radius:12px;font-size:13px;font-weight:600;font-family:Poppins;cursor:pointer;">
+          Cancel
+        </button>
+        <button onclick="document.getElementById('rzpDemoModal').remove();onPaymentSuccess(${total},'demo_'+Date.now(),'Demo Payment')"
+          style="flex:1;padding:12px;background:linear-gradient(135deg,#ff4d4d,#ff1a1a);border:none;color:#fff;border-radius:12px;font-size:13px;font-weight:700;font-family:Poppins;cursor:pointer;box-shadow:0 4px 14px rgba(255,77,77,0.4);">
+          Simulate ✓
+        </button>
+      </div>
+    </div>`;
+  document.body.appendChild(modal);
 }
 
+// ── UNIFIED PAYMENT SUCCESS HANDLER ──────────────────────────────────────────
+// Called by: Razorpay handler, COD confirm, demo simulate
+function onPaymentSuccess(paidAmt, paymentId, methodLabel){
+  // Save order to localStorage + Firestore
+  addToOrderHistory(paidAmt);
+
+  let latestOrder = orderHistory[0];
+
+  // Update Firestore doc with Razorpay payment ID
+  if(paymentId && latestOrder && window._fbDb){
+    let user = firebase.auth().currentUser;
+    if(user){
+      window._fbDb.collection("users").doc(user.uid)
+        .collection("orders").doc(latestOrder.id)
+        .update({ razorpayPaymentId: paymentId, status: "Paid" })
+        .catch(()=>{});
+    }
+    // Also update top-level orders collection
+    window._fbDb.collection("orders")
+      .where("orderId", "==", latestOrder.id)
+      .get()
+      .then(snap => snap.forEach(doc => doc.ref.update({ razorpayPaymentId: paymentId, status: "Paid" })))
+      .catch(()=>{});
+  }
+
+  // Show success screen
+  document.getElementById("qrBox").style.display        = "none";
+  document.getElementById("paymentSuccess").style.display = "block";
+  document.getElementById("paidAmount").innerText        = paidAmt;
+  document.getElementById("successOrderId").innerText    = latestOrder ? latestOrder.id : "#99F-???";
+
+  let dtEl = document.getElementById("successDateTime");
+  if(dtEl && latestOrder) dtEl.innerText = latestOrder.date + " · " + latestOrder.time;
+
+  let pmEl = document.getElementById("successPayMethod");
+  if(pmEl) pmEl.innerText = methodLabel || getRazorpayMethodLabel();
+
+  // Analytics
+  logEvent("purchase_complete", { payment_id: paymentId, amount: paidAmt, method: methodLabel });
+
+  // 🔔 Push notification — order confirmed
+  if(latestOrder) notifyOrderPlaced(latestOrder.id, paidAmt);
+
+  showToast("🎉 Payment successful! Order confirmed.");
+}
+
+// ── LEGACY: kept for any old references ──────────────────────────────────────
 function confirmPaymentDone(){
-showToast("Confirming payment...");
-setTimeout(()=>{
-let paidAmt = document.getElementById("scanAmount").innerText;
-addToOrderHistory(paidAmt);
-document.getElementById("qrBox").style.display="none";
-document.getElementById("paymentSuccess").style.display="block";
-document.getElementById("paidAmount").innerText = paidAmt;
-// Use the ID and timestamp from the order we just saved
-let latestOrder = orderHistory[0];
-document.getElementById("successOrderId").innerText = latestOrder ? latestOrder.id : "#99F-???";
-let dtEl = document.getElementById("successDateTime");
-if(dtEl && latestOrder) dtEl.innerText = latestOrder.date + " · " + latestOrder.time;
-// Show payment method on success screen
-let methodLabels = {upi:"UPI / QR Code", cards:"Credit / Debit Card", netbanking:"Net Banking", cod:"Cash on Delivery"};
-let pmEl = document.getElementById("successPayMethod");
-if(pmEl) pmEl.innerText = methodLabels[selectedPayMethod] || "UPI";
-showToast("Thank you for your payment!");
-},800);
+  let paidAmt = document.getElementById("scanAmount").innerText;
+  onPaymentSuccess(parseInt(paidAmt), "manual_" + Date.now(), getRazorpayMethodLabel());
 }
 
 function closeQR(){
-document.getElementById("qrBox").style.display="none";
+  document.getElementById("qrBox").style.display="none";
 }
 
 function closePayment(){
@@ -4298,11 +4809,14 @@ let selectedRating = 0;
 function toggleReviewForm(){
   let box = document.getElementById("reviewFormBox");
   box.classList.toggle("open");
-  // set avatar initial from login name
-  let name = document.getElementById("loginName");
-  if(name && name.value){
-    document.getElementById("writeAvatar").innerText = name.value.charAt(0).toUpperCase();
-  }
+  // Pre-fill name from logged-in user
+  let user = firebase.auth().currentUser;
+  let name = user ? (user.displayName || userProfile.name || "") : (userProfile.name || "");
+  let nameEl = document.getElementById("reviewName");
+  if(nameEl && name) nameEl.value = name;
+  // Set avatar initial
+  let av = document.getElementById("writeAvatar");
+  if(av) av.innerText = name ? name.charAt(0).toUpperCase() : "?";
 }
 
 function setRating(val){
@@ -4318,38 +4832,72 @@ function toggleTag(el){
   el.classList.toggle("selected");
 }
 
-function submitReview(){
+// ── SUBMIT REVIEW → FIRESTORE ─────────────────────────────────────
+async function submitReview(){
   if(selectedRating === 0){
     showToast("Please select a star rating!");
     return;
   }
 
-  let name = document.getElementById("reviewName").value.trim() ||
-             (document.getElementById("loginName") ? document.getElementById("loginName").value.trim() : "") ||
-             "Anonymous";
-  let text = document.getElementById("reviewText").value.trim() || "Great experience!";
-  let stars = "★".repeat(selectedRating) + (selectedRating < 5 ? '<span style="color:#444">' + "★".repeat(5 - selectedRating) + '</span>' : "");
-
-  // collect selected tags
-  let tags = [];
+  let user    = firebase.auth().currentUser;
+  let name    = document.getElementById("reviewName").value.trim()
+                || (user ? (user.displayName || userProfile.name) : userProfile.name)
+                || "Anonymous";
+  let text    = document.getElementById("reviewText").value.trim() || "Great experience!";
+  let tags    = [];
   document.querySelectorAll(".rtag.selected").forEach(t => tags.push(t.innerText));
+  let catStr  = tags.map(t => t.replace(/[^\w\s]/g,"").trim().toLowerCase()).join(" ") || "food quality";
+
+  // Disable button while saving
+  let btn = document.querySelector(".review-submit-btn");
+  if(btn){ btn.disabled = true; btn.innerText = "Submitting…"; }
+
+  // ── Save to Firestore ──────────────────────────────────────────
+  let reviewDoc = {
+    rating:    selectedRating,
+    text:      text,
+    name:      name,
+    tags:      tags,
+    category:  catStr,
+    uid:       user ? user.uid   : "guest",
+    email:     user ? (user.email || "") : "",
+    avatarUrl: user ? (user.photoURL || "") : "",
+    helpful:   0,
+    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+    clientTime: new Date().toISOString()
+  };
+
+  let savedDocId = null;
+  try {
+    let ref = await window._fbDb.collection("reviews").add(reviewDoc);
+    savedDocId = ref.id;
+    console.log("✅ Review saved to Firestore:", ref.id);
+    logEvent("review_submitted", { rating: selectedRating, has_text: text.length > 0 });
+  } catch(err){
+    console.warn("⚠️ Firestore review save failed:", err.message);
+    // Continue — still show review in UI even if Firestore fails
+  }
+
+  // ── Render new card in UI ──────────────────────────────────────
+  const colors = ["#e91e63","#2196f3","#ff9800","#9c27b0","#00bcd4","#4caf50","#ff5722"];
+  let color   = colors[Math.floor(Math.random() * colors.length)];
+  let initial = name.charAt(0).toUpperCase();
+  let stars   = "★".repeat(selectedRating) + (selectedRating < 5
+    ? '<span style="color:#444">' + "★".repeat(5 - selectedRating) + "</span>" : "");
   let tagsHtml = tags.map(t => `<span class="review-dish-tag">${t}</span>`).join("");
 
-  // build category string for filtering
-  let catStr = tags.map(t => t.replace(/[^\w\s]/g,"").trim().toLowerCase()).join(" ");
-  if(!catStr) catStr = "food quality";
-
-  // avatar color
-  const colors = ["#e91e63","#2196f3","#ff9800","#9c27b0","#00bcd4","#4caf50","#ff5722"];
-  let color = colors[Math.floor(Math.random() * colors.length)];
-  let initial = name.charAt(0).toUpperCase();
+  let avatarHtml = (user && user.photoURL)
+    ? `<img src="${user.photoURL}" style="width:38px;height:38px;border-radius:50%;object-fit:cover;" onerror="this.outerHTML='<div class=reviewer-avatar style=background:${color}>${initial}</div>'">`
+    : `<div class="reviewer-avatar" style="background:${color}">${initial}</div>`;
 
   let newCard = `
-  <div class="review-card" data-category="${catStr}" style="animation:fadeInCard 0.4s ease">
+  <div class="review-card" data-category="${catStr}" data-docid="${savedDocId||""}" style="animation:fadeInCard 0.4s ease">
     <div class="reviewer-row">
-      <div class="reviewer-avatar" style="background:${color}">${initial}</div>
+      ${avatarHtml}
       <div class="reviewer-info">
-        <div class="reviewer-name">${name} <span style="background:#1a2e3a;color:#00bcd4;font-size:10px;padding:2px 8px;border-radius:10px;font-weight:600;margin-left:6px">New ✨</span></div>
+        <div class="reviewer-name">${name}
+          <span style="background:#1a2e3a;color:#00bcd4;font-size:10px;padding:2px 8px;border-radius:10px;font-weight:600;margin-left:6px">New ✨</span>
+        </div>
         <div class="reviewer-meta">Just now</div>
       </div>
       <div class="review-stars">${stars}</div>
@@ -4357,15 +4905,14 @@ function submitReview(){
     <div class="review-text">${text}</div>
     ${tagsHtml ? `<div class="review-dish-tags">${tagsHtml}</div>` : ""}
     <div class="review-actions">
-      <span class="review-helpful" onclick="likeReview(this)">👍 Helpful (0)</span>
+      <span class="review-helpful" onclick="likeReview(this,'${savedDocId||""}')">👍 Helpful (0)</span>
     </div>
   </div>`;
 
-  // insert after the form box
   let formBox = document.getElementById("reviewFormBox");
   formBox.insertAdjacentHTML("afterend", newCard);
 
-  // reset form
+  // ── Reset form ─────────────────────────────────────────────────
   selectedRating = 0;
   document.getElementById("ratingLabel").innerText = "";
   document.querySelectorAll("#starPicker span").forEach(s => s.classList.remove("active"));
@@ -4375,29 +4922,154 @@ function submitReview(){
   document.getElementById("charCount").innerText = "0";
   document.getElementById("reviewFormBox").classList.remove("open");
 
+  if(btn){ btn.disabled = false; btn.innerText = "Submit Review"; }
   showToast("✅ Review submitted! Thank you.");
+
+  // Refresh rating summary
+  loadReviewStats();
 }
 
-// char counter for review textarea
-document.addEventListener("DOMContentLoaded", function(){
-  let ta = document.getElementById("reviewText");
-  if(ta){
-    ta.addEventListener("input", function(){
-      document.getElementById("charCount").innerText = this.value.length;
-    });
-  }
-});
+// ── LOAD REVIEWS FROM FIRESTORE ───────────────────────────────────
+async function loadReviewsFromFirestore(){
+  try {
+    let snap = await window._fbDb.collection("reviews")
+      .orderBy("createdAt","desc")
+      .limit(30)
+      .get();
 
-function likeReview(el){
+    if(snap.empty) return;
+
+    // Remove existing static review cards (keep the form)
+    document.querySelectorAll(".review-card").forEach(c => c.remove());
+
+    let formBox = document.getElementById("reviewFormBox");
+    const colors = ["#e91e63","#2196f3","#ff9800","#9c27b0","#00bcd4","#4caf50","#ff5722"];
+
+    snap.forEach(doc => {
+      let r = doc.data();
+      let name    = r.name || "Anonymous";
+      let initial = name.charAt(0).toUpperCase();
+      let color   = colors[Math.abs(name.charCodeAt(0) - 65) % colors.length];
+      let stars   = "★".repeat(r.rating||5) + (r.rating < 5
+        ? '<span style="color:#444">' + "★".repeat(5-(r.rating||5)) + "</span>" : "");
+      let tagsHtml = (r.tags||[]).map(t => `<span class="review-dish-tag">${t}</span>`).join("");
+      let catStr  = r.category || "food quality";
+
+      // Format date
+      let dateStr = "Recently";
+      if(r.createdAt && r.createdAt.toDate){
+        let d = r.createdAt.toDate();
+        let diff = Math.floor((Date.now() - d.getTime()) / 60000);
+        if(diff < 1)       dateStr = "Just now";
+        else if(diff < 60) dateStr = diff + " min ago";
+        else if(diff < 1440) dateStr = Math.floor(diff/60) + " hr ago";
+        else               dateStr = Math.floor(diff/1440) + " days ago";
+      }
+
+      let avatarHtml = r.avatarUrl
+        ? `<img src="${r.avatarUrl}" style="width:38px;height:38px;border-radius:50%;object-fit:cover;" onerror="this.outerHTML='<div class=reviewer-avatar style=background:${color}>${initial}</div>'">`
+        : `<div class="reviewer-avatar" style="background:${color}">${initial}</div>`;
+
+      let card = document.createElement("div");
+      card.className = "review-card";
+      card.setAttribute("data-category", catStr);
+      card.setAttribute("data-docid", doc.id);
+      card.innerHTML = `
+        <div class="reviewer-row">
+          ${avatarHtml}
+          <div class="reviewer-info">
+            <div class="reviewer-name">${name}</div>
+            <div class="reviewer-meta">${dateStr}</div>
+          </div>
+          <div class="review-stars">${stars}</div>
+        </div>
+        <div class="review-text">${r.text||""}</div>
+        ${tagsHtml ? `<div class="review-dish-tags">${tagsHtml}</div>` : ""}
+        <div class="review-actions">
+          <span class="review-helpful ${(r.helpful||0)>0?'liked':''}" onclick="likeReview(this,'${doc.id}')">
+            👍 Helpful (${r.helpful||0})
+          </span>
+        </div>`;
+
+      // Insert after form box
+      formBox.insertAdjacentElement("afterend", card);
+    });
+
+    loadReviewStats();
+    console.log("✅ Loaded " + snap.size + " reviews from Firestore");
+  } catch(err){
+    console.warn("⚠️ Could not load reviews:", err.message);
+  }
+}
+
+// ── LOAD RATING STATS ─────────────────────────────────────────────
+async function loadReviewStats(){
+  try {
+    let snap = await window._fbDb.collection("reviews").get();
+    if(snap.empty) return;
+
+    let total = snap.size;
+    let sum   = 0;
+    let dist  = {1:0,2:0,3:0,4:0,5:0};
+    snap.forEach(d => {
+      let r = d.data().rating || 5;
+      sum += r;
+      dist[r] = (dist[r]||0) + 1;
+    });
+    let avg = (sum / total).toFixed(1);
+
+    // Update rating summary UI
+    let bigEl = document.querySelector(".rating-big");
+    if(bigEl) bigEl.childNodes[0].textContent = avg;
+
+    let countEl = document.querySelector(".rating-big span");
+    if(countEl) countEl.textContent = total + " ratings";
+
+    // Update bar fills
+    let bars = document.querySelectorAll(".bar-fill");
+    let counts = document.querySelectorAll(".bar-count");
+    [5,4,3,2,1].forEach((star, i) => {
+      let pct = total > 0 ? Math.round((dist[star]||0) / total * 100) : 0;
+      if(bars[i])  bars[i].style.width  = pct + "%";
+      if(counts[i]) counts[i].innerText = dist[star]||0;
+    });
+  } catch(e){}
+}
+
+// ── HELPFUL BUTTON → FIRESTORE ────────────────────────────────────
+async function likeReview(el, docId){
   el.classList.toggle("liked");
-  let text = el.innerText;
-  let match = text.match(/\((\d+)\)/);
+  let match = el.innerText.match(/\((\d+)\)/);
   if(match){
     let count = parseInt(match[1]);
-    el.classList.contains("liked") ? count++ : count--;
+    let liked = el.classList.contains("liked");
+    liked ? count++ : count--;
     el.innerText = "👍 Helpful (" + count + ")";
-    if(el.classList.contains("liked")) el.classList.add("liked");
+    if(liked) el.classList.add("liked");
+
+    // Update Firestore helpful count
+    if(docId){
+      try {
+        await window._fbDb.collection("reviews").doc(docId).update({
+          helpful: firebase.firestore.FieldValue.increment(liked ? 1 : -1)
+        });
+      } catch(e){}
+    }
   }
+}
+
+// ── LOAD REVIEWS WHEN PANEL OPENS ────────────────────────────────
+let _reviewsLoaded = false;
+let _origToggleReviews = window.toggleReviews;
+if(typeof _origToggleReviews === "function"){
+  window.toggleReviews = function(){
+    _origToggleReviews();
+    // Load from Firestore only once per session
+    if(!_reviewsLoaded){
+      _reviewsLoaded = true;
+      loadReviewsFromFirestore();
+    }
+  };
 }
 function setReviewFilter(btn){
   document.querySelectorAll(".review-filter-btn").forEach(b=>b.classList.remove("active"));
@@ -5030,6 +5702,12 @@ function buildOHCard(o, idx){
           onmouseover="this.style.background='#ff4d4d33'" onmouseout="this.style.background='linear-gradient(135deg,#ff4d4d22,#ff1a1a11)'">
           🔄 Reorder
         </button>
+        ${(o.status !== "Delivered" && o.status !== "Cancelled") ? `
+        <button onclick="openTracking('${o.id}')"
+          style="padding:9px 14px;border-radius:10px;background:#0d2e1f22;border:1px solid #00e5a033;color:#00e5a0;font-size:12px;font-weight:700;font-family:Poppins;cursor:pointer;transition:0.2s;"
+          onmouseover="this.style.background='#0d2e1f44'" onmouseout="this.style.background='#0d2e1f22'">
+          📍 Track
+        </button>` : ""}
       </div>
     </div>
 
@@ -5143,6 +5821,891 @@ function reorder(idx){
   document.getElementById("profilePanel").classList.remove("panel-open");
   undimMain();
   setTimeout(() => toggleCart(), 380);
+}
+</script>
+
+<!-- ══ LIVE ORDER TRACKING JS ══ -->
+<script>
+// ══════════════════════════════════════════════════════════════════
+//  LIVE ORDER TRACKING SYSTEM
+//  Real: Firestore listener for status changes
+//  Fake: Auto-progression simulation + animated map rider
+// ══════════════════════════════════════════════════════════════════
+
+let currentTrackingOrderId = null;
+let trackingUnsubscribe    = null;   // Firestore real-time listener
+let trackingSimTimer       = null;   // fake auto-progression timer
+let etaCountdownTimer      = null;   // ETA countdown interval
+let riderAnimTimer         = null;   // map rider animation
+
+// ── TRACKING STEPS CONFIG ─────────────────────────────────────────
+const TRACK_STEPS = [
+  {
+    key:      "Confirmed",
+    icon:     "✅",
+    label:    "Order Confirmed",
+    sub:      "Your order has been received and confirmed",
+    eta:      30,
+    progress: 10,
+    riderPos: "8%",
+    mapLabel: "Order confirmed at restaurant",
+    riderInfo:{ name:"Preparing your order", sub:"Your food is being freshly made", showCall:false }
+  },
+  {
+    key:      "Preparing",
+    icon:     "🧑‍🍳",
+    label:    "Being Prepared",
+    sub:      "Our chef is cooking your order fresh",
+    eta:      22,
+    progress: 30,
+    riderPos: "8%",
+    mapLabel: "Chef is preparing your order",
+    riderInfo:{ name:"Chef is cooking", sub:"Fresh ingredients, made with love 🍕", showCall:false }
+  },
+  {
+    key:      "Out for Delivery",
+    icon:     "🛵",
+    label:    "Out for Delivery",
+    sub:      "Your order is on the way!",
+    eta:      12,
+    progress: 70,
+    riderPos: "55%",
+    mapLabel: "Rider is on the way to you",
+    riderInfo:{ name:"Rahul Kumar", sub:"⭐ 4.9 · Delivery Partner", showCall:true }
+  },
+  {
+    key:      "Delivered",
+    icon:     "📦",
+    label:    "Delivered",
+    sub:      "Enjoy your meal! 😋",
+    eta:      0,
+    progress: 100,
+    riderPos: "88%",
+    mapLabel: "Order delivered!",
+    riderInfo:{ name:"Order Delivered!", sub:"Rate your experience below", showCall:false }
+  }
+];
+
+// ── OPEN TRACKING PAGE ────────────────────────────────────────────
+function openTracking(orderId){
+  if(!orderId){ showToast("No order to track"); return; }
+  currentTrackingOrderId = orderId;
+
+  document.getElementById("trackPage").classList.add("open");
+  document.getElementById("trackOrderId").innerText = "Order " + orderId;
+
+  // Load order data
+  let order = orderHistory.find(o => o.id === orderId);
+  if(order){
+    // Items summary
+    let itemsText = Array.isArray(order.items)
+      ? order.items.map(i => i.name + " ×" + i.qty).join("\n")
+      : (order.itemsText || "");
+    document.getElementById("trackOrderItems").innerText = itemsText;
+    document.getElementById("trackOrderTotal").innerText = "₹" + order.total;
+  }
+
+  // Set initial status
+  let currentStatus = order ? (order.status || "Confirmed") : "Confirmed";
+  renderTrackingUI(currentStatus);
+
+  // Start real-time Firestore listener
+  startFirestoreListener(orderId);
+
+  // Start fake auto-progression (simulates status changes)
+  startFakeProgression(currentStatus);
+}
+
+function closeTracking(){
+  document.getElementById("trackPage").classList.remove("open");
+  stopTracking();
+}
+
+function stopTracking(){
+  if(trackingUnsubscribe){ trackingUnsubscribe(); trackingUnsubscribe = null; }
+  if(trackingSimTimer)   { clearTimeout(trackingSimTimer);  trackingSimTimer = null; }
+  if(etaCountdownTimer)  { clearInterval(etaCountdownTimer); etaCountdownTimer = null; }
+  if(riderAnimTimer)     { clearTimeout(riderAnimTimer);    riderAnimTimer = null; }
+}
+
+// ── FIRESTORE REAL-TIME LISTENER ─────────────────────────────────
+function startFirestoreListener(orderId){
+  if(trackingUnsubscribe) trackingUnsubscribe();
+  try {
+    let query = window._fbDb.collection("orders").where("orderId","==",orderId).limit(1);
+    trackingUnsubscribe = query.onSnapshot(snap => {
+      if(snap.empty) return;
+      let data   = snap.docs[0].data();
+      let status = data.status || "Confirmed";
+      console.log("[Tracking] Firestore status update:", status);
+      renderTrackingUI(status);
+      // Update local order history too
+      let o = orderHistory.find(x => x.id === orderId);
+      if(o) o.status = status;
+    }, err => {
+      console.warn("[Tracking] Firestore listener error:", err.message);
+    });
+  } catch(e){
+    console.warn("[Tracking] Could not start listener:", e.message);
+  }
+}
+
+// ── FAKE AUTO-PROGRESSION ─────────────────────────────────────────
+// Simulates realistic order progression when no admin updates status
+const FAKE_DELAYS = {
+  "Confirmed":        18000,   // 18s → Preparing
+  "Preparing":        25000,   // 25s → Out for Delivery
+  "Out for Delivery": 35000,   // 35s → Delivered
+};
+
+function startFakeProgression(currentStatus){
+  if(trackingSimTimer) clearTimeout(trackingSimTimer);
+  let delay = FAKE_DELAYS[currentStatus];
+  if(!delay) return; // already delivered
+
+  trackingSimTimer = setTimeout(() => {
+    let steps = TRACK_STEPS.map(s => s.key);
+    let idx   = steps.indexOf(currentStatus);
+    if(idx < 0 || idx >= steps.length - 1) return;
+    let nextStatus = steps[idx + 1];
+
+    // Update Firestore (if logged in)
+    let user = firebase.auth().currentUser;
+    if(user && currentTrackingOrderId){
+      window._fbDb.collection("orders")
+        .where("orderId","==",currentTrackingOrderId).limit(1).get()
+        .then(snap => {
+          if(!snap.empty) snap.docs[0].ref.update({status: nextStatus});
+        }).catch(()=>{});
+    }
+
+    // Update UI directly (Firestore listener will also fire)
+    renderTrackingUI(nextStatus);
+    let o = orderHistory.find(x => x.id === currentTrackingOrderId);
+    if(o) o.status = nextStatus;
+
+    // Send FCM notification for status change
+    if(user){
+      sendNotificationToUser(user.uid,
+        nextStatus === "Out for Delivery" ? "Out for Delivery! 🛵" :
+        nextStatus === "Delivered"        ? "Order Delivered! 📦" : "Update on your order",
+        nextStatus === "Out for Delivery" ? "Your order is on the way! ETA 12 minutes." :
+        nextStatus === "Delivered"        ? "Your order has been delivered. Enjoy! 😋" :
+        "Your order status: " + nextStatus,
+        { orderId: currentTrackingOrderId, type: nextStatus.toLowerCase().replace(/ /g,"_") }
+      );
+    }
+
+    // Show in-app notification
+    showFCMNotification(
+      nextStatus === "Out for Delivery" ? "Out for Delivery! 🛵" :
+      nextStatus === "Delivered"        ? "Order Delivered! 📦" : "Order Update",
+      nextStatus === "Out for Delivery" ? "Your order is on the way! ETA 12 minutes." :
+      nextStatus === "Delivered"        ? "Enjoy your meal! 😋" : "Status: " + nextStatus,
+      {}
+    );
+
+    // Continue progression
+    startFakeProgression(nextStatus);
+  }, delay);
+}
+
+// ── RENDER TRACKING UI ────────────────────────────────────────────
+function renderTrackingUI(status){
+  let stepIdx = TRACK_STEPS.findIndex(s => s.key === status);
+  if(stepIdx < 0) stepIdx = 0;
+  let step = TRACK_STEPS[stepIdx];
+
+  // Status label
+  document.getElementById("trackStatusLabel").innerText = status;
+
+  // ETA
+  updateETA(step.eta);
+
+  // Progress bar
+  document.getElementById("trackProgressFill").style.width = step.progress + "%";
+  document.getElementById("trackProgressPct").innerText    = step.progress + "%";
+
+  // Map rider animation
+  animateRider(step.riderPos, step.mapLabel);
+
+  // Rider card
+  let ri = step.riderInfo;
+  document.getElementById("riderName").innerText    = ri.name;
+  document.getElementById("riderSub").innerText     = ri.sub;
+  document.getElementById("riderCallBtn").style.display = ri.showCall ? "flex" : "none";
+  document.getElementById("riderCard").querySelector(".rider-avatar").innerText =
+    status === "Out for Delivery" ? "🛵" :
+    status === "Delivered"        ? "📦" : "🧑‍🍳";
+
+  // ETA bar icon
+  document.querySelector(".eta-icon").innerText =
+    status === "Out for Delivery" ? "🛵" :
+    status === "Delivered"        ? "🎉" : "🧑‍🍳";
+
+  // Timeline
+  renderTimeline(stepIdx);
+}
+
+// ── TIMELINE ──────────────────────────────────────────────────────
+function renderTimeline(activeIdx){
+  let now = new Date();
+  let html = TRACK_STEPS.map((s, i) => {
+    let cls = i < activeIdx ? "done" : i === activeIdx ? "active" : "";
+    let timeStr = "";
+    if(i <= activeIdx){
+      let t = new Date(now.getTime() - (activeIdx - i) * 8 * 60000);
+      timeStr = t.toLocaleTimeString("en-IN",{hour:"2-digit",minute:"2-digit",hour12:true});
+    }
+    return `
+    <div class="track-step ${cls}">
+      <div class="track-dot">${i < activeIdx ? "✓" : s.icon}</div>
+      <div class="track-info">
+        <div class="track-label">${s.label}</div>
+        <div class="track-sublabel">${s.sub}</div>
+        ${timeStr ? `<div class="track-time">🕐 ${timeStr}</div>` : ""}
+      </div>
+    </div>`;
+  }).join("");
+  document.getElementById("trackTimeline").innerHTML = html;
+}
+
+// ── ETA COUNTDOWN ─────────────────────────────────────────────────
+function updateETA(minutes){
+  if(etaCountdownTimer) clearInterval(etaCountdownTimer);
+
+  let remaining = minutes * 60; // seconds
+  let etaTime   = new Date(Date.now() + remaining * 1000);
+  document.getElementById("etaTime").innerText = etaTime.toLocaleTimeString("en-IN",{hour:"2-digit",minute:"2-digit",hour12:true});
+
+  if(minutes <= 0){
+    document.getElementById("etaMinutes").innerText = "0";
+    document.getElementById("etaBar").style.background = "linear-gradient(135deg,#0d2e1f,#111)";
+    return;
+  }
+
+  function tick(){
+    let mins = Math.floor(remaining / 60);
+    let secs = remaining % 60;
+    document.getElementById("etaMinutes").innerText = mins > 0 ? mins : (secs > 0 ? "<1" : "0");
+    if(remaining > 0) remaining--;
+  }
+  tick();
+  etaCountdownTimer = setInterval(tick, 1000);
+}
+
+// ── MAP RIDER ANIMATION ───────────────────────────────────────────
+function animateRider(targetLeft, label){
+  let rider = document.getElementById("mapRider");
+  let lbl   = document.getElementById("mapLabel");
+  if(rider) rider.style.left = targetLeft;
+  if(lbl)   lbl.innerText    = label;
+}
+
+// ── WIRE INTO onPaymentSuccess ────────────────────────────────────
+// Store the order ID so "Track My Order" button works
+let _origOnPaymentSuccess = window.onPaymentSuccess;
+if(typeof _origOnPaymentSuccess === "function"){
+  window.onPaymentSuccess = function(paidAmt, paymentId, methodLabel){
+    _origOnPaymentSuccess(paidAmt, paymentId, methodLabel);
+    // Store latest order ID for tracking button
+    if(orderHistory[0]) currentTrackingOrderId = orderHistory[0].id;
+  };
+}
+</script>
+
+<!-- ══ FCM PUSH NOTIFICATIONS ══ -->
+<script>
+// ══════════════════════════════════════════════════════════════════
+//  FIREBASE CLOUD MESSAGING — Push Notifications
+//  VAPID Key: get from Firebase Console → Project Settings →
+//  Cloud Messaging → Web Push certificates → Generate key pair
+// ══════════════════════════════════════════════════════════════════
+
+// ⚠️ Replace with your VAPID key from Firebase Console
+// Firebase Console → Project Settings → Cloud Messaging →
+// Web configuration → Generate key pair → copy the key
+const FCM_VAPID_KEY = "YOUR_VAPID_KEY_HERE";
+
+// ── REQUEST PERMISSION + GET TOKEN ───────────────────────────────────────────
+async function initFCM(){
+  try {
+    // Only run if messaging is supported
+    if(!firebase.messaging.isSupported()) return;
+
+    const permission = await Notification.requestPermission();
+    if(permission !== "granted"){
+      console.log("FCM: Notification permission denied");
+      return;
+    }
+
+    // Get FCM token
+    const token = await window._fbMsg.getToken({
+      vapidKey:          FCM_VAPID_KEY,
+      serviceWorkerRegistration: await navigator.serviceWorker.getRegistration("/firebase-messaging-sw.js")
+    });
+
+    if(token){
+      console.log("✅ FCM Token:", token.slice(0,20) + "...");
+      await saveFCMToken(token);
+    }
+  } catch(err){
+    // FCM errors must never break the app
+    console.warn("FCM init failed:", err.message);
+  }
+}
+
+// ── SAVE TOKEN TO FIRESTORE ───────────────────────────────────────────────────
+async function saveFCMToken(token){
+  try {
+    let user = firebase.auth().currentUser;
+    let uid  = user ? user.uid : "guest_" + Date.now();
+
+    await window._fbDb.collection("fcmTokens").doc(uid).set({
+      token:     token,
+      uid:       uid,
+      email:     user ? (user.email || "") : "",
+      name:      userProfile.name || "",
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+      platform:  /iPhone|iPad|Android/.test(navigator.userAgent) ? "mobile" : "desktop"
+    }, { merge: true });
+
+    console.log("✅ FCM token saved to Firestore");
+  } catch(e){
+    console.warn("FCM token save failed:", e.message);
+  }
+}
+
+// ── FOREGROUND NOTIFICATION UI ────────────────────────────────────────────────
+// Shows a beautiful in-app notification banner when app is open
+function showFCMNotification(title, body, data){
+  // Remove any existing notification
+  let existing = document.getElementById("fcmBanner");
+  if(existing) existing.remove();
+
+  let banner = document.createElement("div");
+  banner.id = "fcmBanner";
+  banner.style.cssText = `
+    position:fixed;top:20px;left:50%;transform:translateX(-50%) translateY(-80px);
+    z-index:99997;
+    background:#1a1a1a;border:1px solid #2a2a2a;
+    border-radius:16px;padding:14px 18px;
+    display:flex;align-items:center;gap:12px;
+    box-shadow:0 8px 40px rgba(0,0,0,0.6);
+    max-width:360px;width:calc(100% - 40px);
+    transition:transform 0.4s cubic-bezier(0.34,1.3,0.64,1);
+    cursor:pointer;
+  `;
+
+  // Icon based on notification type
+  let icon = "🍕";
+  let borderColor = "#ff4d4d";
+  if(body && body.toLowerCase().includes("deliver")){
+    icon = "🛵"; borderColor = "#00e5a0";
+  } else if(body && body.toLowerCase().includes("prepar")){
+    icon = "🧑‍🍳"; borderColor = "#ff9800";
+  } else if(body && body.toLowerCase().includes("confirm")){
+    icon = "✅"; borderColor = "#4caf50";
+  }
+
+  banner.style.borderColor = borderColor + "44";
+  banner.innerHTML = `
+    <div style="width:44px;height:44px;border-radius:12px;background:${borderColor}22;
+      display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">
+      ${icon}
+    </div>
+    <div style="flex:1;min-width:0;">
+      <div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:2px;">${title}</div>
+      <div style="font-size:12px;color:#888;line-height:1.4;">${body}</div>
+    </div>
+    <button onclick="document.getElementById('fcmBanner').remove()"
+      style="background:none;border:none;color:#555;font-size:18px;cursor:pointer;
+      padding:4px;flex-shrink:0;line-height:1;">✕</button>
+  `;
+
+  // Click opens order history
+  banner.addEventListener("click", e => {
+    if(e.target.tagName === "BUTTON") return;
+    banner.remove();
+    openOrderHistory();
+  });
+
+  document.body.appendChild(banner);
+
+  // Slide in
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      banner.style.transform = "translateX(-50%) translateY(0)";
+    });
+  });
+
+  // Auto-dismiss after 5 seconds
+  setTimeout(() => {
+    if(document.getElementById("fcmBanner")){
+      banner.style.transform = "translateX(-50%) translateY(-80px)";
+      setTimeout(() => banner.remove(), 400);
+    }
+  }, 5000);
+
+  // Also play the click sound
+  playClickSound();
+}
+
+// ── SEND NOTIFICATION (called from admin panel or on order events) ────────────
+// This sends via Firestore trigger — the actual FCM send happens server-side
+// For client-side demo: writes to "notifications" collection which
+// Cloud Functions (or admin panel) can read and send via FCM Admin SDK
+async function sendNotificationToUser(uid, title, body, data){
+  try {
+    await window._fbDb.collection("notifications").add({
+      uid:       uid,
+      title:     title,
+      body:      body,
+      data:      data || {},
+      sent:      false,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    console.log("✅ Notification queued for:", uid);
+  } catch(e){
+    console.warn("Notification queue failed:", e.message);
+  }
+}
+
+// ── AUTO-NOTIFY ON ORDER EVENTS ───────────────────────────────────────────────
+// Called automatically when order is placed
+function notifyOrderPlaced(orderId, total){
+  let user = firebase.auth().currentUser;
+  if(!user) return;
+
+  // Foreground: show in-app banner immediately
+  showFCMNotification(
+    "Order Confirmed! 🎉",
+    "Your order " + orderId + " of Rs." + total + " is confirmed and being prepared.",
+    { orderId: orderId }
+  );
+
+  // Queue for background push (when user closes app)
+  sendNotificationToUser(user.uid,
+    "Order Confirmed! 🎉",
+    "Your order " + orderId + " of Rs." + total + " is confirmed.",
+    { orderId: orderId, type: "order_placed" }
+  );
+}
+
+// ── INIT FCM AFTER LOGIN ──────────────────────────────────────────────────────
+// Called from enterSite() — request permission after user is logged in
+// (browsers require a user gesture before showing permission prompt)
+function requestNotificationPermission(){
+  // Small delay so the page has settled after login
+  setTimeout(() => {
+    if(Notification.permission === "default"){
+      // Show a friendly prompt first instead of jumping straight to browser dialog
+      showNotificationPrompt();
+    } else if(Notification.permission === "granted"){
+      initFCM();
+    }
+  }, 3000);
+}
+
+// ── FRIENDLY PERMISSION PROMPT ────────────────────────────────────────────────
+function showNotificationPrompt(){
+  let prompt = document.createElement("div");
+  prompt.id = "notifPrompt";
+  prompt.style.cssText = `
+    position:fixed;bottom:80px;left:50%;transform:translateX(-50%);
+    z-index:9996;background:#1a1a1a;border:1px solid #ff4d4d33;
+    border-radius:16px;padding:16px 18px;
+    display:flex;align-items:center;gap:12px;
+    box-shadow:0 8px 32px rgba(0,0,0,0.5);
+    max-width:340px;width:calc(100% - 40px);
+    animation:slideUp 0.4s cubic-bezier(0.34,1.3,0.64,1);
+  `;
+  prompt.innerHTML = `
+    <div style="font-size:28px;flex-shrink:0;">🔔</div>
+    <div style="flex:1;">
+      <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:3px;">Enable Notifications</div>
+      <div style="font-size:11px;color:#666;line-height:1.5;">Get updates on your order status — preparing, out for delivery & more</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0;">
+      <button onclick="initFCM();document.getElementById('notifPrompt').remove()"
+        style="padding:7px 14px;background:linear-gradient(135deg,#ff4d4d,#ff1a1a);
+        color:#fff;border:none;border-radius:8px;font-size:12px;font-weight:700;
+        font-family:Poppins;cursor:pointer;white-space:nowrap;">
+        Allow
+      </button>
+      <button onclick="document.getElementById('notifPrompt').remove()"
+        style="padding:7px 14px;background:transparent;border:1px solid #2a2a2a;
+        color:#555;border-radius:8px;font-size:12px;font-weight:600;
+        font-family:Poppins;cursor:pointer;">
+        Later
+      </button>
+    </div>
+  `;
+  document.body.appendChild(prompt);
+
+  // Auto-dismiss after 8 seconds
+  setTimeout(() => {
+    let el = document.getElementById("notifPrompt");
+    if(el) el.remove();
+  }, 8000);
+}
+
+// ── WIRE INTO enterSite ───────────────────────────────────────────────────────
+// Patch enterSite to also request notification permission
+let _origEnterSite = window.enterSite;
+</script>
+
+<!-- ══ AI FOOD RECOMMENDATION JS ══ -->
+<script>
+// ══════════════════════════════════════════════════════════════════
+//  🤖 AI FOOD RECOMMENDATION — OpenAI GPT-4o-mini
+//  Get your API key: https://platform.openai.com/api-keys
+//  Replace the key below — keep it secret in production!
+// ══════════════════════════════════════════════════════════════════
+
+const OPENAI_API_KEY = "YOUR_OPENAI_API_KEY"; // ← paste your key here
+const OPENAI_MODEL   = "gpt-4o-mini";          // cheap + fast + smart
+
+let aiChatHistory = []; // keeps conversation context
+let aiPanelOpen   = false;
+
+// ── OPEN / CLOSE PANEL ────────────────────────────────────────────
+function toggleAIPanel(){
+  let panel = document.getElementById("aiPanel");
+  aiPanelOpen = !aiPanelOpen;
+  panel.classList.toggle("open", aiPanelOpen);
+
+  if(aiPanelOpen){
+    dimMain();
+    // First open — show welcome message
+    if(aiChatHistory.length === 0) initAIChat();
+    setTimeout(() => document.getElementById("aiInput").focus(), 400);
+  } else {
+    undimMain();
+  }
+}
+
+// ── INIT CHAT WITH WELCOME ────────────────────────────────────────
+function initAIChat(){
+  let hour = new Date().getHours();
+  let greeting = hour < 12 ? "Good morning" : hour < 17 ? "Good afternoon" : "Good evening";
+  let name = userProfile.name && userProfile.name !== "Guest" ? ", " + userProfile.name.split(" ")[0] : "";
+
+  // Check API key
+  if(!OPENAI_API_KEY || OPENAI_API_KEY === "YOUR_OPENAI_API_KEY"){
+    document.getElementById("aiKeyNotice").style.display = "block";
+  }
+
+  addAIMessage("ai",
+    greeting + name + "! 👋 I'm your personal food assistant.\n\n" +
+    "I can help you:\n" +
+    "• 🎯 Recommend dishes based on your taste\n" +
+    "• 🔥 Suggest what's popular right now\n" +
+    "• 💰 Find combos within your budget\n" +
+    "• 🌶️ Match your spice preference\n\n" +
+    "What are you craving today?"
+  );
+}
+
+// ── BUILD SYSTEM PROMPT ───────────────────────────────────────────
+function buildSystemPrompt(){
+  // Summarise order history
+  let orderSummary = "No previous orders.";
+  if(orderHistory.length > 0){
+    let allItems = orderHistory.flatMap(o => Array.isArray(o.items) ? o.items.map(i => i.name) : []);
+    let freq = {};
+    allItems.forEach(n => freq[n] = (freq[n]||0) + 1);
+    let top = Object.entries(freq).sort((a,b)=>b[1]-a[1]).slice(0,5).map(([n,c])=>n+" (×"+c+")").join(", ");
+    orderSummary = "Past orders: " + top + ". Total orders: " + orderHistory.length + ".";
+  }
+
+  // Cart context
+  let cartContext = cart.length > 0
+    ? "Currently in cart: " + cart.map(i => i.n).join(", ") + "."
+    : "Cart is empty.";
+
+  // Time context
+  let hour = new Date().getHours();
+  let mealTime = hour < 11 ? "breakfast" : hour < 15 ? "lunch" : hour < 18 ? "snack time" : "dinner";
+
+  // Menu summary (categories + price range)
+  let cats = [...new Set(items.map(i => i.cat))];
+  let minP = Math.min(...items.map(i => i.p));
+  let maxP = Math.max(...items.map(i => i.p));
+  let vegCount = items.filter(i => i.v).length;
+
+  // Top 20 items for context (name, price, cat, veg, desc)
+  let menuSample = items.slice(0,20).map(i =>
+    `${i.n} (₹${i.p}, ${i.cat}, ${i.v?"veg":"non-veg"}, spicy:${i.spicy}/3)`
+  ).join("; ");
+
+  return `You are a friendly, enthusiastic food recommendation AI for 99Foodies, a food delivery app in Valsad, Gujarat, India.
+
+RESTAURANT INFO:
+- Name: 99Foodies
+- Location: Valsad, Gujarat
+- Categories: ${cats.join(", ")}
+- Price range: ₹${minP} – ₹${maxP}
+- Veg items: ${vegCount} out of ${items.length} total
+- Current time: ${mealTime}
+
+MENU SAMPLE (top 20 items):
+${menuSample}
+
+USER CONTEXT:
+- Name: ${userProfile.name || "Guest"}
+- ${orderSummary}
+- ${cartContext}
+
+INSTRUCTIONS:
+1. Recommend 2-3 specific dishes from the menu by EXACT name
+2. Always mention the price (₹)
+3. Be warm, conversational, and enthusiastic — like a knowledgeable friend
+4. Keep responses concise (max 120 words)
+5. When recommending, format each item as: **Item Name** (₹price) — reason
+6. Consider the time of day, user's order history, and current cart
+7. If user asks for combos, suggest complementary items
+8. Always end with a question to keep conversation going
+9. Use emojis naturally but not excessively
+10. NEVER make up items not in the menu`;
+}
+
+// ── SEND MESSAGE ──────────────────────────────────────────────────
+async function sendAIMessage(text){
+  let input = document.getElementById("aiInput");
+  let msg   = text || input.value.trim();
+  if(!msg) return;
+
+  // Clear input & chips
+  input.value = "";
+  document.getElementById("aiChips").style.display = "none";
+
+  // Show user message
+  addAIMessage("user", msg);
+
+  // Add to history
+  aiChatHistory.push({ role: "user", content: msg });
+
+  // Show typing
+  let typingId = showTyping();
+
+  // Disable send
+  let btn = document.getElementById("aiSendBtn");
+  btn.disabled = true;
+
+  try {
+    let reply;
+    if(!OPENAI_API_KEY || OPENAI_API_KEY === "YOUR_OPENAI_API_KEY"){
+      // ── DEMO MODE: smart local fallback ──────────────────────────
+      await new Promise(r => setTimeout(r, 1200)); // fake delay
+      reply = generateLocalRecommendation(msg);
+    } else {
+      // ── REAL GPT CALL ─────────────────────────────────────────────
+      reply = await callOpenAI(msg);
+    }
+
+    removeTyping(typingId);
+    addAIMessage("ai", reply);
+    aiChatHistory.push({ role: "assistant", content: reply });
+
+    // Extract mentioned items and show as cards
+    let mentioned = extractMentionedItems(reply);
+    if(mentioned.length > 0) renderAIFoodCards(mentioned);
+
+    // Log analytics
+    logEvent("ai_recommendation", { query: msg.slice(0,50), items_shown: mentioned.length });
+
+  } catch(err){
+    removeTyping(typingId);
+    addAIMessage("ai", "Sorry, I'm having trouble connecting right now. 😅 Try again in a moment!");
+    console.error("AI error:", err);
+  }
+
+  btn.disabled = false;
+  input.focus();
+}
+
+// ── CALL OPENAI API ───────────────────────────────────────────────
+async function callOpenAI(userMsg){
+  let messages = [
+    { role: "system", content: buildSystemPrompt() },
+    ...aiChatHistory.slice(-8) // keep last 8 messages for context
+  ];
+
+  let res = await fetch("https://api.openai.com/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      "Content-Type":  "application/json",
+      "Authorization": "Bearer " + OPENAI_API_KEY
+    },
+    body: JSON.stringify({
+      model:       OPENAI_MODEL,
+      messages:    messages,
+      max_tokens:  200,
+      temperature: 0.8
+    })
+  });
+
+  if(!res.ok){
+    let err = await res.json().catch(()=>({}));
+    throw new Error(err.error?.message || "API error " + res.status);
+  }
+
+  let data = await res.json();
+  return data.choices[0].message.content.trim();
+}
+
+// ── LOCAL FALLBACK (no API key) ───────────────────────────────────
+function generateLocalRecommendation(query){
+  let q = query.toLowerCase();
+  let hour = new Date().getHours();
+  let isVeg = userProfile.isVeg || false;
+
+  // Analyse query intent
+  let wantsSpicy   = q.includes("spicy") || q.includes("hot");
+  let wantsBudget  = q.includes("cheap") || q.includes("budget") || q.includes("₹") || q.includes("under");
+  let wantsVeg     = q.includes("veg") || q.includes("vegetarian");
+  let wantsPopular = q.includes("popular") || q.includes("best") || q.includes("recommend");
+  let wantsCombo   = q.includes("combo") || q.includes("meal") || q.includes("together");
+  let wantsDrink   = q.includes("drink") || q.includes("cold") || q.includes("juice") || q.includes("coffee");
+
+  // Filter items
+  let pool = items.filter(i => {
+    if(wantsVeg && !i.v) return false;
+    if(wantsSpicy && i.spicy < 2) return false;
+    if(wantsDrink && i.t !== "drink") return false;
+    if(!wantsDrink && i.t === "drink") return false;
+    return true;
+  });
+
+  if(pool.length === 0) pool = items.filter(i => i.t === "food");
+
+  // Sort by relevance
+  if(wantsBudget) pool.sort((a,b) => a.p - b.p);
+  else if(wantsPopular) pool = pool.slice(0, 15); // first items are "popular"
+  else pool.sort(() => Math.random() - 0.5);
+
+  let picks = pool.slice(0, 3);
+
+  // Build response
+  let mealTime = hour < 11 ? "breakfast" : hour < 15 ? "lunch" : hour < 18 ? "snack" : "dinner";
+
+  // Personalise based on order history
+  let historyNote = "";
+  if(orderHistory.length > 0){
+    let lastCat = orderHistory[0].items?.[0]?.name || "";
+    historyNote = lastCat ? ` Since you enjoyed ${lastCat} last time, you might love these too!` : "";
+  }
+
+  let recs = picks.map(i =>
+    `**${i.n}** (₹${i.p}) — ${i.desc || "A customer favourite!"}`
+  ).join("\n");
+
+  let intros = [
+    `Great choice for ${mealTime}!${historyNote} Here's what I'd suggest:`,
+    `Based on your taste, these are perfect right now:`,
+    `Here are my top picks for you today:`,
+    `You're going to love these! 😋`
+  ];
+
+  return intros[Math.floor(Math.random() * intros.length)] + "\n\n" + recs +
+    "\n\nWant me to suggest a drink to go with it? 🥤";
+}
+
+// ── EXTRACT MENTIONED ITEMS FROM AI REPLY ─────────────────────────
+function extractMentionedItems(text){
+  return items.filter(item =>
+    text.toLowerCase().includes(item.n.toLowerCase())
+  ).slice(0, 3);
+}
+
+// ── RENDER FOOD CARDS ─────────────────────────────────────────────
+function renderAIFoodCards(foodItems){
+  let chat = document.getElementById("aiChat");
+  let wrap = document.createElement("div");
+  wrap.style.cssText = "display:flex;flex-direction:column;gap:8px;margin-left:42px;";
+  wrap.className = "ai-msg";
+  wrap.style.animation = "aiMsgIn 0.3s ease both";
+
+  foodItems.forEach(item => {
+    let card = document.createElement("div");
+    card.className = "ai-food-card";
+    card.innerHTML = `
+      <img src="${item.img || 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400&h=200&fit=crop'}"
+        alt="${item.n}" onerror="this.src='https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400&h=200&fit=crop'">
+      <div class="ai-food-card-body">
+        <div class="ai-food-card-name">
+          <span style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1.5px solid ${item.v?'#4caf50':'#f44336'};margin-right:5px;vertical-align:middle;"></span>
+          ${item.n}
+        </div>
+        <div class="ai-food-card-desc">${item.desc || ""}</div>
+        <div class="ai-food-card-footer">
+          <span class="ai-food-card-price">₹${item.p}</span>
+          <button class="ai-food-card-add" onclick="addFromAI('${item.n}',${item.p})">+ Add to Cart</button>
+        </div>
+      </div>`;
+    wrap.appendChild(card);
+  });
+
+  chat.appendChild(wrap);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+// ── ADD ITEM FROM AI CARD ─────────────────────────────────────────
+function addFromAI(name, price){
+  add(name, price);
+  // Confirm in chat
+  addAIMessage("ai", `✅ **${name}** added to your cart! 🛒\n\nAnything else you'd like to add?`);
+}
+
+// ── CHAT HELPERS ──────────────────────────────────────────────────
+function addAIMessage(role, text){
+  let chat = document.getElementById("aiChat");
+  let div  = document.createElement("div");
+  div.className = "ai-msg " + (role === "user" ? "user" : "");
+
+  // Format **bold** markdown
+  let formatted = text
+    .replace(/\*\*(.*?)\*\*/g, '<strong style="color:#fff;">$1</strong>')
+    .replace(/\n/g, "<br>");
+
+  div.innerHTML = `
+    <div class="ai-avatar">${role === "user" ? "👤" : "🤖"}</div>
+    <div class="ai-bubble">${formatted}</div>`;
+
+  chat.appendChild(div);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+function showTyping(){
+  let chat = document.getElementById("aiChat");
+  let id   = "typing-" + Date.now();
+  let div  = document.createElement("div");
+  div.className = "ai-msg";
+  div.id = id;
+  div.innerHTML = `
+    <div class="ai-avatar">🤖</div>
+    <div class="ai-bubble" style="padding:14px 16px;">
+      <div class="ai-typing"><span></span><span></span><span></span></div>
+    </div>`;
+  chat.appendChild(div);
+  chat.scrollTop = chat.scrollHeight;
+  return id;
+}
+
+function removeTyping(id){
+  let el = document.getElementById(id);
+  if(el) el.remove();
+}
+
+// ── CLOSE AI PANEL WHEN OTHER PANELS OPEN ────────────────────────
+let _origCloseAllPanels = window.closeAllPanels;
+if(typeof _origCloseAllPanels === "function"){
+  window.closeAllPanels = function(){
+    _origCloseAllPanels();
+    let panel = document.getElementById("aiPanel");
+    if(panel){ panel.classList.remove("open"); aiPanelOpen = false; }
+  };
 }
 </script>
 
