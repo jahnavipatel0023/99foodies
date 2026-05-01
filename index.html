@@ -45,6 +45,8 @@
 <!-- ══ FIREBASE ══ -->
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-analytics-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 <script>
   const firebaseConfig = {
     apiKey:            "AIzaSyAZCz1vhVC77twHwA7wxpyMu3lwodIw3Ek",
@@ -52,11 +54,19 @@
     projectId:         "foodies-44cd3",
     storageBucket:     "foodies-44cd3.firebasestorage.app",
     messagingSenderId: "735776291980",
-    appId:             "1:735776291980:web:8c7292442ddc421b6e0fa9"
+    appId:             "1:735776291980:web:8c7292442ddc421b6e0fa9",
+    measurementId:     "G-WHYLPGM9JF"
   };
   firebase.initializeApp(firebaseConfig);
-  window._fbAuth = firebase.auth();
-  console.log("✅ Firebase loaded");
+  window._fbAuth      = firebase.auth();
+  window._fbAnalytics = firebase.analytics();
+  window._fbDb        = firebase.firestore();
+  console.log("✅ Firebase + Firestore loaded");
+
+  // ── Analytics helper ───────────────────────────────────────────────────────
+  function logEvent(name, params){
+    try { window._fbAnalytics.logEvent(name, params || {}); } catch(e){}
+  }
 </script>
 
 <style>
@@ -278,6 +288,14 @@ box-shadow:0 30px 80px rgba(0,0,0,0.6);
   display:flex;align-items:center;justify-content:center;line-height:1;
   border:2px solid #0a0a0a;
 }
+@keyframes shake{
+  0%,100%{transform:translateX(0)}
+  20%{transform:translateX(-4px) rotate(-3deg)}
+  40%{transform:translateX(4px) rotate(3deg)}
+  60%{transform:translateX(-3px) rotate(-2deg)}
+  80%{transform:translateX(3px) rotate(2deg)}
+}
+.shake{animation:shake 0.4s ease !important;}
 
 /* ── ENHANCED HERO ── */
 .hero-banner{
@@ -487,7 +505,6 @@ box-shadow:0 30px 80px rgba(0,0,0,0.6);
   background:rgba(255,255,255,0.03);
   border-radius:20px;overflow:hidden;
   border:1px solid rgba(255,255,255,0.06);
-  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
   transition:transform 0.25s ease,box-shadow 0.25s ease,border-color 0.25s ease,background 0.25s ease;
   position:relative;display:flex;flex-direction:column;cursor:pointer;
 }
@@ -628,13 +645,13 @@ box-shadow:0 30px 80px rgba(0,0,0,0.6);
 /* ══ PROFESSIONAL CART ══ */
 .cart{
   position:fixed;right:0;top:0;width:360px;height:100%;
-  background:#0d0d0d;overflow-y:auto;z-index:1000;
+  background:#0d0d0d;overflow-y:auto;z-index:1001;
   transform:translateX(110%);visibility:hidden;
   transition:transform 0.35s cubic-bezier(0.4,0,0.2,1),visibility 0s linear 0.35s;
 }
 #qrBox, #paymentSuccess {
   position:fixed;right:0;top:0;width:360px;height:100%;
-  background:#0d0d0d;overflow-y:auto;z-index:1001;
+  background:#0d0d0d;overflow-y:auto;z-index:1002;
   display:none;
 }
 @media(max-width:600px){
@@ -810,7 +827,7 @@ box-shadow:0 30px 80px rgba(0,0,0,0.6);
 /* REVIEWS & CONTACT PANELS */
 .reviews,.contact{
   position:fixed;right:0;top:0;width:360px;height:100%;
-  background:#111;padding:0;overflow-y:auto;z-index:1000;
+  background:#111;padding:0;overflow-y:auto;z-index:1001;
   transform:translateX(110%);
   visibility:hidden;
   transition:transform 0.35s cubic-bezier(0.4,0,0.2,1), visibility 0s linear 0.35s;
@@ -1101,7 +1118,7 @@ overflow:hidden;
 /* ===== PROFILE PANEL ===== */
 .profile-panel{
   position:fixed;right:0;top:0;width:360px;height:100%;
-  background:#111;overflow-y:auto;z-index:1000;
+  background:#111;overflow-y:auto;z-index:1001;
   transform:translateX(100%);
   transition:transform 0.35s cubic-bezier(0.4,0,0.2,1);
   display:block !important;
@@ -1232,34 +1249,341 @@ overflow:hidden;
 .addr-type-btn.active{background:#ff4d4d22;border-color:#ff4d4d;color:#ff4d4d;}
 /* ORDER HISTORY */
 .order-history-card{
-  background:#1a1a1a;border-radius:12px;padding:14px;margin-bottom:10px;
-  border:1px solid #2a2a2a;
+  background:#1a1a1a;border-radius:16px;padding:0;margin-bottom:14px;
+  border:1px solid #2a2a2a;overflow:hidden;
+  transition:transform 0.2s ease,box-shadow 0.2s ease,border-color 0.2s ease;
+  animation:ohCardIn 0.35s ease both;
 }
-.order-history-card:hover{border-color:#333;}
-.order-id-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
-.order-id{font-size:13px;font-weight:700;color:#fff;}
+@keyframes ohCardIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.order-history-card:hover{border-color:#ff4d4d33;box-shadow:0 6px 24px rgba(255,77,77,0.12);}
+.order-id-row{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:0;}
+.order-id{font-size:12px;font-weight:800;color:#fff;letter-spacing:0.5px;font-family:monospace;}
 .order-status-badge{
-  font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;
+  font-size:10px;font-weight:700;padding:4px 10px;border-radius:20px;
+  display:inline-flex;align-items:center;gap:4px;white-space:nowrap;
 }
-.order-status-badge.delivered{background:#1e3a2f;color:#4caf50;}
-.order-status-badge.pending{background:#3a2e1a;color:#ff9800;}
-.order-items-preview{font-size:12px;color:#888;margin-bottom:8px;line-height:1.5;}
+.order-status-badge.delivered{background:#0d2e1f;color:#00e5a0;border:1px solid #00e5a022;}
+.order-status-badge.confirmed{background:#0d2e1f;color:#00e5a0;border:1px solid #00e5a022;}
+.order-status-badge.pending{background:#2e1f0d;color:#ff9800;border:1px solid #ff980022;}
+.order-status-badge.cancelled{background:#2e0d0d;color:#ff4d4d;border:1px solid #ff4d4d22;}
+.order-items-preview{font-size:12px;color:#888;margin-bottom:0;line-height:1.6;}
 .order-footer-row{display:flex;justify-content:space-between;align-items:center;}
-.order-total-amt{font-size:15px;font-weight:700;color:#ff4d4d;}
-.order-date{font-size:11px;color:#555;}
+.order-total-amt{font-size:18px;font-weight:900;color:#fff;letter-spacing:-0.5px;}
+.order-date{font-size:11px;color:#555;margin-top:2px;}
 .order-reorder-btn{
-  padding:6px 14px;border-radius:8px;
+  padding:8px 16px;border-radius:10px;
   background:#ff4d4d22;border:1px solid #ff4d4d44;
-  color:#ff4d4d;font-size:12px;font-weight:600;font-family:Poppins;cursor:pointer;transition:0.2s;
+  color:#ff4d4d;font-size:12px;font-weight:700;font-family:Poppins;cursor:pointer;transition:0.2s;
 }
-.order-reorder-btn:hover{background:#ff4d4d33;}
+.order-reorder-btn:hover{background:#ff4d4d33;transform:translateY(-1px);}
+/* ORDER HISTORY PAGE */
+.oh-page{
+  position:fixed;inset:0;z-index:1100;
+  background:#0a0a0a;
+  overflow-y:auto;
+  transform:translateX(100%);
+  transition:transform 0.38s cubic-bezier(0.4,0,0.2,1);
+  visibility:hidden;
+}
+.oh-page.open{transform:translateX(0);visibility:visible;}
+.oh-header{
+  position:sticky;top:0;z-index:10;
+  background:rgba(10,10,10,0.97);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid #1a1a1a;
+  padding:16px 20px 14px;
+}
+.oh-stats-bar{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:0;margin:0 20px 20px;
+  background:#111;border-radius:16px;border:1px solid #1a1a1a;
+  overflow:hidden;
+}
+.oh-stat{
+  padding:16px 12px;text-align:center;
+  border-right:1px solid #1a1a1a;
+}
+.oh-stat:last-child{border-right:none;}
+.oh-stat-val{font-size:20px;font-weight:900;color:#fff;letter-spacing:-0.5px;}
+.oh-stat-lbl{font-size:10px;color:#555;font-weight:600;margin-top:3px;text-transform:uppercase;letter-spacing:0.5px;}
+/* ITEM THUMB ROW */
+.oh-thumb-row{display:flex;gap:6px;padding:12px 16px;overflow-x:auto;scrollbar-width:none;}
+.oh-thumb-row::-webkit-scrollbar{display:none}
+.oh-thumb{
+  width:52px;height:52px;border-radius:10px;object-fit:cover;flex-shrink:0;
+  border:1.5px solid #2a2a2a;background:#1a1a1a;
+}
+.oh-thumb-more{
+  width:52px;height:52px;border-radius:10px;flex-shrink:0;
+  background:#1a1a1a;border:1.5px solid #2a2a2a;
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:700;color:#666;
+}
+/* STATUS DOT */
+.oh-status-dot{
+  width:7px;height:7px;border-radius:50%;display:inline-block;margin-right:5px;
+  flex-shrink:0;
+}
+.oh-status-dot.green{background:#00e5a0;box-shadow:0 0 6px #00e5a0;}
+.oh-status-dot.orange{background:#ff9800;box-shadow:0 0 6px #ff9800;}
+.oh-status-dot.red{background:#ff4d4d;box-shadow:0 0 6px #ff4d4d;}
+/* BILL DETAIL */
+.oh-bill-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:5px 0;font-size:12px;color:#666;
+}
+.oh-bill-row.total{font-size:14px;font-weight:800;color:#fff;}
+.oh-bill-row.saving{color:#4caf50;}
+/* FILTER TABS */
+.oh-filter-row{
+  display:flex;gap:8px;padding:0 20px 16px;overflow-x:auto;scrollbar-width:none;
+}
+.oh-filter-row::-webkit-scrollbar{display:none}
+.oh-filter-chip{
+  padding:7px 16px;border-radius:20px;border:1.5px solid #2a2a2a;
+  background:transparent;color:#666;font-size:12px;font-weight:600;
+  font-family:Poppins;cursor:pointer;white-space:nowrap;transition:0.2s;flex-shrink:0;
+}
+.oh-filter-chip.active{background:#ff4d4d22;border-color:#ff4d4d;color:#ff4d4d;}
 @media(max-width:600px){
   .profile-panel{width:100%;}
+  .oh-stats-bar{margin:0 12px 16px;}
+}
+
+/* ═══════════════════════════════════════════════════════
+   ✨ UI POLISH — Loading · Transitions · Hover Effects
+   ═══════════════════════════════════════════════════════ */
+
+/* ── PAGE LOADER ─────────────────────────────────────── */
+#appLoader{
+  position:fixed;inset:0;z-index:99999;
+  background:#0a0a0a;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:20px;
+  transition:opacity 0.5s ease, visibility 0.5s ease;
+}
+#appLoader.hidden{opacity:0;visibility:hidden;pointer-events:none;}
+.loader-logo{
+  width:80px;height:80px;
+  animation:loaderPop 0.6s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+@keyframes loaderPop{
+  0%{transform:scale(0.4) rotate(-10deg);opacity:0}
+  100%{transform:scale(1) rotate(0deg);opacity:1}
+}
+.loader-bar-wrap{
+  width:160px;height:3px;background:#1a1a1a;border-radius:3px;overflow:hidden;
+}
+.loader-bar{
+  height:100%;width:0%;background:linear-gradient(90deg,#ff4d4d,#ff9800);
+  border-radius:3px;
+  animation:loaderFill 1.2s cubic-bezier(0.4,0,0.2,1) forwards 0.3s;
+}
+@keyframes loaderFill{0%{width:0%}60%{width:80%}100%{width:100%}}
+.loader-text{
+  font-size:12px;color:#444;font-weight:600;letter-spacing:1px;
+  animation:loaderFade 0.5s ease both 0.2s;
+}
+@keyframes loaderFade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── SKELETON SHIMMER (menu cards while loading) ─────── */
+@keyframes shimmer{
+  0%{background-position:-400px 0}
+  100%{background-position:400px 0}
+}
+.skeleton{
+  background:linear-gradient(90deg,#1a1a1a 25%,#252525 50%,#1a1a1a 75%);
+  background-size:800px 100%;
+  animation:shimmer 1.4s infinite linear;
+  border-radius:10px;
+}
+
+/* ── MENU CARD ENTRY ANIMATION ───────────────────────── */
+@keyframes cardFadeUp{
+  from{opacity:0;transform:translateY(20px) scale(0.97)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+.card{
+  animation:cardFadeUp 0.4s cubic-bezier(0.34,1.2,0.64,1) both;
+}
+
+/* ── RIPPLE ON BUTTONS ───────────────────────────────── */
+.ripple-host{position:relative;overflow:hidden;}
+@keyframes rippleAnim{
+  to{transform:scale(4);opacity:0}
+}
+.ripple-circle{
+  position:absolute;border-radius:50%;
+  background:rgba(255,255,255,0.18);
+  transform:scale(0);
+  animation:rippleAnim 0.55s linear;
+  pointer-events:none;
+}
+
+/* ── CARD HOVER — deeper glow lift ──────────────────── */
+.card:hover{
+  transform:translateY(-10px) scale(1.01) !important;
+  box-shadow:
+    0 0 0 1px #ff4d4d66,
+    0 16px 48px rgba(255,77,77,0.3),
+    0 0 100px rgba(255,77,77,0.08) !important;
+}
+.card:active{transform:translateY(-4px) scale(0.99) !important;transition:0.1s !important;}
+
+/* ── ADD BUTTON MICRO-BOUNCE ─────────────────────────── */
+.card-add-btn{transition:transform 0.18s cubic-bezier(0.34,1.56,0.64,1),box-shadow 0.18s ease,background 0.2s ease !important;}
+.card-add-btn:hover{transform:scale(1.12) !important;}
+.card-add-btn:active{transform:scale(0.93) !important;}
+
+/* ── BRAND CARD HOVER ────────────────────────────────── */
+.brand-card{transition:transform 0.25s cubic-bezier(0.34,1.3,0.64,1),box-shadow 0.25s ease,border-color 0.25s ease !important;}
+.brand-card:hover{transform:translateY(-8px) scale(1.04) !important;}
+.brand-card:active{transform:scale(0.96) !important;transition:0.1s !important;}
+
+/* ── NAV BUTTON HOVER ────────────────────────────────── */
+.nav-btn{transition:transform 0.2s cubic-bezier(0.34,1.4,0.64,1),background 0.2s,box-shadow 0.2s !important;}
+.nav-btn:hover{transform:translateY(-3px) scale(1.08) !important;}
+.nav-btn:active{transform:scale(0.92) !important;transition:0.1s !important;}
+
+/* ── CHECKOUT BUTTON PULSE WHEN READY ───────────────── */
+@keyframes checkoutPulse{
+  0%,100%{box-shadow:0 6px 24px rgba(255,77,77,0.4)}
+  50%{box-shadow:0 6px 32px rgba(255,77,77,0.7),0 0 0 6px rgba(255,77,77,0.1)}
+}
+.checkout-btn.ready{animation:checkoutPulse 2s ease infinite;}
+.checkout-btn{transition:transform 0.2s cubic-bezier(0.34,1.4,0.64,1),box-shadow 0.2s ease !important;}
+.checkout-btn:hover{transform:translateY(-3px) scale(1.01) !important;}
+.checkout-btn:active{transform:scale(0.98) !important;transition:0.1s !important;}
+
+/* ── FILTER CHIP HOVER ───────────────────────────────── */
+.filter-btn{transition:transform 0.18s cubic-bezier(0.34,1.4,0.64,1),border-color 0.2s,color 0.2s,background 0.2s !important;}
+.filter-btn:hover{transform:translateY(-2px) !important;}
+.filter-btn:active{transform:scale(0.95) !important;}
+
+/* ── FLOAT CART BUTTON BOUNCE ────────────────────────── */
+@keyframes floatBounce{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-5px)}
+}
+.float-cart-btn{animation:floatBounce 2.5s ease infinite;}
+.float-cart-btn:hover{animation:none;transform:translateY(-4px) scale(1.04) !important;}
+
+/* ── PANEL SLIDE — smoother cubic ───────────────────── */
+.cart,.reviews,.contact,.profile-panel{
+  transition:transform 0.38s cubic-bezier(0.4,0,0.15,1),visibility 0s linear 0.38s !important;
+}
+.cart.panel-open,.reviews.panel-open,.contact.panel-open,.profile-panel.panel-open{
+  transition:transform 0.38s cubic-bezier(0.4,0,0.15,1),visibility 0s linear 0s !important;
+}
+
+/* ── TOAST UPGRADE ───────────────────────────────────── */
+.toast{
+  transition:opacity 0.3s cubic-bezier(0.4,0,0.2,1),transform 0.3s cubic-bezier(0.34,1.3,0.64,1) !important;
+}
+.toast.show{
+  transform:translateX(-50%) translateY(0) scale(1) !important;
+}
+
+/* ── INPUT FOCUS GLOW ────────────────────────────────── */
+input:focus,textarea:focus{
+  box-shadow:0 0 0 3px rgba(255,77,77,0.15) !important;
+}
+
+/* ── SCROLL SMOOTH ───────────────────────────────────── */
+html{scroll-behavior:smooth;}
+.cart,.reviews,.contact,.profile-panel,.oh-page{scroll-behavior:smooth;}
+
+/* ── SELECTION COLOR ─────────────────────────────────── */
+::selection{background:#ff4d4d44;color:#fff;}
+
+/* ── CUSTOM SCROLLBAR ────────────────────────────────── */
+::-webkit-scrollbar{width:4px;height:4px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:#2a2a2a;border-radius:4px;}
+::-webkit-scrollbar-thumb:hover{background:#ff4d4d44;}
+
+/* ── HERO IMAGE PARALLAX FEEL ────────────────────────── */
+.hero-img{transition:transform 0.4s cubic-bezier(0.34,1.2,0.64,1),box-shadow 0.3s ease !important;}
+.hero-img:hover{transform:scale(1.05) rotate(1.5deg) !important;box-shadow:0 28px 70px rgba(255,77,77,0.35) !important;}
+
+/* ── ORDER HISTORY CARD HOVER ────────────────────────── */
+.order-history-card{transition:transform 0.22s cubic-bezier(0.34,1.2,0.64,1),box-shadow 0.22s ease,border-color 0.22s ease !important;}
+.order-history-card:hover{transform:translateY(-4px) !important;}
+
+/* ── PROFILE AVATAR HOVER ────────────────────────────── */
+.profile-avatar{transition:transform 0.25s cubic-bezier(0.34,1.4,0.64,1),box-shadow 0.25s ease !important;}
+.profile-avatar:hover{transform:scale(1.06) !important;box-shadow:0 0 0 4px rgba(255,77,77,0.3) !important;}
+
+/* ── COUPON OPTION HOVER ─────────────────────────────── */
+.coupon-option{transition:background 0.15s,transform 0.15s !important;}
+.coupon-option:hover{transform:translateX(3px) !important;}
+
+/* ── MAIN CONTENT FADE-IN ────────────────────────────── */
+@keyframes mainFadeIn{
+  from{opacity:0;transform:translateY(12px)}
+  to{opacity:1;transform:translateY(0)}
+}
+#main.fade-in{animation:mainFadeIn 0.5s cubic-bezier(0.4,0,0.2,1) both;}
+#main{transition:none;}
+
+/* ── STAGGER CARD DELAYS ─────────────────────────────── */
+.card:nth-child(1){animation-delay:0.04s}
+.card:nth-child(2){animation-delay:0.08s}
+.card:nth-child(3){animation-delay:0.12s}
+.card:nth-child(4){animation-delay:0.16s}
+.card:nth-child(5){animation-delay:0.20s}
+.card:nth-child(6){animation-delay:0.24s}
+.card:nth-child(7){animation-delay:0.28s}
+.card:nth-child(8){animation-delay:0.30s}
+.card:nth-child(n+9){animation-delay:0.32s}
+
+/* ── SECTION LABEL SLIDE-IN ──────────────────────────── */
+@keyframes labelSlideIn{
+  from{opacity:0;transform:translateX(-12px)}
+  to{opacity:1;transform:translateX(0)}
+}
+.section-label{animation:labelSlideIn 0.4s ease both 0.1s;}
+
+/* ── PROMO STRIP MARQUEE ─────────────────────────────── */
+@keyframes marquee{
+  0%{transform:translateX(0)}
+  100%{transform:translateX(-50%)}
+}
+.promo-strip-inner{
+  display:flex;gap:0;
+  animation:marquee 18s linear infinite;
+  width:max-content;
+}
+.promo-strip-inner:hover{animation-play-state:paused;}
+
+/* ── HERO TAG GLOW PULSE ─────────────────────────────── */
+@keyframes tagGlow{
+  0%,100%{box-shadow:0 0 0 0 rgba(255,77,77,0.4),0 0 8px rgba(255,77,77,0.2)}
+  50%{box-shadow:0 0 0 8px rgba(255,77,77,0),0 0 20px rgba(255,77,77,0.3)}
+}
+.hero-tag{animation:tagGlow 2.5s ease infinite !important;}
+
+/* ── REDUCE MOTION RESPECT ───────────────────────────── */
+@media(prefers-reduced-motion:reduce){
+  *{animation-duration:0.01ms !important;transition-duration:0.01ms !important;}
 }
 </style>
 </head>
 
 <body>
+
+<!-- ══ APP LOADER ══ -->
+<div id="appLoader">
+  <svg class="loader-logo" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="100" cy="100" r="100" fill="#111"/>
+    <text x="30" y="82" font-family="Arial Black,sans-serif" font-size="58" font-weight="900" fill="#fff">9</text>
+    <text x="72" y="82" font-family="Arial Black,sans-serif" font-size="58" font-weight="900" fill="#f5a623">9</text>
+    <text x="100" y="108" font-family="Arial Black,sans-serif" font-size="26" font-weight="900" fill="#fff" text-anchor="middle" letter-spacing="2">FOODIES</text>
+    <text x="100" y="162" font-family="Georgia,serif" font-size="10" fill="#f5a623" text-anchor="middle" font-style="italic">★ Good Food, Great Mood! ★</text>
+  </svg>
+  <div class="loader-bar-wrap"><div class="loader-bar"></div></div>
+  <div class="loader-text">Loading your menu…</div>
+</div>
 
 <div class="login" id="loginPage">
   <div class="login-card">
@@ -1288,14 +1612,23 @@ overflow:hidden;
       <p>Good Food, Great Mood!</p>
     </div>
 
-    <div style="font-size:18px;font-weight:700;color:#fff;margin-bottom:4px;text-align:center;">Welcome! 👋</div>
-    <div style="font-size:13px;color:#666;margin-bottom:24px;text-align:center;">Sign in to order delicious food</div>
+    <!-- MODE TABS: Sign In / Sign Up -->
+    <div style="display:flex;background:#111;border-radius:12px;padding:4px;margin-bottom:22px;border:1px solid #1a1a1a;">
+      <button id="tabSignin" onclick="switchAuthTab('signin')"
+        style="flex:1;padding:9px;border:none;border-radius:9px;background:linear-gradient(135deg,#ff4d4d,#ff1a1a);color:#fff;font-size:13px;font-weight:700;font-family:Poppins;cursor:pointer;transition:0.2s;">
+        Sign In
+      </button>
+      <button id="tabSignup" onclick="switchAuthTab('signup')"
+        style="flex:1;padding:9px;border:none;border-radius:9px;background:transparent;color:#555;font-size:13px;font-weight:700;font-family:Poppins;cursor:pointer;transition:0.2s;">
+        Sign Up
+      </button>
+    </div>
 
-    <!-- ERROR -->
+    <!-- ERROR / SUCCESS MESSAGE -->
     <div id="loginError"></div>
 
-    <!-- GOOGLE SIGN IN BUTTON -->
-    <button class="google-signin-btn" onclick="signInWithGoogle()">
+    <!-- GOOGLE SIGN IN -->
+    <button class="google-signin-btn ripple-host" onclick="signInWithGoogle()">
       <svg width="20" height="20" viewBox="0 0 48 48">
         <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
         <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
@@ -1307,21 +1640,50 @@ overflow:hidden;
     </button>
 
     <div class="login-divider-line">
-      <span></span><span style="color:#444;font-size:12px;padding:0 10px">or</span><span></span>
+      <span></span><span style="color:#333;font-size:11px;padding:0 10px;white-space:nowrap;">or with email</span><span></span>
     </div>
 
-    <!-- QUICK LOGIN -->
-    <div class="login-input-group">
+    <!-- SIGNUP EXTRA FIELD (name) — shown only on signup tab -->
+    <div class="login-input-group" id="signupNameWrap" style="display:none;">
       <span class="lig-icon">👤</span>
-      <input id="loginName" placeholder="Your full name" type="text" onkeydown="if(event.key==='Enter')quickLogin()">
-    </div>
-    <div class="phone-row">
-      <div class="phone-code">🇮🇳 +91</div>
-      <input class="phone-input" id="loginPhone" placeholder="10-digit number" type="tel" maxlength="10" onkeydown="if(event.key==='Enter')quickLogin()">
+      <input id="authName" placeholder="Your full name" type="text" autocomplete="name"
+        onkeydown="if(event.key==='Enter')document.getElementById('authEmail').focus()">
     </div>
 
-    <button class="login-btn" onclick="quickLogin()">
-      Continue →
+    <!-- EMAIL -->
+    <div class="login-input-group">
+      <span class="lig-icon">✉️</span>
+      <input id="authEmail" placeholder="Email address" type="email" autocomplete="email"
+        onkeydown="if(event.key==='Enter')document.getElementById('authPass').focus()">
+    </div>
+
+    <!-- PASSWORD -->
+    <div class="login-input-group" style="position:relative;">
+      <span class="lig-icon">🔒</span>
+      <input id="authPass" placeholder="Password (min 6 chars)" type="password" autocomplete="current-password"
+        onkeydown="if(event.key==='Enter')handleAuthSubmit()">
+      <button onclick="togglePassVis()" tabindex="-1"
+        style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:#555;font-size:16px;cursor:pointer;padding:4px;line-height:1;"
+        id="passVisBtn">👁</button>
+    </div>
+
+    <!-- FORGOT PASSWORD (signin only) -->
+    <div id="forgotWrap" style="text-align:right;margin:-6px 0 10px;">
+      <button onclick="sendPasswordReset()"
+        style="background:none;border:none;color:#ff4d4d;font-size:12px;font-weight:600;font-family:Poppins;cursor:pointer;padding:0;">
+        Forgot password?
+      </button>
+    </div>
+
+    <!-- MAIN ACTION BUTTON -->
+    <button class="login-btn ripple-host" id="authSubmitBtn" onclick="handleAuthSubmit()">
+      <span id="authBtnText">Sign In</span>
+    </button>
+
+    <!-- GUEST LOGIN -->
+    <button class="login-btn-back" onclick="guestLogin()"
+      style="margin-top:10px;display:flex;align-items:center;justify-content:center;gap:8px;">
+      👀 Browse as Guest
     </button>
 
     <div class="login-footer">
@@ -1364,6 +1726,13 @@ overflow:hidden;
   </div>
 </nav>
 
+<!-- GUEST BANNER (shown only for guest users) -->
+<div id="guestBanner" style="display:none;background:linear-gradient(135deg,#1a1000,#111);border-bottom:1px solid #ff980033;padding:10px 20px;align-items:center;gap:12px;">
+  <span style="font-size:16px;">👀</span>
+  <div style="flex:1;font-size:12px;color:#aaa;">You're browsing as <strong style="color:#ff9800;">Guest</strong> — sign in to save orders &amp; get offers</div>
+  <button onclick="showLoginFromGuest()" style="background:linear-gradient(135deg,#ff4d4d,#ff1a1a);color:#fff;border:none;border-radius:8px;padding:7px 14px;font-size:12px;font-weight:700;font-family:Poppins;cursor:pointer;white-space:nowrap;">Sign In</button>
+</div>
+
 <!-- ═══ HERO BANNER ═══ -->
 <div class="hero-banner">
   <div class="hero-content">
@@ -1385,16 +1754,30 @@ overflow:hidden;
 </div>
 
 <!-- ═══ PROMO STRIP ═══ -->
-<div class="promo-strip">
-  <div class="promo-item">⚡ Express delivery in 30 min</div>
-  <div class="promo-dot"></div>
-  <div class="promo-item">🎁 Free delivery on first order</div>
-  <div class="promo-dot"></div>
-  <div class="promo-item">🌿 100% Fresh ingredients</div>
-  <div class="promo-dot"></div>
-  <div class="promo-item">💳 Safe & secure payments</div>
-  <div class="promo-dot"></div>
-  <div class="promo-item">⭐ 4.5 rated by 1200+ customers</div>
+<div class="promo-strip" style="overflow:hidden;padding:10px 0;">
+  <div class="promo-strip-inner">
+    <div class="promo-item">⚡ Express delivery in 30 min</div>
+    <div class="promo-dot"></div>
+    <div class="promo-item">🎁 Free delivery on first order</div>
+    <div class="promo-dot"></div>
+    <div class="promo-item">🌿 100% Fresh ingredients</div>
+    <div class="promo-dot"></div>
+    <div class="promo-item">💳 Safe & secure payments</div>
+    <div class="promo-dot"></div>
+    <div class="promo-item">⭐ 4.5 rated by 1200+ customers</div>
+    <div class="promo-dot"></div>
+    <!-- duplicate for seamless loop -->
+    <div class="promo-item">⚡ Express delivery in 30 min</div>
+    <div class="promo-dot"></div>
+    <div class="promo-item">🎁 Free delivery on first order</div>
+    <div class="promo-dot"></div>
+    <div class="promo-item">🌿 100% Fresh ingredients</div>
+    <div class="promo-dot"></div>
+    <div class="promo-item">💳 Safe & secure payments</div>
+    <div class="promo-dot"></div>
+    <div class="promo-item">⭐ 4.5 rated by 1200+ customers</div>
+    <div class="promo-dot"></div>
+  </div>
 </div>
 
 <!-- Category Cards with Images -->
@@ -1471,6 +1854,11 @@ overflow:hidden;
   🛒 View Cart <span id="floatCartCount" style="background:rgba(255,255,255,0.25);padding:2px 8px;border-radius:10px;font-size:12px">0</span>
 </button>
 
+</div><!-- end #main -->
+
+<!-- ══════════════════════════════════════════════════════
+     ALL FIXED PANELS — outside #main so blur never hits them
+     ══════════════════════════════════════════════════════ -->
 <div class="cart" id="cart">
 
 <!-- CART HEADER -->
@@ -1480,6 +1868,24 @@ overflow:hidden;
     <div class="cart-header-sub" id="cartRestaurant">99Foodies · Valsad</div>
   </div>
   <button onclick="toggleCart()" class="cart-close-btn">✕</button>
+</div>
+
+<!-- CHECKOUT PROGRESS STEPS -->
+<div style="display:flex;align-items:center;padding:12px 20px 0;gap:0;" id="checkoutSteps">
+  <div style="display:flex;flex-direction:column;align-items:center;flex:1;">
+    <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#ff4d4d,#ff1a1a);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;box-shadow:0 2px 8px rgba(255,77,77,0.4);">1</div>
+    <div style="font-size:10px;color:#ff4d4d;font-weight:700;margin-top:4px;">Cart</div>
+  </div>
+  <div style="flex:1;height:2px;background:linear-gradient(90deg,#ff4d4d44,#2a2a2a);margin-bottom:14px;"></div>
+  <div style="display:flex;flex-direction:column;align-items:center;flex:1;">
+    <div style="width:28px;height:28px;border-radius:50%;background:#1a1a1a;border:2px solid #2a2a2a;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#555;">2</div>
+    <div style="font-size:10px;color:#555;font-weight:700;margin-top:4px;">Address</div>
+  </div>
+  <div style="flex:1;height:2px;background:#2a2a2a;margin-bottom:14px;"></div>
+  <div style="display:flex;flex-direction:column;align-items:center;flex:1;">
+    <div style="width:28px;height:28px;border-radius:50%;background:#1a1a1a;border:2px solid #2a2a2a;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#555;">3</div>
+    <div style="font-size:10px;color:#555;font-weight:700;margin-top:4px;">Payment</div>
+  </div>
 </div>
 
 <!-- CART MAIN BODY (hidden when payment page is shown) -->
@@ -1498,12 +1904,58 @@ overflow:hidden;
     <div style="font-size:11px;color:#666;margin-bottom:1px;">Delivering to</div>
     <div style="font-size:13px;font-weight:600;color:#fff;" id="cartAddrText">Tap to add address</div>
   </div>
-  <span style="color:#ff4d4d;font-size:12px;font-weight:700;">Change ›</span>
+  <span style="color:#ff4d4d;font-size:12px;font-weight:700;" id="cartAddrBarAction">Add ›</span>
 </div>
 
-<!-- ADDRESS FORM (inline, shown on tap) -->
+<!-- ADDRESS CHOOSER (shown when an address already exists) -->
+<div id="cartAddrChooser" style="display:none;margin:10px 16px 0;">
+  <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:10px;">📍 Deliver to</div>
+
+  <!-- Current saved address card -->
+  <div id="chooserCurrentAddr"
+    onclick="useSavedDeliveryAddr()"
+    style="display:flex;align-items:flex-start;gap:12px;background:#0d2e1f;border:1.5px solid #00e5a033;border-radius:14px;padding:14px;margin-bottom:8px;cursor:pointer;transition:0.2s;"
+    onmouseover="this.style.borderColor='#00e5a066'" onmouseout="this.style.borderColor='#00e5a033'">
+    <div style="width:36px;height:36px;border-radius:10px;background:#1e4a2f;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">📍</div>
+    <div style="flex:1;min-width:0;">
+      <div style="font-size:11px;color:#00e5a0;font-weight:700;margin-bottom:3px;">✔ Deliver here</div>
+      <div style="font-size:13px;font-weight:600;color:#fff;line-height:1.4;" id="chooserAddrText">—</div>
+    </div>
+    <div style="width:20px;height:20px;border-radius:50%;background:#00e5a0;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">
+      <div style="width:8px;height:8px;border-radius:50%;background:#0a0a0a;"></div>
+    </div>
+  </div>
+
+  <!-- Saved profile addresses (rendered dynamically) -->
+  <div id="chooserSavedList"></div>
+
+  <!-- Add new address option -->
+  <div onclick="showNewAddrForm()"
+    style="display:flex;align-items:center;gap:12px;background:#1a1a1a;border:1.5px dashed #333;border-radius:14px;padding:14px;cursor:pointer;transition:0.2s;margin-bottom:4px;"
+    onmouseover="this.style.borderColor='#ff4d4d66'" onmouseout="this.style.borderColor='#333'">
+    <div style="width:36px;height:36px;border-radius:10px;background:#2a1a1a;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">➕</div>
+    <div style="flex:1;">
+      <div style="font-size:13px;font-weight:600;color:#ff4d4d;">Add a new address</div>
+      <div style="font-size:11px;color:#555;margin-top:1px;">Enter a different delivery location</div>
+    </div>
+    <span style="color:#ff4d4d;font-size:16px;">›</span>
+  </div>
+
+  <!-- Cancel -->
+  <button onclick="closeAddrChooser()"
+    style="width:100%;margin-top:8px;padding:10px;background:transparent;border:1px solid #2a2a2a;color:#666;border-radius:10px;font-size:13px;font-weight:600;font-family:Poppins;cursor:pointer;transition:0.2s;"
+    onmouseover="this.style.borderColor='#444';this.style.color='#aaa'" onmouseout="this.style.borderColor='#2a2a2a';this.style.color='#666'">
+    Cancel
+  </button>
+</div>
+
+<!-- ADDRESS FORM (inline, shown when adding new) -->
 <div id="cartAddrForm" style="display:none;">
-  <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:12px;">📍 Delivery Address</div>
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+    <button onclick="backToChooser()" id="addrFormBackBtn"
+      style="width:30px;height:30px;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:8px;color:#aaa;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;">←</button>
+    <div style="font-size:13px;font-weight:700;color:#fff;">📍 New Delivery Address</div>
+  </div>
 
   <input id="addrName" type="text" placeholder="Full Name *" maxlength="50"
     style="width:100%;box-sizing:border-box;padding:11px 13px;background:#111;border:1.5px solid #2a2a2a;border-radius:10px;color:#fff;font-family:Poppins;font-size:13px;outline:none;margin-bottom:8px;"
@@ -1535,9 +1987,9 @@ overflow:hidden;
   <div style="display:flex;gap:8px;">
     <button onclick="saveDeliveryAddr()"
       style="flex:1;padding:12px;background:linear-gradient(135deg,#ff4d4d,#ff1a1a);color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;font-family:Poppins;cursor:pointer;box-shadow:0 4px 14px rgba(255,77,77,0.3);">
-      Save Address
+      Save & Deliver Here
     </button>
-    <button onclick="toggleAddrForm()"
+    <button onclick="backToChooser()"
       style="padding:12px 16px;background:#111;border:1px solid #333;color:#888;border-radius:10px;font-size:13px;font-weight:600;font-family:Poppins;cursor:pointer;">
       Cancel
     </button>
@@ -1865,6 +2317,11 @@ overflow:hidden;
       </div>
       <div class="pay-detail-divider"></div>
       <div class="pay-detail-row">
+        <span class="pay-detail-label">Date & Time</span>
+        <span class="pay-detail-value" id="successDateTime" style="font-size:12px;">—</span>
+      </div>
+      <div class="pay-detail-divider"></div>
+      <div class="pay-detail-row">
         <span class="pay-detail-label">Amount Paid</span>
         <span class="pay-detail-value pay-amount">₹<span id="paidAmount">0</span></span>
       </div>
@@ -2181,7 +2638,14 @@ overflow:hidden;
   <div class="profile-header">
     <div style="display:flex;justify-content:space-between;align-items:center">
       <h3 style="margin:0;font-size:18px;font-weight:700">My Profile</h3>
-      <button onclick="toggleProfile()" style="background:none;border:none;color:#aaa;font-size:22px;cursor:pointer;line-height:1;padding:0">&#x2715;</button>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <button onclick="signOut()"
+          style="background:#1a0a0a;border:1px solid #ff4d4d33;color:#ff4d4d;font-size:11px;font-weight:700;font-family:Poppins;padding:6px 12px;border-radius:8px;cursor:pointer;transition:0.2s;"
+          onmouseover="this.style.background='#2a1010'" onmouseout="this.style.background='#1a0a0a'">
+          Sign Out
+        </button>
+        <button onclick="toggleProfile()" style="background:none;border:none;color:#aaa;font-size:22px;cursor:pointer;line-height:1;padding:0">&#x2715;</button>
+      </div>
     </div>
   </div>
 
@@ -2300,21 +2764,71 @@ overflow:hidden;
 
     <!-- TAB: ORDER HISTORY -->
     <div class="profile-tab-content" id="tab-orders" style="display:none">
-      <div class="profile-section-title">Order History</div>
-      <div id="orderHistoryList">
-        <div style="text-align:center;padding:40px 20px;color:#555">
-          <div style="font-size:40px;margin-bottom:10px">&#x1F6D2;</div>
-          <div style="font-size:14px;font-weight:600;color:#666">No orders yet</div>
-          <div style="font-size:12px;color:#444;margin-top:4px">Your order history will appear here</div>
-        </div>
+      <!-- Quick summary + open full page -->
+      <div style="text-align:center;padding:24px 20px 20px;">
+        <div style="font-size:52px;margin-bottom:12px;">🧾</div>
+        <div style="font-size:16px;font-weight:800;color:#fff;margin-bottom:6px;">Your Order History</div>
+        <div style="font-size:13px;color:#666;margin-bottom:20px;line-height:1.6;">View all your past orders, bills,<br>items and reorder in one tap.</div>
+        <button onclick="openOrderHistory()" style="width:100%;padding:15px;background:linear-gradient(135deg,#ff4d4d,#ff1a1a);color:#fff;border:none;border-radius:14px;font-size:15px;font-weight:800;font-family:Poppins;cursor:pointer;box-shadow:0 6px 20px rgba(255,77,77,0.35);transition:0.2s;display:flex;align-items:center;justify-content:center;gap:10px;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">
+          📋 View All Orders
+          <span id="ohTabBadge" style="background:rgba(255,255,255,0.2);padding:3px 10px;border-radius:20px;font-size:13px;font-weight:800;">0</span>
+        </button>
       </div>
+
+      <!-- Recent 2 orders preview -->
+      <div style="padding:0 16px 24px;" id="ohRecentPreview"></div>
     </div>
 
   </div>
 </div>
 
-<!-- BLUR OVERLAY -->
-<div id="blurOverlay" onclick="closeAllPanels()" style="display:none;position:fixed;inset:0;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);background:rgba(0,0,0,0.4);z-index:999"></div>
+<!-- ══ ORDER HISTORY FULL PAGE ══ -->
+<div class="oh-page" id="ohPage">
+
+  <!-- STICKY HEADER -->
+  <div class="oh-header">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+      <button onclick="closeOrderHistory()" style="width:36px;height:36px;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:12px;color:#aaa;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:0.2s;" onmouseover="this.style.borderColor='#ff4d4d44';this.style.color='#fff'" onmouseout="this.style.borderColor='#2a2a2a';this.style.color='#aaa'">←</button>
+      <div style="flex:1;">
+        <div style="font-size:18px;font-weight:800;color:#fff;letter-spacing:-0.3px;">My Orders</div>
+        <div style="font-size:11px;color:#555;margin-top:1px;" id="ohSubtitle">Loading…</div>
+      </div>
+      <button onclick="clearOrderHistory()" style="background:transparent;border:1px solid #2a2a2a;color:#555;font-size:11px;font-weight:600;font-family:Poppins;padding:7px 12px;border-radius:10px;cursor:pointer;transition:0.2s;" onmouseover="this.style.borderColor='#ff4d4d44';this.style.color='#ff4d4d'" onmouseout="this.style.borderColor='#2a2a2a';this.style.color='#555'">🗑️ Clear</button>
+    </div>
+
+    <!-- FILTER CHIPS -->
+    <div class="oh-filter-row" id="ohFilterRow">
+      <button class="oh-filter-chip active" onclick="ohFilter(this,'all')">All Orders</button>
+      <button class="oh-filter-chip" onclick="ohFilter(this,'confirmed')">✔ Confirmed</button>
+      <button class="oh-filter-chip" onclick="ohFilter(this,'pending')">⏳ Pending</button>
+      <button class="oh-filter-chip" onclick="ohFilter(this,'upi')">📱 UPI</button>
+      <button class="oh-filter-chip" onclick="ohFilter(this,'cod')">🛵 COD</button>
+    </div>
+  </div>
+
+  <!-- STATS BAR -->
+  <div class="oh-stats-bar" id="ohStatsBar" style="margin-top:20px;">
+    <div class="oh-stat">
+      <div class="oh-stat-val" id="ohStatOrders">0</div>
+      <div class="oh-stat-lbl">Orders</div>
+    </div>
+    <div class="oh-stat">
+      <div class="oh-stat-val" id="ohStatSpent">₹0</div>
+      <div class="oh-stat-lbl">Total Spent</div>
+    </div>
+    <div class="oh-stat">
+      <div class="oh-stat-val" id="ohStatAvg">₹0</div>
+      <div class="oh-stat-lbl">Avg Order</div>
+    </div>
+  </div>
+
+  <!-- ORDER LIST -->
+  <div id="ohList" style="padding:0 16px 100px;"></div>
+
+</div>
+
+<!-- DIM OVERLAY — sits above #main, below panels -->
+<div id="blurOverlay" onclick="closeAllPanels()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:1000;transition:opacity 0.3s ease;"></div>
 
 <!-- 🔔 TOAST -->
 <div id="toast" class="toast"></div>
@@ -2492,7 +3006,17 @@ let savedAddresses = [];
 let defaultAddressIdx = 0;
 let selectedAddrType = "Home";
 // Load order history from localStorage on startup
-let orderHistory = JSON.parse(localStorage.getItem("99f_orders") || "[]");
+let orderHistory = JSON.parse(localStorage.getItem("99f_orders_v2") || "[]");
+// Migrate old format if exists
+(function migrateLegacyOrders(){
+  let legacy = localStorage.getItem("99f_orders");
+  if(legacy && !localStorage.getItem("99f_orders_v2")){
+    try {
+      let old = JSON.parse(legacy);
+      if(old.length) localStorage.setItem("99f_orders_v2", JSON.stringify(old));
+    } catch(e){}
+  }
+})();
 let freeshippingUsed = localStorage.getItem("99f_freeship") === "true";
 
 // ===== GOOGLE SIGN-IN + QUICK LOGIN =====
@@ -2529,6 +3053,7 @@ async function signInWithGoogle(){
     userProfile.phone    = user.phoneNumber  || "";
     userProfile.email    = user.email        || "";
     userProfile.avatarUrl = user.photoURL    || "";
+    logEvent("login", { method: "google" });
     enterSite();
   } catch(err){
     console.error("Google sign-in error:", err);
@@ -2541,24 +3066,332 @@ async function signInWithGoogle(){
   }
 }
 
-// ── Quick login (name + phone) ────────────────────────────────────────────────
-function quickLogin(){
-  let name  = document.getElementById("loginName").value.trim();
-  let phone = document.getElementById("loginPhone").value.trim();
-  if(!name){ showLoginError("⚠️ Please enter your name"); return; }
-  if(!phone || phone.length !== 10 || !/^\d{10}$/.test(phone)){
-    showLoginError("⚠️ Enter a valid 10-digit mobile number"); return;
+// ===== 🔐 REAL FIREBASE AUTH SYSTEM =====
+
+let _authMode = "signin"; // "signin" | "signup"
+
+// ── Tab switcher ──────────────────────────────────────────────────────────────
+function switchAuthTab(mode){
+  _authMode = mode;
+  clearLoginError();
+  let isSignup = mode === "signup";
+
+  // Tab styles
+  let tabSI = document.getElementById("tabSignin");
+  let tabSU = document.getElementById("tabSignup");
+  tabSI.style.background    = isSignup ? "transparent" : "linear-gradient(135deg,#ff4d4d,#ff1a1a)";
+  tabSI.style.color         = isSignup ? "#555" : "#fff";
+  tabSU.style.background    = isSignup ? "linear-gradient(135deg,#ff4d4d,#ff1a1a)" : "transparent";
+  tabSU.style.color         = isSignup ? "#fff" : "#555";
+
+  // Show/hide name field & forgot password
+  document.getElementById("signupNameWrap").style.display = isSignup ? "block" : "none";
+  document.getElementById("forgotWrap").style.display     = isSignup ? "none"  : "block";
+
+  // Button label
+  document.getElementById("authBtnText").innerText = isSignup ? "Create Account 🚀" : "Sign In →";
+
+  // Autocomplete hint
+  document.getElementById("authPass").setAttribute("autocomplete", isSignup ? "new-password" : "current-password");
+}
+
+// ── Password visibility toggle ────────────────────────────────────────────────
+function togglePassVis(){
+  let inp = document.getElementById("authPass");
+  let btn = document.getElementById("passVisBtn");
+  let isHidden = inp.type === "password";
+  inp.type = isHidden ? "text" : "password";
+  btn.innerText = isHidden ? "🙈" : "👁";
+}
+
+// ── Show / clear error ────────────────────────────────────────────────────────
+function showLoginError(msg, isSuccess){
+  let e = document.getElementById("loginError");
+  e.innerText = msg;
+  e.style.display    = "block";
+  e.style.background = isSuccess ? "#0d2e1f" : "#ff4d4d18";
+  e.style.border     = "1px solid " + (isSuccess ? "#1e4a2f" : "#ff4d4d44");
+  e.style.borderRadius = "10px";
+  e.style.padding    = "10px 14px";
+  e.style.fontSize   = "13px";
+  e.style.color      = isSuccess ? "#4caf50" : "#ff6b6b";
+  e.style.marginBottom = "12px";
+  e.style.textAlign  = "center";
+}
+function clearLoginError(){
+  let e = document.getElementById("loginError");
+  e.innerText = ""; e.style.display = "none";
+}
+
+// ── Button loading state ──────────────────────────────────────────────────────
+function setAuthLoading(on){
+  let btn  = document.getElementById("authSubmitBtn");
+  let text = document.getElementById("authBtnText");
+  btn.disabled = on;
+  if(on){
+    text.innerHTML = '<span style="display:inline-block;animation:spin 0.8s linear infinite">⏳</span> Please wait…';
+  } else {
+    text.innerText = _authMode === "signup" ? "Create Account 🚀" : "Sign In →";
   }
-  userProfile.name  = name;
-  userProfile.phone = phone;
+}
+
+// ── Firebase error → human message ───────────────────────────────────────────
+function firebaseErrMsg(code){
+  const map = {
+    "auth/email-already-in-use":    "❌ This email is already registered. Sign in instead.",
+    "auth/invalid-email":           "❌ Invalid email address.",
+    "auth/weak-password":           "❌ Password must be at least 6 characters.",
+    "auth/user-not-found":          "❌ No account found with this email.",
+    "auth/wrong-password":          "❌ Incorrect password. Try again.",
+    "auth/invalid-credential":      "❌ Incorrect email or password.",
+    "auth/too-many-requests":       "❌ Too many attempts. Try again later.",
+    "auth/network-request-failed":  "❌ Network error. Check your connection.",
+    "auth/popup-blocked":           "❌ Popup blocked — allow popups for this site.",
+    "auth/popup-closed-by-user":    "Sign-in cancelled.",
+    "auth/user-disabled":           "❌ This account has been disabled.",
+    "auth/operation-not-allowed":   "⚠️ Email login not enabled yet. Use Google sign-in or enable Email/Password in Firebase Console → Authentication → Sign-in method.",
+    "auth/configuration-not-found": "⚠️ Firebase Auth not configured. Please enable a sign-in method in Firebase Console.",
+  };
+  return map[code] || "❌ Something went wrong. Please try again.";
+}
+
+// ── MAIN SUBMIT HANDLER ───────────────────────────────────────────────────────
+async function handleAuthSubmit(){
+  clearLoginError();
+  let email = document.getElementById("authEmail").value.trim();
+  let pass  = document.getElementById("authPass").value;
+  let name  = _authMode === "signup" ? document.getElementById("authName").value.trim() : "";
+
+  // Client-side validation
+  if(!email || !email.includes("@")){ showLoginError("⚠️ Enter a valid email address."); return; }
+  if(!pass || pass.length < 6)      { showLoginError("⚠️ Password must be at least 6 characters."); return; }
+  if(_authMode === "signup" && !name){ showLoginError("⚠️ Please enter your full name."); return; }
+
+  setAuthLoading(true);
+
+  try {
+    let result;
+    if(_authMode === "signup"){
+      // ── CREATE ACCOUNT ──────────────────────────────────────────────────────
+      result = await firebase.auth().createUserWithEmailAndPassword(email, pass);
+      // Set display name in Firebase
+      await result.user.updateProfile({ displayName: name });
+      userProfile.name     = name;
+      userProfile.email    = email;
+      userProfile.avatarUrl = "";
+      logEvent("sign_up", { method: "email" });
+      showLoginError("✅ Account created! Welcome to 99Foodies 🎉", true);
+      setTimeout(() => enterSite(), 900);
+
+    } else {
+      // ── SIGN IN ─────────────────────────────────────────────────────────────
+      result = await firebase.auth().signInWithEmailAndPassword(email, pass);
+      userProfile.name     = result.user.displayName || email.split("@")[0];
+      userProfile.email    = result.user.email || email;
+      userProfile.avatarUrl = result.user.photoURL || "";
+      logEvent("login", { method: "email" });
+      enterSite();
+    }
+
+  } catch(err){
+    console.error("Auth error:", err.code, err.message);
+    showLoginError(firebaseErrMsg(err.code));
+    setAuthLoading(false);
+  }
+}
+
+// ── FORGOT PASSWORD ───────────────────────────────────────────────────────────
+async function sendPasswordReset(){
+  let email = document.getElementById("authEmail").value.trim();
+  if(!email || !email.includes("@")){
+    showLoginError("⚠️ Enter your email address first, then click Forgot password.");
+    return;
+  }
+  try {
+    await firebase.auth().sendPasswordResetEmail(email);
+    showLoginError(
+      "📧 Reset email sent to " + email + ".\n\n" +
+      "✅ Check your Gmail inbox.\n" +
+      "📁 Also check Spam / Junk folder.\n" +
+      "⏱ May take 1–2 minutes to arrive.",
+      true
+    );
+  } catch(err){
+    showLoginError(firebaseErrMsg(err.code));
+  }
+}
+
+// ── GOOGLE SIGN-IN ────────────────────────────────────────────────────────────
+async function signInWithGoogle(){
+  let btn = document.querySelector(".google-signin-btn");
+  btn.disabled = true;
+  btn.innerHTML = '<span style="display:inline-block;animation:spin 0.8s linear infinite">⏳</span> Signing in…';
+  try {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    const result   = await firebase.auth().signInWithPopup(provider);
+    const user     = result.user;
+    userProfile.name      = user.displayName || "User";
+    userProfile.phone     = user.phoneNumber  || "";
+    userProfile.email     = user.email        || "";
+    userProfile.avatarUrl = user.photoURL     || "";
+    logEvent("login", { method: "google" });
+    enterSite();
+  } catch(err){
+    console.error("Google sign-in error:", err);
+    btn.disabled = false;
+    btn.innerHTML = `<svg width="20" height="20" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg> Continue with Google`;
+    showLoginError(firebaseErrMsg(err.code));
+  }
+}
+
+// ── GUEST LOGIN ───────────────────────────────────────────────────────────────
+function guestLogin(){
+  userProfile.name    = "Guest";
+  userProfile.phone   = "";
+  userProfile.isGuest = true;
+  logEvent("login", { method: "guest" });
+  enterSite();
+  showToast("👀 Browsing as Guest — sign in to save your orders");
+}
+
+// ── AUTO-LOGIN: restore session if Firebase still has a user ──────────────────
+firebase.auth().onAuthStateChanged(function(user){
+  // Only auto-enter if login page is still showing (not already inside)
+  let loginPage = document.getElementById("loginPage");
+  if(user && loginPage && loginPage.style.display !== "none"){
+    userProfile.name      = user.displayName || user.email.split("@")[0];
+    userProfile.email     = user.email || "";
+    userProfile.avatarUrl = user.photoURL || "";
+    enterSite();
+  }
+});
+
+// ── SIGN OUT (called from profile panel) ─────────────────────────────────────
+function signOut(){
+  firebase.auth().signOut().then(() => {
+    // Reset profile
+    userProfile = { name:"", phone:"", email:"", avatarUrl:"", isGuest:false };
+    // Close all panels and go back to login
+    closeAllPanels();
+    document.getElementById("main").style.display = "none";
+    document.getElementById("loginPage").style.display = "flex";
+    document.getElementById("authEmail").value = "";
+    document.getElementById("authPass").value  = "";
+    clearLoginError();
+    switchAuthTab("signin");
+    showToast("👋 Signed out successfully");
+  }).catch(err => showToast("Sign out failed: " + err.message));
+}
+
+// ── KEEP quickLogin as fallback (no longer shown in UI but kept for safety) ───
+function quickLogin(){
+  let name = (document.getElementById("authName") || {}).value || "User";
+  userProfile.name = name;
   enterSite();
 }
 
 function enterSite(){
   document.getElementById("loginPage").style.display = "none";
-  document.getElementById("main").style.display = "block";
+  let main = document.getElementById("main");
+  main.style.display = "block";
+  requestAnimationFrame(() => main.classList.add("fade-in"));
   applyFilters();
   refreshProfileUI();
+  let guestBanner = document.getElementById("guestBanner");
+  if(guestBanner) guestBanner.style.display = userProfile.isGuest ? "flex" : "none";
+
+  // 🔄 Silently pre-fetch orders from Firestore in background
+  // so the order history page is instant when the user opens it
+  let user = firebase.auth().currentUser;
+  if(user && !userProfile.isGuest){
+    setTimeout(() => {
+      window._fbDb.collection("users").doc(user.uid)
+        .collection("orders")
+        .limit(50)
+        .get()
+        .then(snapshot => {
+          let fetched = [];
+          snapshot.forEach(doc => {
+            let d = doc.data();
+            let ts = d.timestamp && d.timestamp.toDate ? d.timestamp.toDate().toISOString() : (d.clientTime || "");
+            fetched.push({
+              id: d.orderId || doc.id, timestamp: ts,
+              date: d.date||"", time: d.time||"",
+              items: d.items||[], itemsText: d.itemsText||"",
+              subtotal: d.subtotal||0, deliveryFee: d.deliveryFee||0,
+              platformFee: d.platformFee||0, taxes: d.taxes||0,
+              discount: d.discount||0, total: d.total||0,
+              payMethod: d.payMethod||"", address: d.address||"",
+              status: d.status||"Confirmed", coupon: d.coupon||""
+            });
+          });
+          // Merge with local
+          let localIds = new Set(fetched.map(o => o.id));
+          let localOnly = orderHistory.filter(o => !localIds.has(o.id));
+          let merged = [...fetched, ...localOnly];
+          merged.sort((a,b) => (b.timestamp||"").localeCompare(a.timestamp||""));
+          orderHistory = merged;
+          saveOrdersToStorage();
+          renderRecentOrderPreview();
+          let countEl = document.getElementById("profileOrderCount");
+          if(countEl) countEl.innerText = orderHistory.length;
+        })
+        .catch(err => console.warn("Background order fetch failed:", err.message));
+    }, 1500); // delay so login animation completes first
+  }
+}
+function showLoginFromGuest(){
+  // Reset guest flag and show login page
+  userProfile.isGuest = false;
+  document.getElementById("main").style.display = "none";
+  document.getElementById("loginPage").style.display = "flex";
+  document.getElementById("loginName").value = "";
+  document.getElementById("loginPhone").value = "";
+  clearLoginError();
+}
+
+// ── Checkout step indicator ───────────────────────────────────────────────────
+function updateCheckoutStep(step){
+  // step: 1=cart, 2=address, 3=payment
+  let steps = document.querySelectorAll("#checkoutSteps > div:not([style*='height'])");
+  let lines  = document.querySelectorAll("#checkoutSteps > div[style*='height']");
+  steps.forEach((s, i) => {
+    let num = s.querySelector("div:first-child");
+    let lbl = s.querySelector("div:last-child");
+    if(i + 1 < step){
+      // completed
+      num.style.background = "linear-gradient(135deg,#4caf50,#2e7d32)";
+      num.style.border = "none";
+      num.style.color = "#fff";
+      num.style.boxShadow = "0 2px 8px rgba(76,175,80,0.4)";
+      num.innerText = "✓";
+      lbl.style.color = "#4caf50";
+    } else if(i + 1 === step){
+      // active
+      num.style.background = "linear-gradient(135deg,#ff4d4d,#ff1a1a)";
+      num.style.border = "none";
+      num.style.color = "#fff";
+      num.style.boxShadow = "0 2px 8px rgba(255,77,77,0.4)";
+      num.innerText = String(i + 1);
+      lbl.style.color = "#ff4d4d";
+    } else {
+      // future
+      num.style.background = "#1a1a1a";
+      num.style.border = "2px solid #2a2a2a";
+      num.style.color = "#555";
+      num.style.boxShadow = "none";
+      num.innerText = String(i + 1);
+      lbl.style.color = "#555";
+    }
+  });
+  // update connector lines
+  lines.forEach((l, i) => {
+    l.style.background = i + 1 < step
+      ? "linear-gradient(90deg,#4caf50,#ff4d4d44)"
+      : i + 1 === step
+        ? "linear-gradient(90deg,#ff4d4d44,#2a2a2a)"
+        : "#2a2a2a";
+  });
 }
 
 let vegOnly = false;
@@ -2608,8 +3441,10 @@ function show(list){
       let qtyBadge = inCart ? `<span class="in-cart-badge">${cartQty[i.n].q} in cart</span>` : "";
       let popularBadge = idx < 3 ? `<span class="popular-badge">🔥 Popular</span>` : "";
       let spicyLevel = i.spicy >= 3 ? `<span class="spicy-badge">🌶️ Spicy</span>` : "";
+      // stagger delay capped at 0.35s so last cards don't wait forever
+      let delay = Math.min(idx * 0.05, 0.35).toFixed(2);
       html += `
-      <div class="card">
+      <div class="card" style="animation-delay:${delay}s">
         ${qtyBadge}
         ${popularBadge}
         <div class="card-info">
@@ -2626,7 +3461,7 @@ function show(list){
             <div class="card-price">&#x20B9;${i.p}</div>
             <div style="font-size:10px;color:#444;margin-top:1px">onwards</div>
           </div>
-          <button class="card-add-btn${inCart?' in-cart':''}" onclick="add('${i.n}',${i.p})">${inCart?'✓ Added':'Add +'}</button>
+          <button class="card-add-btn ripple-host${inCart?' in-cart':''}" onclick="add('${i.n}',${i.p})">${inCart?'✓ Added':'Add +'}</button>
         </div>
       </div>`;
     });
@@ -2662,8 +3497,11 @@ function filterCat(el, cat){
   document.querySelector(".filter-btn").classList.add("active");
   setCatBackground(cat);
   applyFilters();
-  // scroll menu into view
-  document.getElementById("menu").scrollIntoView({behavior:"smooth", block:"start"});
+  // scroll menu into view smoothly with a small delay so render completes
+  setTimeout(()=>{
+    let menuEl = document.getElementById("menu");
+    if(menuEl) menuEl.scrollIntoView({behavior:"smooth", block:"start"});
+  }, 80);
 }
 
 function setFilter(el, type){
@@ -2697,7 +3535,24 @@ let open=c.classList.contains("panel-open");
 closeAllPanels();
 if(!open){
   c.classList.add("panel-open");
-  document.getElementById("blurOverlay").style.display="block";
+  dimMain();
+  // If no active delivery address but profile has saved ones → auto-load default
+  if(!savedDeliveryAddr && savedAddresses.length > 0){
+    let def = savedAddresses[defaultAddressIdx] || savedAddresses[0];
+    savedDeliveryAddr = {
+      name:   userProfile.name  || "",
+      phone:  userProfile.phone || "",
+      flat:   def.flat,
+      street: def.street,
+      city:   def.city,
+      pin:    def.pin || ""
+    };
+    let line = [def.flat, def.street, def.city, def.pin ? "- " + def.pin : ""].filter(Boolean).join(", ");
+    document.getElementById("cartAddrText").innerText  = line;
+    document.getElementById("cartAddrBar").style.border = "1.5px solid #4caf5044";
+    document.getElementById("cartAddrBarAction").innerText = "Change ›";
+  }
+  updateCheckoutStep(savedDeliveryAddr ? 3 : 1);
 }
 }
 
@@ -2708,16 +3563,30 @@ let isVeg = itemData ? itemData.v : false;
 
 if(!cartQty[n]){cartQty[n]={p:p,q:0,img:img};cart.push({n,p,img,v:isVeg})}
 cartQty[n].q++;
+logEvent("add_to_cart", { item_name: n, price: p, currency: "INR" });
 update();
 applyFilters(); // refresh card buttons
 
 /* 🔊 SOUND */
 playClickSound();
 
-/* 🛒 SHAKE */
+/* 🛒 SHAKE + BOUNCE BADGE */
 let cartBtn=document.getElementById("cartBtn");
 cartBtn.classList.add("shake");
 setTimeout(()=>cartBtn.classList.remove("shake"),400);
+
+/* Badge pop animation */
+let badge = document.getElementById("cartCount");
+badge.style.animation = "none";
+badge.offsetHeight; // reflow
+badge.style.animation = "popIn 0.35s ease";
+
+/* Float btn pulse */
+let floatBtn = document.getElementById("floatCartBtn");
+if(floatBtn){
+  floatBtn.style.transform = "scale(1.08)";
+  setTimeout(()=>floatBtn.style.transform="",300);
+}
 
 /* 🔔 TOAST */
 let t=document.getElementById("toast");
@@ -2809,6 +3678,7 @@ cartQty[n].q+=delta;
 if(cartQty[n].q<=0){
 delete cartQty[n];
 cart=cart.filter(i=>i.n!==n);
+showToast("🗑️ " + n + " removed");
 }
 update();
 applyFilters();
@@ -2958,17 +3828,152 @@ document.addEventListener("DOMContentLoaded", () => selectCartPay("upi"));
 // ── DELIVERY ADDRESS ──────────────────────────────────────────────────────────
 let savedDeliveryAddr = null;
 
+// ── HELPERS: hide all address UI panels ──────────────────────────────────────
+function hideAllAddrPanels(){
+  document.getElementById("cartAddrChooser").style.display = "none";
+  document.getElementById("cartAddrForm").style.display    = "none";
+}
+
+// ── MAIN ENTRY: tap on address bar ───────────────────────────────────────────
 function toggleAddrForm(){
-  let form = document.getElementById("cartAddrForm");
-  let isOpen = form.style.display !== "none";
-  form.style.display = isOpen ? "none" : "block";
-  if(!isOpen && savedDeliveryAddr){
-    document.getElementById("addrName").value    = savedDeliveryAddr.name   || "";
-    document.getElementById("addrPhone").value   = savedDeliveryAddr.phone  || "";
-    document.getElementById("addrFlat2").value   = savedDeliveryAddr.flat   || "";
-    document.getElementById("addrStreet2").value = savedDeliveryAddr.street || "";
-    document.getElementById("addrCity2").value   = savedDeliveryAddr.city   || "";
-    document.getElementById("addrPin2").value    = savedDeliveryAddr.pin    || "";
+  let chooser = document.getElementById("cartAddrChooser");
+  let form    = document.getElementById("cartAddrForm");
+
+  // If chooser or form already open → close everything
+  if(chooser.style.display !== "none" || form.style.display !== "none"){
+    hideAllAddrPanels();
+    return;
+  }
+
+  // Has a current delivery address OR profile has saved addresses → show chooser
+  if(savedDeliveryAddr || savedAddresses.length > 0){
+    openAddrChooser();
+  } else {
+    // Truly no addresses anywhere → blank form
+    showNewAddrForm();
+  }
+}
+
+// ── OPEN CHOOSER ─────────────────────────────────────────────────────────────
+function openAddrChooser(){
+  updateCheckoutStep(2);
+
+  let icons = { Home:"🏠", Work:"💼", Other:"📍" };
+
+  // ── CASE A: active delivery address exists → show it as "current" ──────────
+  let currentHtml = "";
+  if(savedDeliveryAddr){
+    let a = savedDeliveryAddr;
+    let addrLine = [a.flat, a.street, a.city, a.pin ? "- " + a.pin : ""].filter(Boolean).join(", ");
+    document.getElementById("chooserAddrText").innerText = addrLine;
+    document.getElementById("chooserCurrentAddr").style.display = "flex";
+  } else {
+    // No active address — hide the "current" card
+    document.getElementById("chooserCurrentAddr").style.display = "none";
+  }
+
+  // ── Build list of profile addresses (exclude the one already active) ────────
+  let listEl = document.getElementById("chooserSavedList");
+  let others = savedAddresses.filter(sa => {
+    if(!savedDeliveryAddr) return true;          // show all if nothing active
+    let a = savedDeliveryAddr;
+    return !(sa.flat === a.flat && sa.street === a.street && sa.city === a.city);
+  });
+
+  if(others.length > 0){
+    // Section label only when there's also a "current" card above
+    let sectionLabel = savedDeliveryAddr
+      ? `<div style="font-size:10px;font-weight:700;color:#555;letter-spacing:1px;text-transform:uppercase;margin:4px 0 8px;">Other saved addresses</div>`
+      : `<div style="font-size:10px;font-weight:700;color:#555;letter-spacing:1px;text-transform:uppercase;margin:0 0 8px;">Your saved addresses</div>`;
+
+    listEl.innerHTML = sectionLabel + others.map(sa => {
+      let realIdx = savedAddresses.indexOf(sa);
+      let line = [sa.flat, sa.street, sa.city, sa.pin ? "- " + sa.pin : ""].filter(Boolean).join(", ");
+      let isDefault = realIdx === defaultAddressIdx;
+      return `
+      <div onclick="selectSavedAddr(${realIdx})"
+        style="display:flex;align-items:flex-start;gap:12px;background:#1a1a1a;border:1.5px solid ${isDefault ? '#ff4d4d33' : '#2a2a2a'};border-radius:14px;padding:14px;margin-bottom:8px;cursor:pointer;transition:0.2s;"
+        onmouseover="this.style.borderColor='#ff4d4d55'" onmouseout="this.style.borderColor='${isDefault ? '#ff4d4d33' : '#2a2a2a'}'">
+        <div style="width:36px;height:36px;border-radius:10px;background:#2a1a1a;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">${icons[sa.type]||'📍'}</div>
+        <div style="flex:1;min-width:0;">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">
+            <span style="font-size:11px;color:#ff4d4d;font-weight:700;">${sa.type}</span>
+            ${isDefault ? `<span style="font-size:9px;background:#ff4d4d22;color:#ff4d4d;padding:1px 7px;border-radius:8px;font-weight:700;">Default</span>` : ""}
+          </div>
+          <div style="font-size:13px;font-weight:600;color:#fff;line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${line}</div>
+        </div>
+        <span style="color:#ff4d4d;font-size:16px;margin-top:4px;flex-shrink:0;">›</span>
+      </div>`;
+    }).join("");
+  } else {
+    listEl.innerHTML = "";
+  }
+
+  document.getElementById("cartAddrChooser").style.display = "block";
+  document.getElementById("cartAddrForm").style.display    = "none";
+
+  let cartPanel = document.getElementById("cart");
+  if(cartPanel) cartPanel.scrollTo({top: 0, behavior:"smooth"});
+}
+
+// ── USE CURRENT SAVED ADDRESS (no change) ────────────────────────────────────
+function useSavedDeliveryAddr(){
+  hideAllAddrPanels();
+  showToast("✅ Delivering to " + (savedDeliveryAddr.city || "saved address"));
+  updateCheckoutStep(3);
+}
+
+// ── SELECT A DIFFERENT SAVED PROFILE ADDRESS ─────────────────────────────────
+function selectSavedAddr(idx){
+  let a = savedAddresses[idx];
+  if(!a) return;
+  savedDeliveryAddr = { name: userProfile.name || "", phone: userProfile.phone || "", flat: a.flat, street: a.street, city: a.city, pin: a.pin || "" };
+  let line = [a.flat, a.street, a.city, a.pin ? "- " + a.pin : ""].filter(Boolean).join(", ");
+  document.getElementById("cartAddrText").innerText = line;
+  document.getElementById("cartAddrBar").style.border = "1.5px solid #4caf5044";
+  document.getElementById("cartAddrBarAction").innerText = "Change ›";
+  hideAllAddrPanels();
+  showToast("✅ Delivering to " + a.city);
+  updateCheckoutStep(3);
+}
+
+// ── CLOSE CHOOSER WITHOUT CHANGE ─────────────────────────────────────────────
+function closeAddrChooser(){
+  hideAllAddrPanels();
+}
+
+// ── SHOW BLANK NEW ADDRESS FORM ───────────────────────────────────────────────
+function showNewAddrForm(){
+  // Clear form fields
+  ["addrName","addrPhone","addrFlat2","addrStreet2","addrCity2","addrPin2"].forEach(id => {
+    let el = document.getElementById(id);
+    if(el) el.value = "";
+  });
+  document.getElementById("addrFormError").style.display = "none";
+
+  // Pre-fill name/phone from profile if available
+  if(userProfile.name)  document.getElementById("addrName").value  = userProfile.name;
+  if(userProfile.phone) document.getElementById("addrPhone").value = userProfile.phone;
+
+  // Show/hide back button (only if there's something to go back to)
+  let backBtn = document.getElementById("addrFormBackBtn");
+  if(backBtn) backBtn.style.display = (savedDeliveryAddr || savedAddresses.length > 0) ? "flex" : "none";
+
+  document.getElementById("cartAddrChooser").style.display = "none";
+  document.getElementById("cartAddrForm").style.display    = "block";
+  updateCheckoutStep(2);
+
+  // Scroll cart to top
+  let cartPanel = document.getElementById("cart");
+  if(cartPanel) cartPanel.scrollTo({top: 0, behavior:"smooth"});
+}
+
+// ── BACK FROM FORM TO CHOOSER ─────────────────────────────────────────────────
+function backToChooser(){
+  if(savedDeliveryAddr || savedAddresses.length > 0){
+    openAddrChooser();
+  } else {
+    hideAllAddrPanels();
   }
 }
 
@@ -2990,7 +3995,7 @@ function saveDeliveryAddr(){
   document.getElementById("addrFormError").style.display = "none";
   savedDeliveryAddr = { name, phone, flat, street, city, pin };
 
-  // ── Also save to profile Addresses (avoid duplicates) ──
+  // Also save to profile Addresses (avoid duplicates)
   let alreadySaved = savedAddresses.some(a =>
     a.flat === flat && a.street === street && a.city === city && a.pin === pin
   );
@@ -3000,10 +4005,13 @@ function saveDeliveryAddr(){
     renderAddresses();
   }
 
-  document.getElementById("cartAddrText").innerText = flat + ", " + street + ", " + city + " - " + pin;
+  let addrLine = flat + ", " + street + ", " + city + " - " + pin;
+  document.getElementById("cartAddrText").innerText = addrLine;
   document.getElementById("cartAddrBar").style.border = "1.5px solid #4caf5044";
-  document.getElementById("cartAddrForm").style.display = "none";
-  showToast("✅ Address saved!");
+  document.getElementById("cartAddrBarAction").innerText = "Change ›";
+  hideAllAddrPanels();
+  showToast("✅ Delivering to " + city + "!");
+  updateCheckoutStep(3);
 }
 
 function showAddrError(msg){
@@ -3015,11 +4023,11 @@ function showAddrError(msg){
 function setDeliveryType(type, el){
   document.querySelectorAll(".cart-del-btn").forEach(b => b.classList.remove("active"));
   el.classList.add("active");
-  let addrBar = document.getElementById("cartAddrBar");
+  let addrBar  = document.getElementById("cartAddrBar");
   let addrForm = document.getElementById("cartAddrForm");
   if(type === "pickup"){
     if(addrBar) addrBar.style.display = "none";
-    if(addrForm) addrForm.style.display = "none";
+    hideAllAddrPanels();
     showToast("🏃 Pickup selected — collect from store");
   } else {
     if(addrBar) addrBar.style.display = "flex";
@@ -3123,14 +4131,20 @@ let qrInstance = null;
 function initiatePayment(){
 let total = parseInt(document.getElementById("total").innerText.replace("₹",""));
 if(total <= 0){
-  showToast("Add items to cart first!");
+  showToast("🛒 Add items to cart first!");
   return;
+}
+
+// Guest checkout — prompt to sign in or continue
+if(userProfile.isGuest){
+  let proceed = confirm("You're browsing as Guest.\n\nSign in to save your order history, or tap OK to continue as guest.");
+  if(!proceed) return;
 }
 
 // Check delivery address (only for delivery mode, not pickup)
 let isPickup = document.getElementById("pickBtn") && document.getElementById("pickBtn").classList.contains("active");
 if(!isPickup && !savedDeliveryAddr){
-  document.getElementById("cartAddrForm").style.display = "block";
+  showNewAddrForm();
   document.getElementById("cartAddrBar").style.border = "1.5px solid #ff4d4d";
   // Scroll the cart panel to top so address form is visible
   let cartPanel = document.getElementById("cart");
@@ -3145,9 +4159,14 @@ if(cartPayMethod === "cod"){
   if(confirm("Confirm Cash on Delivery order?\n\nOrder Total: ₹" + total + "\nCOD Charge: ₹20\nTotal Payable: ₹" + codTotal)){
     let paidAmt = codTotal;
     addToOrderHistory(paidAmt);
+    let latestOrder = orderHistory[0];
     document.getElementById("paymentSuccess").style.display = "block";
     document.getElementById("paidAmount").innerText = paidAmt;
-    document.getElementById("successOrderId").innerText = "#99F" + Date.now().toString().slice(-6);
+    document.getElementById("successOrderId").innerText = latestOrder ? latestOrder.id : "#99F-???";
+    let dtEl = document.getElementById("successDateTime");
+    if(dtEl && latestOrder) dtEl.innerText = latestOrder.date + " · " + latestOrder.time;
+    let pmEl = document.getElementById("successPayMethod");
+    if(pmEl) pmEl.innerText = "Cash on Delivery";
     showToast("🛵 COD order placed! Pay ₹" + codTotal + " on delivery.");
   }
   return;
@@ -3192,7 +4211,15 @@ addToOrderHistory(paidAmt);
 document.getElementById("qrBox").style.display="none";
 document.getElementById("paymentSuccess").style.display="block";
 document.getElementById("paidAmount").innerText = paidAmt;
-document.getElementById("successOrderId").innerText = "#99F" + Date.now().toString().slice(-6);
+// Use the ID and timestamp from the order we just saved
+let latestOrder = orderHistory[0];
+document.getElementById("successOrderId").innerText = latestOrder ? latestOrder.id : "#99F-???";
+let dtEl = document.getElementById("successDateTime");
+if(dtEl && latestOrder) dtEl.innerText = latestOrder.date + " · " + latestOrder.time;
+// Show payment method on success screen
+let methodLabels = {upi:"UPI / QR Code", cards:"Credit / Debit Card", netbanking:"Net Banking", cod:"Cash on Delivery"};
+let pmEl = document.getElementById("successPayMethod");
+if(pmEl) pmEl.innerText = methodLabels[selectedPayMethod] || "UPI";
 showToast("Thank you for your payment!");
 },800);
 }
@@ -3206,25 +4233,45 @@ cart = [];
 cartQty = {};
 appliedDiscount = 0;
 freeDelivery = false;
+savedDeliveryAddr = null;
+document.getElementById("cartAddrText").innerText = "Tap to add address";
+document.getElementById("cartAddrBar").style.border = "1.5px solid #222";
+document.getElementById("cartAddrBarAction").innerText = "Add ›";
+hideAllAddrPanels();
+document.getElementById("couponInput").value = "";
+document.getElementById("couponMsg").innerText = "";
 update();
 applyFilters();
 document.getElementById("paymentSuccess").style.display="none";
 document.getElementById("qrBox").style.display="none";
+document.getElementById("cart").classList.remove("panel-open");
+undimMain();
 showToast("🎉 Order placed! Thank you!");
+// Scroll back to top of menu
+window.scrollTo({top:0, behavior:"smooth"});
+}
+
+// ── DIM / UNDIM HELPERS ───────────────────────────────────────────────────────
+function dimMain(){
+  document.getElementById("blurOverlay").style.display = "block";
+}
+function undimMain(){
+  document.getElementById("blurOverlay").style.display = "none";
+  document.getElementById("main").classList.remove("panel-dimmed");
 }
 
 function toggleReviews(){
 let r=document.getElementById("reviews");
 let open=r.classList.contains("panel-open");
 closeAllPanels();
-if(!open){r.classList.add("panel-open");document.getElementById("blurOverlay").style.display="block";}
+if(!open){r.classList.add("panel-open");dimMain();}
 }
 
 function toggleContact(){
 let c=document.getElementById("contact");
 let open=c.classList.contains("panel-open");
 closeAllPanels();
-if(!open){c.classList.add("panel-open");document.getElementById("blurOverlay").style.display="block";}
+if(!open){c.classList.add("panel-open");dimMain();}
 }
 
 function closeAllPanels(){
@@ -3232,9 +4279,9 @@ document.getElementById("cart").classList.remove("panel-open");
 document.getElementById("reviews").classList.remove("panel-open");
 document.getElementById("contact").classList.remove("panel-open");
 document.getElementById("profilePanel").classList.remove("panel-open");
-document.getElementById("blurOverlay").style.display="none";
 document.getElementById("qrBox").style.display="none";
 document.getElementById("paymentSuccess").style.display="none";
+undimMain();
 }
 
 // 🆕 TOAST HELPER
@@ -3384,7 +4431,7 @@ function toggleProfile(){
   closeAllPanels();
   if(!open){
     p.classList.add("panel-open");
-    document.getElementById("blurOverlay").style.display = "block";
+    dimMain();
     refreshProfileUI();
   }
 }
@@ -3529,9 +4576,11 @@ function useAddressForDelivery(i){
   let a = savedAddresses[i];
   if(!a) return;
   // Set as active delivery address in cart
-  savedDeliveryAddr = { name:"", phone:"", flat:a.flat, street:a.street, city:a.city, pin:a.pin };
-  document.getElementById("cartAddrText").innerText = a.flat + ", " + a.street + ", " + a.city + " - " + a.pin;
+  savedDeliveryAddr = { name: userProfile.name || "", phone: userProfile.phone || "", flat:a.flat, street:a.street, city:a.city, pin:a.pin };
+  let line = a.flat + ", " + a.street + ", " + a.city + " - " + a.pin;
+  document.getElementById("cartAddrText").innerText = line;
   document.getElementById("cartAddrBar").style.border = "1.5px solid #4caf5044";
+  document.getElementById("cartAddrBarAction").innerText = "Change ›";
   showToast("✅ Delivering to " + a.city);
   // Close profile and open cart
   toggleProfile();
@@ -3557,57 +4606,680 @@ function deleteAddress(i){
   showToast("Address removed");
 }
 
-// --- ORDER HISTORY ---
+// ── ORDER ID GENERATOR ────────────────────────────────────────────────────────
+function generateOrderId(){
+  // Format: 99F-YYYYMMDD-XXXX  (date + 4 random alphanumeric chars)
+  let now = new Date();
+  let datePart = now.getFullYear().toString() +
+    String(now.getMonth()+1).padStart(2,"0") +
+    String(now.getDate()).padStart(2,"0");
+  let chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  let rand = Array.from({length:4}, ()=> chars[Math.floor(Math.random()*chars.length)]).join("");
+  return "99F-" + datePart + "-" + rand;
+}
+
+// ── SAVE ORDER TO LOCALSTORAGE ────────────────────────────────────────────────
+function saveOrdersToStorage(){
+  try {
+    localStorage.setItem("99f_orders_v2", JSON.stringify(orderHistory));
+  } catch(e){
+    // localStorage full — trim oldest 5 orders and retry
+    if(orderHistory.length > 5) orderHistory = orderHistory.slice(0, orderHistory.length - 5);
+    try { localStorage.setItem("99f_orders_v2", JSON.stringify(orderHistory)); } catch(e2){}
+  }
+}
+
+// ── ADD ORDER TO HISTORY ──────────────────────────────────────────────────────
 function addToOrderHistory(total){
-  let items_snapshot = cart.map(i => `${i.n} x${cartQty[i.n]?cartQty[i.n].q:1}`).join(", ");
-  orderHistory.unshift({
-    id: "#99F" + Date.now().toString().slice(-6),
-    items: items_snapshot,
-    total: total,
-    date: new Date().toLocaleDateString("en-IN", {day:"numeric",month:"short",year:"numeric"}),
-    status: "Delivered"
-  });
+  let now = new Date();
+
+  // Build rich items array
+  let itemsList = cart.map(i => ({
+    name:  i.n,
+    price: i.p,
+    qty:   cartQty[i.n] ? cartQty[i.n].q : 1,
+    img:   i.img || "",
+    veg:   i.v
+  }));
+
+  // Recalculate bill breakdown
+  let subtotal     = itemsList.reduce((s, i) => s + i.price * i.qty, 0);
+  let isPickup     = document.getElementById("pickBtn") && document.getElementById("pickBtn").classList.contains("active");
+  let deliveryFee  = isPickup ? 0 : (freeDelivery ? 0 : (subtotal > 0 ? 39 : 0));
+  let platformFee  = subtotal > 0 ? 10 : 0;
+  let taxes        = Math.round(subtotal * 0.09);
+  let discount     = appliedDiscount || 0;
+  let grandTotal   = parseInt(total); // use the passed total (may include COD charge)
+
+  // Payment method label
+  let methodLabels = {upi:"UPI / QR Code", cards:"Credit / Debit Card", netbanking:"Net Banking", cod:"Cash on Delivery"};
+  let payMethod    = methodLabels[cartPayMethod] || "UPI";
+
+  // Delivery address snapshot
+  let addrSnap = "";
+  if(isPickup){
+    addrSnap = "Store Pickup";
+  } else if(savedDeliveryAddr){
+    let a = savedDeliveryAddr;
+    addrSnap = [a.flat, a.street, a.city, a.pin ? "- " + a.pin : ""].filter(Boolean).join(", ");
+  }
+
+  let order = {
+    id:          generateOrderId(),
+    timestamp:   now.toISOString(),
+    date:        now.toLocaleDateString("en-IN", {day:"numeric", month:"short", year:"numeric"}),
+    time:        now.toLocaleTimeString("en-IN", {hour:"2-digit", minute:"2-digit", hour12:true}),
+    items:       itemsList,
+    itemsText:   itemsList.map(i => `${i.name} ×${i.qty}`).join(", "),
+    subtotal:    subtotal,
+    deliveryFee: deliveryFee,
+    platformFee: platformFee,
+    taxes:       taxes,
+    discount:    discount,
+    total:       grandTotal,
+    payMethod:   payMethod,
+    address:     addrSnap,
+    status:      "Confirmed",
+    coupon:      document.getElementById("couponInput") ? document.getElementById("couponInput").value.trim().toUpperCase() : ""
+  };
+
+  orderHistory.unshift(order);
+
   // Mark free shipping coupon as used after first order
   freeshippingUsed = true;
-  // Save to localStorage so history persists after refresh
-  localStorage.setItem("99f_orders", JSON.stringify(orderHistory));
   localStorage.setItem("99f_freeship", "true");
-  document.getElementById("profileOrderCount").innerText = orderHistory.length;
+
+  // 1️⃣ Save to localStorage (instant, offline-safe)
+  saveOrdersToStorage();
+
+  // 2️⃣ Save to Firestore (real database)
+  saveOrderToFirestore(order);
+
+  // 📊 Analytics — purchase event (standard GA4 e-commerce event)
+  logEvent("purchase", {
+    transaction_id: order.id,
+    value:          grandTotal,
+    currency:       "INR",
+    coupon:         order.coupon || "",
+    items:          itemsList.map(i => ({
+      item_name: i.name,
+      price:     i.price,
+      quantity:  i.qty
+    }))
+  });
+
+  // Update profile counter
+  let countEl = document.getElementById("profileOrderCount");
+  if(countEl) countEl.innerText = orderHistory.length;
+
+  // Refresh recent preview in profile tab
+  renderRecentOrderPreview();
 }
 
-function renderOrderHistory(){
-  let list = document.getElementById("orderHistoryList");
-  if(!list) return;
-  if(orderHistory.length === 0){
-    list.innerHTML = `<div style="text-align:center;padding:40px 20px;color:#555">
-      <div style="font-size:40px;margin-bottom:10px">&#x1F6D2;</div>
-      <div style="font-size:14px;font-weight:600;color:#666">No orders yet</div>
-      <div style="font-size:12px;color:#444;margin-top:4px">Your order history will appear here</div>
+// ── SAVE ORDER TO FIRESTORE ───────────────────────────────────────────────────
+async function saveOrderToFirestore(order){
+  try {
+    let db   = window._fbDb;
+    let user = firebase.auth().currentUser;
+
+    // Build the Firestore document — strip image URLs to save space
+    let doc = {
+      orderId:     order.id,
+      timestamp:   firebase.firestore.FieldValue.serverTimestamp(), // server time (accurate)
+      clientTime:  order.timestamp,                                 // client ISO string backup
+      date:        order.date,
+      time:        order.time,
+
+      // User info
+      uid:         user ? user.uid   : "guest",
+      userEmail:   user ? (user.email || "") : "guest",
+      userName:    user ? (user.displayName || userProfile.name || "") : "Guest",
+      userPhone:   userProfile.phone || "",
+
+      // Order details
+      items: order.items.map(i => ({
+        name:  i.name,
+        price: i.price,
+        qty:   i.qty,
+        veg:   i.veg
+        // img excluded — saves Firestore read/write quota
+      })),
+      itemsText:   order.itemsText,
+      subtotal:    order.subtotal,
+      deliveryFee: order.deliveryFee,
+      platformFee: order.platformFee,
+      taxes:       order.taxes,
+      discount:    order.discount,
+      coupon:      order.coupon || "",
+      total:       order.total,
+      payMethod:   order.payMethod,
+      address:     order.address,
+      status:      "Confirmed",
+
+      // Meta
+      appVersion:  "99Foodies-v1",
+      source:      "web"
+    };
+
+    // Save to top-level "orders" collection
+    let ref = await db.collection("orders").add(doc);
+    console.log("✅ Order saved to Firestore:", ref.id, "→", order.id);
+
+    // Also save under user's own sub-collection (easy to query per user)
+    if(user){
+      await db.collection("users").doc(user.uid)
+              .collection("orders").doc(order.id).set(doc);
+    }
+
+  } catch(err){
+    // Firestore failure must NEVER break the order flow — just log it
+    console.warn("⚠️ Firestore save failed (order still saved locally):", err.message);
+  }
+}
+
+// ── OPEN / CLOSE ORDER HISTORY PAGE ─────────────────────────────────────────
+function openOrderHistory(){
+  let page = document.getElementById("ohPage");
+  page.classList.add("open");
+  // Always fetch fresh from Firestore when opening
+  fetchAndRenderOrders("all");
+}
+function closeOrderHistory(){
+  document.getElementById("ohPage").classList.remove("open");
+}
+
+// ── FILTER STATE ─────────────────────────────────────────────────────────────
+let ohActiveFilter = "all";
+function ohFilter(btn, filter){
+  ohActiveFilter = filter;
+  document.querySelectorAll(".oh-filter-chip").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+  renderOHPage(filter);   // re-filter already-loaded data (no new fetch)
+}
+
+// ── FETCH FROM FIRESTORE + MERGE WITH LOCALSTORAGE ───────────────────────────
+async function fetchAndRenderOrders(filter){
+  let container = document.getElementById("ohList");
+  if(!container) return;
+
+  // Show skeleton while loading
+  container.innerHTML = `
+    <div style="padding:0 4px;">
+      ${[1,2,3].map(() => `
+        <div style="background:#1a1a1a;border-radius:16px;padding:16px;margin-bottom:14px;border:1px solid #222;">
+          <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
+            <div class="skeleton" style="width:140px;height:14px;border-radius:6px;"></div>
+            <div class="skeleton" style="width:70px;height:20px;border-radius:10px;"></div>
+          </div>
+          <div style="display:flex;gap:8px;margin-bottom:12px;">
+            ${[1,2,3].map(()=>`<div class="skeleton" style="width:52px;height:52px;border-radius:10px;"></div>`).join("")}
+          </div>
+          <div class="skeleton" style="width:100%;height:12px;border-radius:6px;margin-bottom:8px;"></div>
+          <div class="skeleton" style="width:60%;height:12px;border-radius:6px;"></div>
+        </div>`).join("")}
     </div>`;
+
+  // Update subtitle
+  document.getElementById("ohSubtitle").innerText = "Fetching your orders…";
+
+  let user = firebase.auth().currentUser;
+
+  if(user && !userProfile.isGuest){
+    // ── LOGGED-IN: fetch from Firestore ──────────────────────────────────────
+    try {
+      let db       = window._fbDb;
+      let snapshot = await db.collection("users").doc(user.uid)
+                             .collection("orders")
+                             .limit(50)
+                             .get();
+
+      let firestoreOrders = [];
+      snapshot.forEach(doc => {
+        let d = doc.data();
+        // Normalise Firestore Timestamp → ISO string
+        let ts = d.timestamp && d.timestamp.toDate ? d.timestamp.toDate().toISOString() : (d.clientTime || "");
+        firestoreOrders.push({
+          id:          d.orderId     || doc.id,
+          timestamp:   ts,
+          date:        d.date        || "",
+          time:        d.time        || "",
+          items:       d.items       || [],
+          itemsText:   d.itemsText   || "",
+          subtotal:    d.subtotal    || 0,
+          deliveryFee: d.deliveryFee || 0,
+          platformFee: d.platformFee || 0,
+          taxes:       d.taxes       || 0,
+          discount:    d.discount    || 0,
+          total:       d.total       || 0,
+          payMethod:   d.payMethod   || "",
+          address:     d.address     || "",
+          status:      d.status      || "Confirmed",
+          coupon:      d.coupon      || ""
+        });
+      });
+
+      // Merge: Firestore is source of truth; add any local-only orders not yet synced
+      let localIds = new Set(firestoreOrders.map(o => o.id));
+      let localOnly = orderHistory.filter(o => !localIds.has(o.id));
+      let merged = [...firestoreOrders, ...localOnly];
+
+      // Sort by timestamp desc
+      merged.sort((a, b) => (b.timestamp || "").localeCompare(a.timestamp || ""));
+
+      // Update in-memory + localStorage with merged data
+      orderHistory = merged;
+      saveOrdersToStorage();
+
+      console.log(`✅ Loaded ${firestoreOrders.length} orders from Firestore, ${localOnly.length} local-only`);
+
+    } catch(err){
+      console.warn("⚠️ Firestore fetch failed, showing local orders:", err.message);
+      // Fall through — orderHistory still has localStorage data
+    }
+
+  } else {
+    // ── GUEST: small delay to feel like it's "loading" ───────────────────────
+    await new Promise(r => setTimeout(r, 400));
+  }
+
+  // Render whatever we have
+  renderOHPage(filter || ohActiveFilter);
+
+  // Refresh profile tab preview too
+  renderRecentOrderPreview();
+}
+
+// ── COMPUTE STATS ─────────────────────────────────────────────────────────────
+function computeOHStats(list){
+  let count = list.length;
+  let spent = list.reduce((s, o) => s + (parseInt(o.total) || 0), 0);
+  let avg   = count > 0 ? Math.round(spent / count) : 0;
+  document.getElementById("ohStatOrders").innerText = count;
+  document.getElementById("ohStatSpent").innerText  = "₹" + spent.toLocaleString("en-IN");
+  document.getElementById("ohStatAvg").innerText    = "₹" + avg;
+  document.getElementById("ohSubtitle").innerText   = count === 0
+    ? "No orders yet"
+    : count + " order" + (count > 1 ? "s" : "") + " placed";
+}
+
+// ── RENDER FULL ORDER HISTORY PAGE ───────────────────────────────────────────
+function renderOHPage(filter){
+  filter = filter || ohActiveFilter;
+
+  // Filter list
+  let list = orderHistory.filter(o => {
+    if(filter === "all")       return true;
+    if(filter === "confirmed") return (o.status||"").toLowerCase().includes("confirm") || (o.status||"").toLowerCase().includes("deliver");
+    if(filter === "pending")   return (o.status||"").toLowerCase().includes("pending");
+    if(filter === "upi")       return (o.payMethod||"").toLowerCase().includes("upi");
+    if(filter === "cod")       return (o.payMethod||"").toLowerCase().includes("cash");
+    return true;
+  });
+
+  computeOHStats(list);
+
+  let container = document.getElementById("ohList");
+  if(!container) return;
+
+  if(list.length === 0){
+    container.innerHTML = `
+      <div style="text-align:center;padding:60px 20px;">
+        <div style="font-size:56px;margin-bottom:16px;">🛒</div>
+        <div style="font-size:16px;font-weight:700;color:#555;margin-bottom:8px;">No orders here</div>
+        <div style="font-size:13px;color:#444;">Try a different filter or place your first order!</div>
+        <button onclick="closeOrderHistory()" style="margin-top:20px;padding:12px 28px;background:linear-gradient(135deg,#ff4d4d,#ff1a1a);color:#fff;border:none;border-radius:12px;font-size:14px;font-weight:700;font-family:Poppins;cursor:pointer;box-shadow:0 4px 16px rgba(255,77,77,0.35);">Browse Menu</button>
+      </div>`;
     return;
   }
-  list.innerHTML = orderHistory.map(o => `
-    <div class="order-history-card">
-      <div class="order-id-row">
-        <span class="order-id">${o.id}</span>
-        <span class="order-status-badge delivered">${o.status}</span>
-      </div>
-      <div class="order-items-preview">${o.items}</div>
-      <div class="order-footer-row">
-        <div>
-          <div class="order-total-amt">&#x20B9;${o.total}</div>
-          <div class="order-date">${o.date}</div>
-        </div>
-        <button class="order-reorder-btn" onclick="reorder('${o.id}')">&#x1F504; Reorder</button>
-      </div>
-    </div>`).join("");
+
+  container.innerHTML = list.map((o, idx) => buildOHCard(o, idx)).join("");
 }
 
-function reorder(id){
-  showToast("Items added to cart!");
-  toggleProfile();
-  toggleCart();
+// ── BUILD ONE ORDER CARD ──────────────────────────────────────────────────────
+function buildOHCard(o, idx){
+  // Real index in orderHistory array (needed for reorder)
+  let realIdx = orderHistory.indexOf(o);
+
+  // Status config
+  let statusCfg = {
+    "Confirmed":{"cls":"confirmed","dot":"green","icon":"✔"},
+    "Delivered": {"cls":"delivered","dot":"green","icon":"✔"},
+    "Pending":   {"cls":"pending",  "dot":"orange","icon":"⏳"},
+    "Cancelled": {"cls":"cancelled","dot":"red",   "icon":"✕"}
+  };
+  let sc = statusCfg[o.status] || statusCfg["Confirmed"];
+
+  // Item thumbnails (up to 4)
+  let thumbsHtml = "";
+  if(Array.isArray(o.items) && o.items.length > 0){
+    let show = o.items.slice(0, 4);
+    let extra = o.items.length - 4;
+    thumbsHtml = show.map(i => {
+      let imgSrc = i.img || getFoodPlaceholder(i.name);
+      return `<img class="oh-thumb" src="${imgSrc}" alt="${i.name}" onerror="this.src='https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=100&h=100&fit=crop'">`;
+    }).join("");
+    if(extra > 0) thumbsHtml += `<div class="oh-thumb-more">+${extra}</div>`;
+  }
+
+  // Items text
+  let itemsText = Array.isArray(o.items)
+    ? o.items.map(i => `${i.name} ×${i.qty}`).join("  ·  ")
+    : (o.itemsText || o.items || "");
+
+  // Bill rows
+  let billRows = "";
+  if(o.subtotal !== undefined){
+    billRows += `<div class="oh-bill-row"><span>Item Total</span><span>₹${o.subtotal}</span></div>`;
+    if(o.deliveryFee > 0){
+      billRows += `<div class="oh-bill-row"><span>Delivery Fee</span><span>₹${o.deliveryFee}</span></div>`;
+    } else {
+      billRows += `<div class="oh-bill-row saving"><span>Delivery</span><span>FREE 🎉</span></div>`;
+    }
+    billRows += `<div class="oh-bill-row"><span>Platform Fee</span><span>₹${o.platformFee||10}</span></div>`;
+    billRows += `<div class="oh-bill-row"><span>GST & Charges</span><span>₹${o.taxes||0}</span></div>`;
+    if(o.discount > 0){
+      billRows += `<div class="oh-bill-row saving"><span>Discount${o.coupon ? ' ('+o.coupon+')' : ''}</span><span>−₹${o.discount}</span></div>`;
+    }
+    billRows += `<div style="height:1px;background:#2a2a2a;margin:8px 0;"></div>`;
+    billRows += `<div class="oh-bill-row total"><span>Total Paid</span><span style="color:#ff4d4d;">₹${o.total}</span></div>`;
+  }
+
+  // Address + pay method
+  let metaHtml = "";
+  if(o.address) metaHtml += `<div style="display:flex;align-items:flex-start;gap:7px;font-size:12px;color:#666;margin-top:10px;"><span style="flex-shrink:0;">📍</span><span>${o.address}</span></div>`;
+  if(o.payMethod) metaHtml += `<div style="display:flex;align-items:center;gap:7px;font-size:12px;color:#666;margin-top:5px;"><span>💳</span><span>${o.payMethod}</span></div>`;
+
+  // Delay for stagger animation
+  let delay = Math.min(idx * 0.06, 0.4);
+
+  return `
+  <div class="order-history-card" style="animation-delay:${delay}s;">
+
+    <!-- TOP BAR: order id + status -->
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px 0;">
+      <div>
+        <div style="font-size:11px;font-weight:800;color:#fff;letter-spacing:0.5px;font-family:monospace;">${o.id}</div>
+        <div style="font-size:10px;color:#555;margin-top:2px;">📅 ${o.date}${o.time ? '  ·  🕐 ' + o.time : ''}</div>
+      </div>
+      <span class="order-status-badge ${sc.cls}">
+        <span class="oh-status-dot ${sc.dot}"></span>${o.status || "Confirmed"}
+      </span>
+    </div>
+
+    <!-- FOOD THUMBNAILS -->
+    ${thumbsHtml ? `<div class="oh-thumb-row">${thumbsHtml}</div>` : ""}
+
+    <!-- ITEMS TEXT -->
+    <div style="padding:0 16px 12px;font-size:12px;color:#777;line-height:1.7;border-bottom:1px solid #222;">
+      ${itemsText}
+    </div>
+
+    <!-- AMOUNT + DATE ROW -->
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;">
+      <div>
+        <div style="font-size:22px;font-weight:900;color:#fff;letter-spacing:-0.5px;">₹${o.total}</div>
+        <div style="font-size:10px;color:#555;margin-top:1px;">${Array.isArray(o.items) ? o.items.length + ' item' + (o.items.length > 1 ? 's' : '') : ''}</div>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <button onclick="toggleOHDetail(${realIdx})" id="ohdetail-btn-${realIdx}"
+          style="padding:9px 14px;border-radius:10px;background:#1a1a1a;border:1px solid #2a2a2a;color:#aaa;font-size:12px;font-weight:600;font-family:Poppins;cursor:pointer;transition:0.2s;">
+          🧾 Bill
+        </button>
+        <button onclick="reorder(${realIdx})"
+          style="padding:9px 16px;border-radius:10px;background:linear-gradient(135deg,#ff4d4d22,#ff1a1a11);border:1px solid #ff4d4d44;color:#ff4d4d;font-size:12px;font-weight:700;font-family:Poppins;cursor:pointer;transition:0.2s;"
+          onmouseover="this.style.background='#ff4d4d33'" onmouseout="this.style.background='linear-gradient(135deg,#ff4d4d22,#ff1a1a11)'">
+          🔄 Reorder
+        </button>
+      </div>
+    </div>
+
+    <!-- EXPANDABLE BILL DETAIL -->
+    <div id="ohdetail-${realIdx}" style="display:none;padding:0 16px 14px;border-top:1px solid #1a1a1a;margin-top:0;">
+      <div style="padding-top:12px;">
+        ${billRows}
+        ${metaHtml}
+      </div>
+    </div>
+
+  </div>`;
 }
+
+// ── TOGGLE BILL DETAIL ────────────────────────────────────────────────────────
+function toggleOHDetail(idx){
+  let detail = document.getElementById("ohdetail-" + idx);
+  let btn    = document.getElementById("ohdetail-btn-" + idx);
+  if(!detail) return;
+  let open = detail.style.display !== "none";
+  detail.style.display = open ? "none" : "block";
+  if(btn){
+    btn.innerText = open ? "🧾 Bill" : "✕ Close";
+    btn.style.color = open ? "#aaa" : "#ff4d4d";
+    btn.style.borderColor = open ? "#2a2a2a" : "#ff4d4d44";
+  }
+}
+
+// ── FOOD IMAGE PLACEHOLDER ────────────────────────────────────────────────────
+function getFoodPlaceholder(name){
+  let n = (name||"").toLowerCase();
+  if(n.includes("pizza"))    return "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=100&h=100&fit=crop";
+  if(n.includes("burger"))   return "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=100&h=100&fit=crop";
+  if(n.includes("pasta"))    return "https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=100&h=100&fit=crop";
+  if(n.includes("dosa"))     return "https://images.unsplash.com/photo-1668236543090-82eba5ee5976?w=100&h=100&fit=crop";
+  if(n.includes("samosa"))   return "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=100&h=100&fit=crop";
+  if(n.includes("coffee") || n.includes("tea")) return "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=100&h=100&fit=crop";
+  if(n.includes("shake"))    return "https://images.unsplash.com/photo-1553361371-9b22f78e8b1d?w=100&h=100&fit=crop";
+  if(n.includes("sandwich")) return "https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=100&h=100&fit=crop";
+  return "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=100&h=100&fit=crop";
+}
+
+// ── RENDER RECENT PREVIEW (2 orders in profile tab) ──────────────────────────
+function renderRecentOrderPreview(){
+  let el = document.getElementById("ohRecentPreview");
+  if(!el) return;
+  // Update badge
+  let badge = document.getElementById("ohTabBadge");
+  if(badge) badge.innerText = orderHistory.length;
+  if(orderHistory.length === 0){ el.innerHTML = ""; return; }
+  let recent = orderHistory.slice(0, 2);
+  el.innerHTML = `
+    <div style="font-size:11px;font-weight:700;color:#555;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;">Recent Orders</div>
+    ${recent.map((o, i) => `
+      <div style="display:flex;align-items:center;gap:12px;background:#1a1a1a;border-radius:12px;padding:12px 14px;margin-bottom:8px;border:1px solid #2a2a2a;cursor:pointer;transition:0.2s;" onclick="openOrderHistory()" onmouseover="this.style.borderColor='#ff4d4d33'" onmouseout="this.style.borderColor='#2a2a2a'">
+        <div style="width:44px;height:44px;border-radius:10px;background:#111;border:1px solid #2a2a2a;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">
+          ${Array.isArray(o.items) && o.items.length > 0 ? `<img src="${o.items[0].img || getFoodPlaceholder(o.items[0].name)}" style="width:100%;height:100%;object-fit:cover;border-radius:10px;" onerror="this.parentElement.innerText='🍽️'">` : '🍽️'}
+        </div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:12px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${Array.isArray(o.items) ? o.items.map(it=>it.name).join(", ") : (o.itemsText||"")}</div>
+          <div style="font-size:10px;color:#555;margin-top:2px;">${o.date}${o.time ? ' · ' + o.time : ''}</div>
+        </div>
+        <div style="text-align:right;flex-shrink:0;">
+          <div style="font-size:14px;font-weight:800;color:#fff;">₹${o.total}</div>
+          <div style="font-size:10px;color:#00e5a0;margin-top:2px;">✔ ${o.status||'Confirmed'}</div>
+        </div>
+      </div>`).join("")}
+    ${orderHistory.length > 2 ? `<div style="text-align:center;padding:8px 0;font-size:12px;color:#ff4d4d;font-weight:600;cursor:pointer;" onclick="openOrderHistory()">View all ${orderHistory.length} orders →</div>` : ""}`;
+}
+
+// ── LEGACY renderOrderHistory (kept for compat) ───────────────────────────────
+function renderOrderHistory(){
+  renderRecentOrderPreview();
+}
+
+// ── CLEAR ORDER HISTORY ───────────────────────────────────────────────────────
+function clearOrderHistory(){
+  if(orderHistory.length === 0){ showToast("No orders to clear"); return; }
+  if(!confirm("Clear all " + orderHistory.length + " order(s) from history?")) return;
+  orderHistory = [];
+  saveOrdersToStorage();
+  let countEl = document.getElementById("profileOrderCount");
+  if(countEl) countEl.innerText = "0";
+  renderOrderHistory();       // updates recent preview + badge
+  renderOHPage("all");        // refresh full page if open
+  showToast("Order history cleared");
+}
+
+// ── REORDER ───────────────────────────────────────────────────────────────────
+function reorder(idx){
+  let order = orderHistory[idx];
+  if(!order || !Array.isArray(order.items)){
+    showToast("⚠️ Can't reorder — item data not available");
+    return;
+  }
+  // Add all items back to cart
+  order.items.forEach(oi => {
+    let itemData = items.find(i => i.n === oi.name);
+    if(!itemData) return;
+    if(!cartQty[oi.name]){
+      cartQty[oi.name] = {p: oi.price, q: 0, img: itemData.img || ""};
+      cart.push({n: oi.name, p: oi.price, img: itemData.img || "", v: itemData.v});
+    }
+    cartQty[oi.name].q += oi.qty;
+  });
+  update();
+  applyFilters();
+  showToast("🛒 " + order.items.length + " item(s) added to cart!");
+  // Close all panels and open cart
+  closeOrderHistory();
+  document.getElementById("profilePanel").classList.remove("panel-open");
+  undimMain();
+  setTimeout(() => toggleCart(), 380);
+}
+</script>
+
+<!-- ══ UI POLISH JS ══ -->
+<script>
+// ── APP LOADER DISMISS ────────────────────────────────────────────────────────
+(function(){
+  function dismissLoader(){
+    let loader = document.getElementById("appLoader");
+    if(loader) loader.classList.add("hidden");
+  }
+  // Dismiss after bar animation completes (1.5s) or on DOMContentLoaded
+  if(document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", () => setTimeout(dismissLoader, 1500));
+  } else {
+    setTimeout(dismissLoader, 1500);
+  }
+})();
+
+// ── RIPPLE EFFECT ─────────────────────────────────────────────────────────────
+document.addEventListener("click", function(e){
+  let btn = e.target.closest(".ripple-host");
+  if(!btn) return;
+  let rect = btn.getBoundingClientRect();
+  let size = Math.max(rect.width, rect.height) * 1.4;
+  let x = e.clientX - rect.left - size / 2;
+  let y = e.clientY - rect.top  - size / 2;
+  let circle = document.createElement("span");
+  circle.className = "ripple-circle";
+  circle.style.cssText = `width:${size}px;height:${size}px;left:${x}px;top:${y}px;`;
+  btn.appendChild(circle);
+  circle.addEventListener("animationend", () => circle.remove());
+});
+
+// ── ADD ripple-host TO KEY BUTTONS ────────────────────────────────────────────
+document.addEventListener("DOMContentLoaded", function(){
+  // Checkout, login, filter buttons
+  document.querySelectorAll(".checkout-btn,.login-btn,.filter-btn,.cart-del-btn,.pay-tab,.oh-filter-chip,.order-reorder-btn,.google-signin-btn").forEach(el => {
+    el.classList.add("ripple-host");
+  });
+});
+
+// ── CHECKOUT BUTTON PULSE WHEN CART HAS ITEMS ─────────────────────────────────
+function updateCheckoutBtnState(){
+  let btn = document.querySelector(".checkout-btn");
+  if(!btn) return;
+  let total = parseInt(document.getElementById("total")?.innerText?.replace("₹","")) || 0;
+  btn.classList.toggle("ready", total > 0);
+}
+
+// ── PATCH update() TO ALSO CALL PULSE STATE ───────────────────────────────────
+let _origUpdate = window.update;
+if(typeof _origUpdate === "function"){
+  window.update = function(){
+    _origUpdate();
+    updateCheckoutBtnState();
+  };
+}
+
+// ── SMOOTH NUMBER COUNT-UP FOR STATS ─────────────────────────────────────────
+function countUp(el, target, prefix, duration){
+  if(!el) return;
+  let start = 0;
+  let startTime = null;
+  let num = parseInt(String(target).replace(/[^\d]/g,"")) || 0;
+  function step(ts){
+    if(!startTime) startTime = ts;
+    let progress = Math.min((ts - startTime) / duration, 1);
+    let ease = 1 - Math.pow(1 - progress, 3); // ease-out cubic
+    let current = Math.round(ease * num);
+    el.innerText = prefix + current.toLocaleString("en-IN");
+    if(progress < 1) requestAnimationFrame(step);
+    else el.innerText = prefix + num.toLocaleString("en-IN");
+  }
+  requestAnimationFrame(step);
+}
+
+// Patch computeOHStats to animate numbers
+let _origComputeOHStats = window.computeOHStats;
+if(typeof _origComputeOHStats === "function"){
+  window.computeOHStats = function(list){
+    _origComputeOHStats(list);
+    // Re-animate after values are set
+    let count = list.length;
+    let spent = list.reduce((s,o) => s + (parseInt(o.total)||0), 0);
+    let avg   = count > 0 ? Math.round(spent/count) : 0;
+    countUp(document.getElementById("ohStatOrders"), count,  "",  600);
+    countUp(document.getElementById("ohStatSpent"),  spent,  "₹", 700);
+    countUp(document.getElementById("ohStatAvg"),    avg,    "₹", 600);
+  };
+}
+
+// ── SCROLL-TRIGGERED CARD REVEAL (Intersection Observer) ─────────────────────
+(function(){
+  if(!window.IntersectionObserver) return;
+  let io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        entry.target.style.opacity = "1";
+        entry.target.style.transform = "translateY(0) scale(1)";
+        io.unobserve(entry.target);
+      }
+    });
+  }, {threshold: 0.08});
+
+  // Observe brand cards
+  document.querySelectorAll(".brand-card").forEach((el, i) => {
+    el.style.opacity = "0";
+    el.style.transform = "translateY(16px) scale(0.96)";
+    el.style.transition = `opacity 0.4s ease ${i*0.04}s, transform 0.4s cubic-bezier(0.34,1.2,0.64,1) ${i*0.04}s`;
+    io.observe(el);
+  });
+})();
+
+// ── HERO STATS COUNT-UP ON LOAD ───────────────────────────────────────────────
+document.addEventListener("DOMContentLoaded", function(){
+  let heroStats = [
+    {selector:".hero-stat:nth-child(1) span", target:500, suffix:"+"},
+    {selector:".hero-stat:nth-child(3) span", target:30,  suffix:" min"},
+    {selector:".hero-stat:nth-child(5) span", target:4.5, suffix:"★", isFloat:true},
+  ];
+  heroStats.forEach(({selector, target, suffix, isFloat}) => {
+    let el = document.querySelector(selector);
+    if(!el) return;
+    let start = null;
+    let duration = 1200;
+    function step(ts){
+      if(!start) start = ts;
+      let p = Math.min((ts - start) / duration, 1);
+      let ease = 1 - Math.pow(1 - p, 3);
+      let val = isFloat ? (ease * target).toFixed(1) : Math.round(ease * target);
+      el.innerText = val + suffix;
+      if(p < 1) requestAnimationFrame(step);
+    }
+    setTimeout(() => requestAnimationFrame(step), 800);
+  });
+});
 </script>
 
 <!-- ══ PWA: SERVICE WORKER + INSTALL PROMPT ══ -->
