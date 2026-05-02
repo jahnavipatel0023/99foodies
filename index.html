@@ -3636,6 +3636,7 @@ function firebaseErrMsg(code){
     "auth/user-disabled":           "❌ This account has been disabled.",
     "auth/operation-not-allowed":   "⚠️ Email login not enabled yet. Use Google sign-in or enable Email/Password in Firebase Console → Authentication → Sign-in method.",
     "auth/configuration-not-found": "⚠️ Firebase Auth not configured. Please enable a sign-in method in Firebase Console.",
+    "auth/unauthorized-domain":     "⚠️ This domain is not authorized. Go to Firebase Console → Authentication → Settings → Authorized domains → Add: " + location.hostname,
   };
   return map[code] || "❌ Something went wrong. Please try again.";
 }
@@ -3741,7 +3742,6 @@ function guestLogin(){
 
 // ── AUTO-LOGIN: restore session if Firebase still has a user ──────────────────
 firebase.auth().onAuthStateChanged(function(user){
-  // Only auto-enter if login page is still showing (not already inside)
   let loginPage = document.getElementById("loginPage");
   if(user && loginPage && loginPage.style.display !== "none"){
     userProfile.name      = user.displayName || user.email.split("@")[0];
@@ -3749,6 +3749,9 @@ firebase.auth().onAuthStateChanged(function(user){
     userProfile.avatarUrl = user.photoURL || "";
     enterSite();
   }
+}, function(error){
+  // Silently ignore auth state errors on load (e.g. unauthorized domain)
+  console.warn("Auth state error:", error.code);
 });
 
 // ── SIGN OUT (called from profile panel) ─────────────────────────────────────
