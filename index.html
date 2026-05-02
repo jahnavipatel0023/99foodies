@@ -48,8 +48,35 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-analytics-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-messaging-compat.js"></script>
-<!-- ══ CONFIG — all keys live here ══ -->
-<script src="js/config.js"></script>
+<!-- ══ CONFIG ══ -->
+<script>
+const APP_CONFIG = {
+  app: {
+    name:        "99Foodies",
+    tagline:     "Good Food, Great Mood!",
+    version:     "1.0.0",
+    phone:       "+91 99985 25204",
+    email:       "jahnavipatel0023@gmail.com",
+    upiId:       "jahnavipatel0023@oksbi",
+    adminEmails: ["jahnavipatel0023@gmail.com"],
+  },
+  firebase: {
+    apiKey:            "AIzaSyAZCz1vhVC77twHwA7wxpyMu3lwodIw3Ek",
+    authDomain:        "foodies-44cd3.firebaseapp.com",
+    projectId:         "foodies-44cd3",
+    storageBucket:     "foodies-44cd3.firebasestorage.app",
+    messagingSenderId: "735776291980",
+    appId:             "1:735776291980:web:8c7292442ddc421b6e0fa9",
+    measurementId:     "G-WHYLPGM9JF",
+  },
+  fcm:      { vapidKey:  "YOUR_VAPID_KEY_HERE" },
+  razorpay: { keyId:     "rzp_test_Sk9oYANSZtNNKs", currency: "INR", codCharge: 20 },
+  openai:   { apiKey:    "YOUR_OPENAI_API_KEY",      model: "gpt-4o-mini", maxTokens: 200 },
+  delivery: { fee: 39, platformFee: 10, gstPercent: 9, avgTimeMin: 30 },
+  features: { aiRecommendations: true, pushNotifications: true, liveTracking: true, razorpayPayments: true, guestCheckout: true },
+};
+Object.freeze(APP_CONFIG);
+</script>
 <!-- ══ RAZORPAY SDK ══ -->
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
