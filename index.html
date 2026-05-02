@@ -48,37 +48,27 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-analytics-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-messaging-compat.js"></script>
+<!-- ══ CONFIG — all keys live here ══ -->
+<script src="js/config.js"></script>
 <!-- ══ RAZORPAY SDK ══ -->
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
-  const firebaseConfig = {
-    apiKey:            "AIzaSyAZCz1vhVC77twHwA7wxpyMu3lwodIw3Ek",
-    authDomain:        "foodies-44cd3.firebaseapp.com",
-    projectId:         "foodies-44cd3",
-    storageBucket:     "foodies-44cd3.firebasestorage.app",
-    messagingSenderId: "735776291980",
-    appId:             "1:735776291980:web:8c7292442ddc421b6e0fa9",
-    measurementId:     "G-WHYLPGM9JF"
-  };
-  firebase.initializeApp(firebaseConfig);
+  firebase.initializeApp(APP_CONFIG.firebase);
   window._fbAuth      = firebase.auth();
   window._fbAnalytics = firebase.analytics();
   window._fbDb        = firebase.firestore();
   window._fbMsg       = firebase.messaging();
   console.log("✅ Firebase + Firestore + FCM loaded");
 
-  // ── Analytics helper ───────────────────────────────────────────────────────
   function logEvent(name, params){
     try { window._fbAnalytics.logEvent(name, params || {}); } catch(e){}
   }
 
-  // ── FCM: handle foreground messages (app is open) ─────────────────────────
   window._fbMsg.onMessage(payload => {
     console.log("[FCM] Foreground message:", payload);
     const n = payload.notification || {};
     const d = payload.data || {};
-    // Show as in-app toast + browser notification
-    showFCMNotification(n.title || "99Foodies", n.body || "", d);
+    showFCMNotification(n.title || APP_CONFIG.app.name, n.body || "", d);
   });
 </script>
 
@@ -1653,6 +1643,120 @@ html{scroll-behavior:smooth;}
 /* ── REDUCE MOTION RESPECT ───────────────────────────── */
 @media(prefers-reduced-motion:reduce){
   *{animation-duration:0.01ms !important;transition-duration:0.01ms !important;}
+}
+
+/* ══════════════════════════════════════════════════════
+   📱 RESPONSIVE AUDIT — 320px · 375px · 768px · 1440px
+   ══════════════════════════════════════════════════════ */
+
+/* ── 320px (iPhone SE 1st gen, small Androids) ───────── */
+@media(max-width:320px){
+  .login-card{padding:24px 16px 20px;border-radius:16px;}
+  .login-logo h2{font-size:18px;}
+  .otp-box{width:38px;height:46px;font-size:18px;}
+  .hero-title{font-size:18px;letter-spacing:-0.5px;}
+  .hero-sub{font-size:12px;}
+  .hero-img{width:100px;height:85px;}
+  .hero-badge{width:38px;height:38px;font-size:8px;}
+  .hero-banner{padding:16px 12px;min-height:auto;}
+  .container{grid-template-columns:1fr 1fr;gap:6px;padding:0 8px 80px;}
+  .card-info{padding:10px 10px 6px;}
+  .card-info h4{font-size:13px;}
+  .card-price{font-size:16px;}
+  .card-add-btn{padding:7px 10px;font-size:11px;}
+  .brand-grid{grid-template-columns:repeat(3,1fr);gap:6px;padding:4px 8px 12px;}
+  .brand-card-title{font-size:9px;padding:16px 3px 5px;}
+  .navbar{padding:8px 10px;gap:6px;}
+  .nav-title{font-size:15px;}
+  .nav-btn{width:34px;height:34px;font-size:14px;}
+  .nav-actions{gap:4px;}
+  .cart,.reviews,.contact,.profile-panel{width:100% !important;border-radius:0 !important;}
+  .ai-panel{width:100%;}
+  .checkout-btn{font-size:13px;padding:13px 14px;}
+  .section-label{font-size:10px;padding:14px 12px 8px;}
+  .filters{padding:4px 8px 12px;}
+  .filter-btn{padding:7px 12px;font-size:11px;}
+  .oh-stats-bar{grid-template-columns:repeat(3,1fr);}
+  .oh-stat-val{font-size:16px;}
+  .stat-val{font-size:22px;}
+}
+
+/* ── 375px (iPhone 6/7/8/X standard) ────────────────── */
+@media(max-width:375px){
+  .hero-title{font-size:20px;}
+  .hero-img{width:110px;height:95px;}
+  .container{grid-template-columns:1fr 1fr;gap:8px;padding:0 10px 80px;}
+  .brand-grid{grid-template-columns:repeat(4,1fr);}
+  .cart,.reviews,.contact,.profile-panel{width:96% !important;}
+  .ai-panel{width:100%;}
+  .stats-grid{grid-template-columns:repeat(2,1fr);}
+}
+
+/* ── 768px (tablets, iPad) ───────────────────────────── */
+@media(min-width:601px) and (max-width:768px){
+  .container{grid-template-columns:repeat(3,1fr);gap:12px;padding:0 16px 32px;}
+  .brand-grid{grid-template-columns:repeat(5,1fr);}
+  .hero-title{font-size:28px;}
+  .hero-img{width:160px;height:130px;}
+  .cart,.reviews,.contact,.profile-panel{width:420px;}
+  .ai-panel{width:420px;}
+  .navbar{padding:10px 16px;}
+  .nav-search-wrap{display:flex !important;flex:1 !important;width:auto !important;margin:0 12px !important;}
+  .stats-grid{grid-template-columns:repeat(4,1fr);}
+  .oh-page .main-content{margin-left:0;}
+}
+
+/* ── 1024px (iPad Pro, small laptops) ───────────────── */
+@media(min-width:769px) and (max-width:1024px){
+  .container{grid-template-columns:repeat(3,1fr);gap:14px;padding:0 20px 32px;}
+  .brand-grid{grid-template-columns:repeat(6,1fr);}
+  .hero-title{font-size:32px;}
+  .cart,.reviews,.contact,.profile-panel{width:400px;}
+  .ai-panel{width:400px;}
+}
+
+/* ── 1440px (desktop, large screens) ────────────────── */
+@media(min-width:1200px){
+  .container{grid-template-columns:repeat(auto-fill,minmax(220px,1fr));max-width:1400px;margin:0 auto;}
+  .brand-grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr));max-width:1400px;margin:0 auto;}
+  .hero-banner{max-width:1400px;margin:0 auto;}
+  .hero-title{font-size:42px;}
+  .hero-img{width:260px;height:210px;}
+  .promo-strip{max-width:1400px;margin:0 auto;}
+  .section-label{max-width:1400px;margin:0 auto;}
+  .filters{max-width:1400px;margin:0 auto;}
+  .navbar{max-width:100%;padding:10px 40px;}
+  .cart,.reviews,.contact,.profile-panel{width:420px;}
+  .ai-panel{width:420px;}
+}
+
+/* ── Touch targets — minimum 44×44px (WCAG 2.5.5) ───── */
+@media(pointer:coarse){
+  .card-add-btn{min-height:44px;min-width:44px;}
+  .nav-btn{min-width:44px;min-height:44px;}
+  .filter-btn{min-height:40px;}
+  .cart-del-btn{min-height:44px;}
+  .checkout-btn{min-height:52px;}
+  .ai-send-btn{min-width:44px;min-height:44px;}
+  .brand-card{min-height:80px;}
+}
+
+/* ── Safe area (iPhone notch / Dynamic Island) ────────── */
+@supports(padding:max(0px)){
+  .navbar{padding-top:max(10px, env(safe-area-inset-top));}
+  .float-cart-btn{bottom:max(24px, calc(env(safe-area-inset-bottom) + 16px));}
+  .ai-fab{bottom:max(90px, calc(env(safe-area-inset-bottom) + 80px));}
+  .ai-input-wrap{padding-bottom:max(12px, env(safe-area-inset-bottom));}
+  .track-page,.oh-page{padding-bottom:env(safe-area-inset-bottom);}
+}
+
+/* ── Landscape mobile ────────────────────────────────── */
+@media(max-height:500px) and (orientation:landscape){
+  .login{padding:10px 0;align-items:flex-start;}
+  .login-card{padding:20px 24px;max-height:90vh;overflow-y:auto;}
+  .login-logo{display:none;}
+  .hero-banner{min-height:auto;padding:16px;}
+  .hero-img{display:none;}
 }
 
 /* ── FCM NOTIFICATION BANNER ─────────────────────────── */
@@ -4516,7 +4620,7 @@ function processPayment(){
 //  Replace YOUR_RAZORPAY_KEY_ID with your actual key from:
 //  https://dashboard.razorpay.com → Settings → API Keys
 // ══════════════════════════════════════════════════════════════
-const RAZORPAY_KEY = "rzp_test_Sk9oYANSZtNNKs"; // ← Razorpay Test Key
+const RAZORPAY_KEY = APP_CONFIG.razorpay.keyId;
 
 let qrInstance = null;
 
@@ -6125,7 +6229,7 @@ if(typeof _origOnPaymentSuccess === "function"){
 // ⚠️ Replace with your VAPID key from Firebase Console
 // Firebase Console → Project Settings → Cloud Messaging →
 // Web configuration → Generate key pair → copy the key
-const FCM_VAPID_KEY = "YOUR_VAPID_KEY_HERE";
+const FCM_VAPID_KEY = APP_CONFIG.fcm.vapidKey;
 
 // ── REQUEST PERMISSION + GET TOKEN ───────────────────────────────────────────
 async function initFCM(){
@@ -6363,8 +6467,8 @@ let _origEnterSite = window.enterSite;
 //  Replace the key below — keep it secret in production!
 // ══════════════════════════════════════════════════════════════════
 
-const OPENAI_API_KEY = "YOUR_OPENAI_API_KEY"; // ← paste your key here
-const OPENAI_MODEL   = "gpt-4o-mini";          // cheap + fast + smart
+const OPENAI_API_KEY = APP_CONFIG.openai.apiKey;
+const OPENAI_MODEL   = APP_CONFIG.openai.model;
 
 let aiChatHistory = []; // keeps conversation context
 let aiPanelOpen   = false;
