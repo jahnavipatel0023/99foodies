@@ -4141,7 +4141,7 @@ async function sendPasswordReset(){
     await firebase.auth().sendPasswordResetEmail(email);
     showLoginError(
       "Reset email sent to " + email + ".\n\n" +
-      "Check your Gmail inbox.\n" +
+      "Check your email inbox.\\n" +
       "Also check Spam / Junk folder.\n" +
       "May take 1-2 minutes to arrive.",
       true
@@ -5234,7 +5234,7 @@ function showRazorpayDemoModal(total){
           1. Go to <span style="color:#ff4d4d;">razorpay.com</span> → Sign up<br>
           2. Dashboard → Settings → API Keys<br>
           3. Copy your <span style="color:#ff4d4d;">Key ID</span><br>
-          4. Paste in code: <code style="color:#ff9800;font-size:11px;">RAZORPAY_KEY = "YOUR_RAZORPAY_KEY_ID"</code>
+          4. Paste in code: <code style="color:#ff9800;font-size:11px;">APP_CONFIG.razorpay.keyId = "YOUR_RAZORPAY_KEY_ID"</code>
         </div>
       </div>
       <div style="display:flex;gap:10px;">
@@ -6462,10 +6462,10 @@ function renderTrackingUI(status){
   document.getElementById("riderCallBtn").style.display = ri.showCall ? "flex" : "none";
   document.getElementById("riderCard").querySelector(".rider-avatar").innerText =
     status === "Out for Delivery" ? "🛵" :
-    status === "Delivered"        ? "✅" : "👨â€🍳";
+    status === "Delivered"        ? "✅" : "👨‍🍳";
   // ETA bar icon
   document.querySelector(".eta-icon").innerText =
-    status === "Out for Delivery" ? "&#x1F6F5;" :
+    status === "Out for Delivery" ? "🛵" :
     status === "Delivered"        ? "✅" : "⏳";
   // Timeline
   renderTimeline(stepIdx);
