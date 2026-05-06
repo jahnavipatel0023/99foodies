@@ -7,7 +7,6 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>99Foodies - Good Food, Great Mood!</title>
-
 <!-- -- PWA META TAGS -- -->
 <meta name="application-name" content="99Foodies">
 <meta name="description" content="Order fresh food delivered fast to your door in 30 minutes">
@@ -18,30 +17,23 @@
 <meta name="apple-mobile-web-app-title" content="99Foodies">
 <meta name="msapplication-TileColor" content="#ff4d4d">
 <meta name="msapplication-tap-highlight" content="no">
-
 <!-- -- PWA MANIFEST -- -->
 <link rel="manifest" href="manifest.json">
-
 <!-- -- APPLE TOUCH ICONS -- -->
 <link rel="apple-touch-icon" href="https://via.placeholder.com/180x180/ff4d4d/ffffff?text=99F">
 <link rel="apple-touch-icon" sizes="152x152" href="https://via.placeholder.com/152x152/ff4d4d/ffffff?text=99F">
 <link rel="apple-touch-icon" sizes="180x180" href="https://via.placeholder.com/180x180/ff4d4d/ffffff?text=99F">
 <link rel="apple-touch-icon" sizes="167x167" href="https://via.placeholder.com/167x167/ff4d4d/ffffff?text=99F">
-
 <!-- -- SPLASH SCREENS (iOS) -- -->
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-
 <!-- -- OPEN GRAPH -- -->
 <meta property="og:title" content="99Foodies - Good Food, Great Mood!">
 <meta property="og:description" content="Order fresh food delivered fast">
 <meta property="og:type" content="website">
-
 <!-- -- FONTS -- -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=Dancing+Script:wght@700&family=Cinzel:wght@700;900&family=Cormorant+Garamond:ital,wght@1,700;1,800&display=swap" rel="stylesheet">
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-
 <!-- -- FIREBASE -- -->
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
@@ -86,11 +78,9 @@ Object.freeze(APP_CONFIG);
   window._fbDb        = firebase.firestore();
   window._fbMsg       = firebase.messaging();
    console.log("Firebase + Firestore + FCM loaded");
-
   function logEvent(name, params){
     try { window._fbAnalytics.logEvent(name, params || {}); } catch(e){}
   }
-
   window._fbMsg.onMessage(payload => {
     console.log("[FCM] Foreground message:", payload);
     const n = payload.notification || {};
@@ -98,7 +88,6 @@ Object.freeze(APP_CONFIG);
     showFCMNotification(n.title || APP_CONFIG.app.name, n.body || "", d);
   });
 </script>
-
 <style>
 body{
 margin:0;
@@ -108,19 +97,16 @@ color:white;
 padding-top: env(safe-area-inset-top);
 padding-bottom: env(safe-area-inset-bottom);
 overflow-x:hidden;
-
 /* CAFE BACKGROUND */
 background:linear-gradient(rgba(0,0,0,0.75),rgba(0,0,0,0.75)),
 url('https://images.unsplash.com/photo-1504674900247-0877df9cc836');
 background-size:cover;
 background-attachment:fixed;
 }
-
 /* Fix background-attachment:fixed on iOS Safari */
 @supports (-webkit-touch-callout: none) {
   body { background-attachment: scroll; }
 }
-
 /* LOGIN FLOW */
 .login{
 position:fixed;top:0;left:0;width:100%;height:100%;
@@ -212,7 +198,6 @@ box-sizing:border-box;
   text-transform:uppercase;
   opacity:0.8;
 }
-
 /* GOOGLE SIGN IN BUTTON */
 .google-signin-btn{
   width:100%;padding:14px;
@@ -232,7 +217,6 @@ box-sizing:border-box;
 .login-divider-line span:last-child{
   flex:1;height:1px;background:#2a2a2a;
 }
-
 /* INPUT GROUP */
 .login-input-group{position:relative;margin-bottom:14px;}
 .login-input-group .lig-icon{
@@ -248,7 +232,6 @@ box-sizing:border-box;
 }
 .login-input-group input::placeholder{color:#555}
 .login-input-group input:focus{border-color:#ff4d4d;background:rgba(255,77,77,0.07);}
-
 /* PHONE ROW */
 .phone-row{display:flex;gap:8px;margin-bottom:14px;}
 .phone-code{
@@ -267,7 +250,6 @@ box-sizing:border-box;
 }
 .phone-input:focus{border-color:#ff4d4d;background:rgba(255,77,77,0.07);}
 .phone-input::placeholder{color:#555;letter-spacing:0;}
-
 /* OTP BOXES */
 .otp-row{display:flex;gap:10px;justify-content:center;margin:8px 0 18px;}
 .otp-box{
@@ -281,7 +263,6 @@ box-sizing:border-box;
 }
 .otp-box:focus{border-color:#ff4d4d;background:rgba(255,77,77,0.08);box-shadow:0 0 0 3px rgba(255,77,77,0.15);}
 .otp-box.filled{border-color:#ff4d4d55;color:#fff;}
-
 /* RESEND */
 .otp-resend-row{text-align:center;margin-bottom:16px;}
 .otp-timer{font-size:13px;color:#666;}
@@ -292,7 +273,6 @@ box-sizing:border-box;
   cursor:pointer;padding:0;display:none;
 }
 .otp-resend-btn:hover{text-decoration:underline;}
-
 /* SENT BADGE */
 .otp-sent-badge{
   display:flex;align-items:center;gap:8px;
@@ -300,7 +280,6 @@ box-sizing:border-box;
   border-radius:12px;padding:10px 14px;margin-bottom:16px;
   font-size:12px;color:#4caf50;
 }
-
 /* MAIN BUTTON */
 .login-btn{
   width:100%;padding:15px;
@@ -320,14 +299,12 @@ box-sizing:border-box;
   font-family:Poppins;cursor:pointer;transition:0.2s;
 }
 .login-btn-back:hover{border-color:#444;color:#fff;}
-
 /* ERROR */
 #loginError{
   display:none;background:#ff4d4d18;border:1px solid #ff4d4d44;
   border-radius:10px;padding:10px 14px;font-size:13px;color:#ff6b6b;
   margin-bottom:12px;text-align:center;
 }
-
 .login-footer{
   text-align:center;margin-top:20px;color:#444;font-size:11px;line-height:1.6;
 }
@@ -337,7 +314,6 @@ box-sizing:border-box;
 }
 @keyframes popIn{0%{transform:scale(0.5);opacity:0}70%{transform:scale(1.15)}100%{transform:scale(1);opacity:1}}
 @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
-
 /* NAV */
 .navbar{
   display:flex;align-items:center;gap:12px;
@@ -409,7 +385,6 @@ box-sizing:border-box;
   80%{transform:translateX(3px) rotate(2deg)}
 }
 .shake{animation:shake 0.4s ease !important;}
-
 /* -- ENHANCED HERO -- */
 .hero-banner{
   display:flex;align-items:center;justify-content:space-between;
@@ -491,7 +466,6 @@ box-sizing:border-box;
   .hero-stats{gap:12px;}
   .hero-stat span{font-size:16px;}
 }
-
 /* BRAND CAROUSEL */
 /* -- ENHANCED SECTION LABEL -- */
 .section-label{
@@ -524,7 +498,6 @@ box-sizing:border-box;
 .brand-chip.active .brand-chip-icon{border-color:#ff4d4d;box-shadow:0 0 16px rgba(255,77,77,0.3)}
 .brand-chip.active span:last-child{color:#ff4d4d}
 .brand-chip:hover .brand-chip-icon{border-color:#ff4d4d55;transform:translateY(-2px)}
-
 /* CATEGORY GRID - big image cards */
 .brand-grid{
   display:grid;
@@ -582,7 +555,6 @@ box-sizing:border-box;
   .brand-grid{grid-template-columns:repeat(4,1fr);gap:8px;padding:4px 12px 16px}
   .brand-card-title{font-size:10px;padding:20px 4px 7px}
 }
-
 /* CHIP IMAGE */
 .brand-chip-img{
   width:52px;height:52px;border-radius:14px;
@@ -591,7 +563,6 @@ box-sizing:border-box;
 }
 .brand-chip.active .brand-chip-img{border-color:#ff4d4d;box-shadow:0 0 12px rgba(255,77,77,0.35)}
 .brand-chip:hover .brand-chip-img{border-color:#ff4d4d55;transform:translateY(-2px)}
-
 /* FILTERS */
 .filters{
   display:flex;gap:8px;padding:4px 20px 18px;
@@ -615,7 +586,6 @@ box-sizing:border-box;
   border-color:#4caf50;color:#4caf50;
   box-shadow:0 0 16px rgba(76,175,80,0.15);
 }
-
 /* CARDS - text only, no image */
 .container{
   display:grid;
@@ -686,7 +656,6 @@ box-sizing:border-box;
 .spicy-dots{display:flex;gap:2px;margin-bottom:8px}
 .spicy-dot{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,0.1)}
 .spicy-dot.hot{background:#ff5722}
-
 /* POPULAR & SPICY BADGES */
 .popular-badge{
   position:absolute;top:10px;left:10px;
@@ -700,7 +669,6 @@ box-sizing:border-box;
   font-size:9px;color:#ff5722;font-weight:700;
   vertical-align:middle;margin-left:4px;
 }
-
 /* FLOATING CART BUTTON (mobile) */
 .float-cart-btn{
   display:none;
@@ -722,7 +690,6 @@ box-sizing:border-box;
   .container{grid-template-columns:repeat(2,1fr);gap:10px;padding:0 12px 16px}
   .hero-title{font-size:20px}
 }
-
 /* -- PROMO STRIP -- */
 .promo-strip{
   display:flex;align-items:center;gap:0;
@@ -734,7 +701,6 @@ box-sizing:border-box;
 .promo-strip::-webkit-scrollbar{display:none}
 .promo-item{font-size:12px;color:#888;font-weight:500;flex-shrink:0;padding:0 4px;}
 .promo-dot{width:4px;height:4px;border-radius:50%;background:#ff4d4d44;flex-shrink:0;margin:0 12px;}
-
 /* TOAST */
 .toast{
   position:fixed;bottom:24px;left:50%;
@@ -746,7 +712,6 @@ box-sizing:border-box;
   font-size:13px;font-weight:600;white-space:nowrap;
 }
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-
 /* CART PAYMENT OPTIONS */
 .cart-pay-option{
   display:flex;align-items:center;gap:14px;
@@ -801,7 +766,6 @@ box-sizing:border-box;
   padding:0 5px;font-size:8px;font-weight:800;
   letter-spacing:0.3px;
 }
-
 /* -- PROFESSIONAL CART -- */
 .cart{
   position:fixed;right:0;top:0;width:360px;height:100%;
@@ -837,7 +801,6 @@ box-sizing:border-box;
   transition:0.2s;
 }
 .cart-close-btn:hover{color:#fff;border-color:#333;}
-
 /* DELIVERY TOGGLE */
 .cart-delivery-toggle{
   display:flex;gap:0;margin:14px 20px 0;
@@ -849,7 +812,6 @@ box-sizing:border-box;
   font-family:Poppins;cursor:pointer;transition:0.2s;
 }
 .cart-del-btn.active{background:#ff4d4d;color:#fff;box-shadow:0 2px 8px rgba(255,77,77,0.3);}
-
 /* ADDRESS BAR */
 .cart-addr-bar{
   display:flex;align-items:center;gap:10px;
@@ -866,7 +828,6 @@ box-sizing:border-box;
   padding:16px;
   box-sizing:border-box;
 }
-
 /* ADD MORE */
 .cart-add-more{
   display:flex;align-items:center;gap:8px;
@@ -874,7 +835,6 @@ box-sizing:border-box;
   border-bottom:1px dashed #1a1a1a;
   cursor:pointer;
 }
-
 /* COUPON */
 .cart-coupon-wrap{padding:14px 20px 0;}
 .cart-coupon-row{
@@ -892,7 +852,6 @@ box-sizing:border-box;
   font-size:13px;font-weight:700;cursor:pointer;font-family:Poppins;
   padding:0;white-space:nowrap;
 }
-
 /* BILL */
 .cart-bill{
   margin:14px 20px 0;
@@ -909,14 +868,12 @@ box-sizing:border-box;
 }
 .cart-bill-divider{height:1px;background:#2a2a2a;margin:10px 0;}
 .cart-bill-total{font-size:16px;font-weight:800;color:#fff;}
-
 /* SAVINGS */
 .cart-savings{
   margin:10px 20px 0;padding:10px 14px;
   background:#0d2e1f;border:1px solid #1e4a2f;border-radius:10px;
   font-size:12px;color:#4caf50;text-align:center;
 }
-
 /* CHECKOUT BTN */
 .checkout-btn{
   margin:14px 20px;
@@ -935,7 +892,6 @@ box-sizing:border-box;
   background:rgba(0,0,0,0.2);padding:4px 12px;
   border-radius:8px;font-size:15px;font-weight:800;
 }
-
 /* ASSURANCE */
 .cart-assurance{
   display:flex;justify-content:space-around;
@@ -946,7 +902,6 @@ box-sizing:border-box;
   font-size:10px;color:#444;font-weight:600;
 }
 .cart-assurance-item span:first-child{font-size:18px;}
-
 /* MOBILE CART RESPONSIVENESS */
 @media(max-width:600px){
 .cart,.reviews,.contact,.profile-panel{
@@ -968,7 +923,6 @@ box-sizing:border-box;
 .checkout-btn{padding:12px;font-size:15px}
 #cartAddrForm input{font-size:16px !important;} /* prevent iOS zoom */
 }
-
 @media(max-width:600px){
   .container{grid-template-columns:repeat(2,1fr);gap:8px;padding:8px}
   .card-thumb{height:100px}
@@ -983,7 +937,6 @@ box-sizing:border-box;
  qty-minus{background:#ff4d4d;color:white}
  qty-plus{background:#00ffcc;color:black}
  qty-remove{background:transparent;color:#f44336;font-size:18px;margin-left:5px}
-
 /* REVIEWS & CONTACT PANELS */
 .reviews,.contact{
   position:fixed;right:0;top:0;width:360px;height:100%;
@@ -997,7 +950,6 @@ box-sizing:border-box;
   visibility:visible;
   transition:transform 0.35s cubic-bezier(0.4,0,0.2,1), visibility 0s linear 0s;
 }
-
 /* REVIEWS */
 .reviews-header{
 padding:20px 20px 16px;
@@ -1039,7 +991,6 @@ position:sticky;top:0;z-index:2;
 .review-helpful.liked{color:#ff4d4d}
 .review-photos{display:flex;gap:6px;margin-bottom:10px}
 .review-photo{width:70px;height:70px;border-radius:8px;object-fit:cover;cursor:pointer}
-
 /* CONTACT */
 .contact-header{
 padding:20px 20px 16px;
@@ -1072,7 +1023,6 @@ position:sticky;top:0;z-index:2;
 .contact-social{display:flex;gap:10px;margin-top:4px}
 .social-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;background:#1a1a1a;border-radius:12px;padding:12px;font-size:13px;font-weight:600;color:#fff;cursor:pointer;transition:0.2s;border:1px solid #2a2a2a;text-decoration:none}
 .social-btn:hover{background:#222;border-color:#444}
-
 /* WRITE REVIEW FORM */
 .write-review-bar{
   display:flex;align-items:center;justify-content:space-between;
@@ -1127,7 +1077,6 @@ position:sticky;top:0;z-index:2;
 .review-submit-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(255,77,77,0.45);}
 .review-submit-btn:disabled{background:#333;color:#666;cursor:not-allowed;box-shadow:none;transform:none;}
 @keyframes fadeInCard{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
-
 /* COUPON DROPDOWN */
 .coupon-dropdown{
 display:none;
@@ -1147,15 +1096,12 @@ overflow:hidden;
 .coupon-option-title{font-size:13px;font-weight:600;color:#fff}
 .coupon-option-desc{font-size:11px;color:#888;margin-top:1px}
 .coupon-apply-btn{font-size:12px;font-weight:700;color:#ff4d4d;background:none;border:none;cursor:pointer;font-family:Poppins;padding:0}
-
 .qr{width:150px;margin:auto}
-
 /* SCANNER FRAME */
 .scanner-frame{position:relative;width:200px;height:200px;margin:0 auto;border:3px solid #00ffcc;border-radius:10px;overflow:hidden}
 .scanner-frame img{width:100%;height:100%;object-fit:cover}
 .scanner-line{position:absolute;top:0;left:0;width:100%;height:3px;background:#00ffcc;box-shadow:0 0 10px #00ffcc;animation:scan 2s linear infinite}
 @keyframes scan{0%{top:0}50%{top:97%}100%{top:0}}
-
 /* -- PAYMENT METHODS -- */
 .pay-tab{
   padding:8px 16px;border-radius:20px;border:1.5px solid #2a2a2a;
@@ -1189,7 +1135,6 @@ overflow:hidden;
   cursor:pointer;transition:0.2s;font-size:13px;font-weight:600;color:#aaa;
 }
 .wallet-btn:hover,.wallet-btn.active{border-color:#ff4d4d;color:#fff;background:#2a1a1a;}
-
 /* ===== PROFESSIONAL CARD PANEL ===== */
 .card-preview-wrap{
   perspective:1000px;
@@ -1401,7 +1346,6 @@ overflow:hidden;
   border:1px solid #1a1a1a;
   margin-bottom:4px;
 }
-
 /* ===== PROFESSIONAL NET BANKING PANEL ===== */
 .nb-banks-grid{
   display:grid;
@@ -1514,7 +1458,6 @@ overflow:hidden;
   flex:1;justify-content:center;
 }
 .nb-info-divider{width:1px;height:20px;background:#222;}
-
 /* PAYMENT SUCCESS */
 .pay-success-wrap{
   display:flex;flex-direction:column;align-items:center;
@@ -1599,7 +1542,6 @@ overflow:hidden;
 .pay-order-more-btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(255,77,77,0.5)}
 @keyframes bounce{0%,100%{transform:scale(1)}50%{transform:scale(1.2)}}
 #paymentSuccess{background:#111;height:100%}
-
 /* -- LIVE ORDER TRACKING ------------------------------- */
 .track-page{
   position:fixed;inset:0;z-index:1100;
@@ -1673,7 +1615,6 @@ overflow:hidden;
 .track-progress-wrap{margin:0 20px 20px;}
 .track-progress-bar{height:6px;background:#1a1a1a;border-radius:6px;overflow:hidden;}
 .track-progress-fill{height:100%;border-radius:6px;background:linear-gradient(90deg,#ff4d4d,#ff9800,#00e5a0);transition:width 1s cubic-bezier(0.4,0,0.2,1);width:0%;}
-
 /* ===== PROFILE PANEL ===== */
 .profile-panel{
   position:fixed;right:0;top:0;width:360px;height:100%;
@@ -1908,11 +1849,9 @@ overflow:hidden;
   .profile-panel{width:100%;}
   .oh-stats-bar{margin:0 12px 16px;}
 }
-
 /* -------------------------------------------------------
    UI POLISH - Loading - Transitions - Hover Effects
    ------------------------------------------------------- */
-
 /* -- PAGE LOADER --------------------------------------- */
 #appLoader{
   position:fixed;inset:0;z-index:99999;
@@ -1946,7 +1885,6 @@ overflow:hidden;
   animation:loaderFade 0.5s ease both 0.2s;
 }
 @keyframes loaderFade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-
 /* -- SKELETON SHIMMER (menu cards while loading) ------- */
 @keyframes shimmer{
   0%{background-position:-400px 0}
@@ -1958,7 +1896,6 @@ overflow:hidden;
   animation:shimmer 1.4s infinite linear;
   border-radius:10px;
 }
-
 /* -- MENU CARD ENTRY ANIMATION ------------------------- */
 @keyframes cardFadeUp{
   from{opacity:0;transform:translateY(20px) scale(0.97)}
@@ -1967,7 +1904,6 @@ overflow:hidden;
 .card{
   animation:cardFadeUp 0.4s cubic-bezier(0.34,1.2,0.64,1) both;
 }
-
 /* -- RIPPLE ON BUTTONS --------------------------------- */
 .ripple-host{position:relative;overflow:hidden;}
 @keyframes rippleAnim{
@@ -1980,7 +1916,6 @@ overflow:hidden;
   animation:rippleAnim 0.55s linear;
   pointer-events:none;
 }
-
 /* -- CARD HOVER - deeper glow lift -------------------- */
 .card:hover{
   transform:translateY(-10px) scale(1.01) !important;
@@ -1990,22 +1925,18 @@ overflow:hidden;
     0 0 100px rgba(255,77,77,0.08) !important;
 }
 .card:active{transform:translateY(-4px) scale(0.99) !important;transition:0.1s !important;}
-
 /* -- ADD BUTTON MICRO-BOUNCE --------------------------- */
 .card-add-btn{transition:transform 0.18s cubic-bezier(0.34,1.56,0.64,1),box-shadow 0.18s ease,background 0.2s ease !important;}
 .card-add-btn:hover{transform:scale(1.12) !important;}
 .card-add-btn:active{transform:scale(0.93) !important;}
-
 /* -- BRAND CARD HOVER ---------------------------------- */
 .brand-card{transition:transform 0.25s cubic-bezier(0.34,1.3,0.64,1),box-shadow 0.25s ease,border-color 0.25s ease !important;}
 .brand-card:hover{transform:translateY(-8px) scale(1.04) !important;}
 .brand-card:active{transform:scale(0.96) !important;transition:0.1s !important;}
-
 /* -- NAV BUTTON HOVER ---------------------------------- */
 .nav-btn{transition:transform 0.2s cubic-bezier(0.34,1.4,0.64,1),background 0.2s,box-shadow 0.2s !important;}
 .nav-btn:hover{transform:translateY(-3px) scale(1.08) !important;}
 .nav-btn:active{transform:scale(0.92) !important;transition:0.1s !important;}
-
 /* -- CHECKOUT BUTTON PULSE WHEN READY ----------------- */
 @keyframes checkoutPulse{
   0%,100%{box-shadow:0 6px 24px rgba(255,77,77,0.4)}
@@ -2015,12 +1946,10 @@ overflow:hidden;
 .checkout-btn{transition:transform 0.2s cubic-bezier(0.34,1.4,0.64,1),box-shadow 0.2s ease !important;}
 .checkout-btn:hover{transform:translateY(-3px) scale(1.01) !important;}
 .checkout-btn:active{transform:scale(0.98) !important;transition:0.1s !important;}
-
 /* -- FILTER CHIP HOVER --------------------------------- */
 .filter-btn{transition:transform 0.18s cubic-bezier(0.34,1.4,0.64,1),border-color 0.2s,color 0.2s,background 0.2s !important;}
 .filter-btn:hover{transform:translateY(-2px) !important;}
 .filter-btn:active{transform:scale(0.95) !important;}
-
 /* -- FLOAT CART BUTTON BOUNCE -------------------------- */
 @keyframes floatBounce{
   0%,100%{transform:translateY(0)}
@@ -2028,7 +1957,6 @@ overflow:hidden;
 }
 .float-cart-btn{animation:floatBounce 2.5s ease infinite;}
 .float-cart-btn:hover{animation:none;transform:translateY(-4px) scale(1.04) !important;}
-
 /* -- PANEL SLIDE - smoother cubic --------------------- */
 .cart,.reviews,.contact,.profile-panel{
   transition:transform 0.38s cubic-bezier(0.4,0,0.15,1),visibility 0s linear 0.38s !important;
@@ -2036,7 +1964,6 @@ overflow:hidden;
 .cart.panel-open,.reviews.panel-open,.contact.panel-open,.profile-panel.panel-open{
   transition:transform 0.38s cubic-bezier(0.4,0,0.15,1),visibility 0s linear 0s !important;
 }
-
 /* -- TOAST UPGRADE ------------------------------------- */
 .toast{
   transition:opacity 0.3s cubic-bezier(0.4,0,0.2,1),transform 0.3s cubic-bezier(0.34,1.3,0.64,1) !important;
@@ -2044,41 +1971,32 @@ overflow:hidden;
 .toast.show{
   transform:translateX(-50%) translateY(0) scale(1) !important;
 }
-
 /* -- INPUT FOCUS GLOW ---------------------------------- */
 input:focus,textarea:focus{
   box-shadow:0 0 0 3px rgba(255,77,77,0.15) !important;
 }
-
 /* -- SCROLL SMOOTH ------------------------------------- */
 html{scroll-behavior:smooth;}
 .cart,.reviews,.contact,.profile-panel,.oh-page{scroll-behavior:smooth;}
-
 /* -- SELECTION COLOR ----------------------------------- */
 ::selection{background:#ff4d4d44;color:#fff;}
-
 /* -- CUSTOM SCROLLBAR ---------------------------------- */
 ::-webkit-scrollbar{width:4px;height:4px;}
 ::-webkit-scrollbar-track{background:transparent;}
 ::-webkit-scrollbar-thumb{background:#2a2a2a;border-radius:4px;}
 ::-webkit-scrollbar-thumb:hover{background:#ff4d4d44;}
-
 /* -- HERO IMAGE PARALLAX FEEL -------------------------- */
 .hero-img{transition:transform 0.4s cubic-bezier(0.34,1.2,0.64,1),box-shadow 0.3s ease !important;}
 .hero-img:hover{transform:scale(1.05) rotate(1.5deg) !important;box-shadow:0 28px 70px rgba(255,77,77,0.35) !important;}
-
 /* -- ORDER HISTORY CARD HOVER -------------------------- */
 .order-history-card{transition:transform 0.22s cubic-bezier(0.34,1.2,0.64,1),box-shadow 0.22s ease,border-color 0.22s ease !important;}
 .order-history-card:hover{transform:translateY(-4px) !important;}
-
 /* -- PROFILE AVATAR HOVER ------------------------------ */
 .profile-avatar{transition:transform 0.25s cubic-bezier(0.34,1.4,0.64,1),box-shadow 0.25s ease !important;}
 .profile-avatar:hover{transform:scale(1.06) !important;box-shadow:0 0 0 4px rgba(255,77,77,0.3) !important;}
-
 /* -- COUPON OPTION HOVER ------------------------------- */
 .coupon-option{transition:background 0.15s,transform 0.15s !important;}
 .coupon-option:hover{transform:translateX(3px) !important;}
-
 /* -- MAIN CONTENT FADE-IN ------------------------------ */
 @keyframes mainFadeIn{
   from{opacity:0;transform:translateY(12px)}
@@ -2086,7 +2004,6 @@ html{scroll-behavior:smooth;}
 }
 #main.fade-in{animation:mainFadeIn 0.5s cubic-bezier(0.4,0,0.2,1) both;}
 #main{transition:none;}
-
 /* -- STAGGER CARD DELAYS ------------------------------- */
 .card:nth-child(1){animation-delay:0.04s}
 .card:nth-child(2){animation-delay:0.08s}
@@ -2097,14 +2014,12 @@ html{scroll-behavior:smooth;}
 .card:nth-child(7){animation-delay:0.28s}
 .card:nth-child(8){animation-delay:0.30s}
 .card:nth-child(n+9){animation-delay:0.32s}
-
 /* -- SECTION LABEL SLIDE-IN ---------------------------- */
 @keyframes labelSlideIn{
   from{opacity:0;transform:translateX(-12px)}
   to{opacity:1;transform:translateX(0)}
 }
 .section-label{animation:labelSlideIn 0.4s ease both 0.1s;}
-
 /* -- PROMO STRIP MARQUEE ------------------------------- */
 @keyframes marquee{
   0%{transform:translateX(0)}
@@ -2116,23 +2031,19 @@ html{scroll-behavior:smooth;}
   width:max-content;
 }
 .promo-strip-inner:hover{animation-play-state:paused;}
-
 /* -- HERO TAG GLOW PULSE ------------------------------- */
 @keyframes tagGlow{
   0%,100%{box-shadow:0 0 0 0 rgba(255,77,77,0.4),0 0 8px rgba(255,77,77,0.2)}
   50%{box-shadow:0 0 0 8px rgba(255,77,77,0),0 0 20px rgba(255,77,77,0.3)}
 }
 .hero-tag{animation:tagGlow 2.5s ease infinite !important;}
-
 /* -- REDUCE MOTION RESPECT ----------------------------- */
 @media(prefers-reduced-motion:reduce){
   *{animation-duration:0.01ms !important;transition-duration:0.01ms !important;}
 }
-
 /* ------------------------------------------------------
    RESPONSIVE AUDIT - 320px - 375px - 768px - 1440px
    ------------------------------------------------------ */
-
 /* -- 320px (iPhone SE 1st gen, small Androids) --------- */
 @media(max-width:320px){
   .login-card{padding:24px 16px 20px;border-radius:16px;}
@@ -2164,7 +2075,6 @@ html{scroll-behavior:smooth;}
   .oh-stat-val{font-size:16px;}
   .stat-val{font-size:22px;}
 }
-
 /* -- 375px (iPhone 6/7/8/X standard) ------------------ */
 @media(max-width:375px){
   .hero-title{font-size:20px;}
@@ -2175,7 +2085,6 @@ html{scroll-behavior:smooth;}
   .ai-panel{width:100%;}
   .stats-grid{grid-template-columns:repeat(2,1fr);}
 }
-
 /* -- 768px (tablets, iPad) ----------------------------- */
 @media(min-width:601px) and (max-width:768px){
   .container{grid-template-columns:repeat(3,1fr);gap:12px;padding:0 16px 32px;}
@@ -2189,7 +2098,6 @@ html{scroll-behavior:smooth;}
   .stats-grid{grid-template-columns:repeat(4,1fr);}
   .oh-page .main-content{margin-left:0;}
 }
-
 /* -- 1024px (iPad Pro, small laptops) ----------------- */
 @media(min-width:769px) and (max-width:1024px){
   .container{grid-template-columns:repeat(3,1fr);gap:14px;padding:0 20px 32px;}
@@ -2198,7 +2106,6 @@ html{scroll-behavior:smooth;}
   .cart,.reviews,.contact,.profile-panel{width:400px;}
   .ai-panel{width:400px;}
 }
-
 /* -- 1440px (desktop, large screens) ------------------ */
 @media(min-width:1200px){
   .container{grid-template-columns:repeat(auto-fill,minmax(220px,1fr));max-width:1400px;margin:0 auto;}
@@ -2213,7 +2120,6 @@ html{scroll-behavior:smooth;}
   .cart,.reviews,.contact,.profile-panel{width:420px;}
   .ai-panel{width:420px;}
 }
-
 /* -- Touch targets - minimum 44x44px (WCAG 2.5.5) ----- */
 @media(pointer:coarse){
   .card-add-btn{min-height:44px;min-width:44px;}
@@ -2224,7 +2130,6 @@ html{scroll-behavior:smooth;}
   .ai-send-btn{min-width:44px;min-height:44px;}
   .brand-card{min-height:80px;}
 }
-
 /* -- Safe area (iPhone notch / Dynamic Island) ---------- */
 @supports(padding:max(0px)){
   .navbar{padding-top:max(10px, env(safe-area-inset-top));}
@@ -2233,7 +2138,6 @@ html{scroll-behavior:smooth;}
   .ai-input-wrap{padding-bottom:max(12px, env(safe-area-inset-bottom));}
   .track-page,.oh-page{padding-bottom:env(safe-area-inset-bottom);}
 }
-
 /* -- Landscape mobile ---------------------------------- */
 @media(max-height:500px) and (orientation:landscape){
   .login{padding:10px 0;align-items:flex-start;}
@@ -2242,13 +2146,11 @@ html{scroll-behavior:smooth;}
   .hero-banner{min-height:auto;padding:16px;}
   .hero-img{display:none;}
 }
-
 /* -- FCM NOTIFICATION BANNER --------------------------- */
 @keyframes slideUp{
   from{transform:translateX(-50%) translateY(40px);opacity:0}
   to{transform:translateX(-50%) translateY(0);opacity:1}
 }
-
 /* -- AI FOOD RECOMMENDATION ---------------------------- */
 /* Floating button */
 .ai-fab{
@@ -2330,11 +2232,9 @@ html{scroll-behavior:smooth;}
 .ai-typing span:nth-child(2){animation-delay:0.2s;}
 .ai-typing span:nth-child(3){animation-delay:0.4s;}
 @keyframes aiTyping{0%,60%,100%{transform:translateY(0);opacity:0.4}30%{transform:translateY(-6px);opacity:1}}
-
 /* ============================================================
    NEW ANIMATIONS — added without changing existing styles
    ============================================================ */
-
 /* 1. LOGIN CARD ENTRANCE */
 @keyframes loginCardIn{
   0%{opacity:0;transform:translateY(40px) scale(0.96)}
@@ -2342,7 +2242,6 @@ html{scroll-behavior:smooth;}
   100%{opacity:1;transform:translateY(0) scale(1)}
 }
 .login-card{animation:loginCardIn 0.6s cubic-bezier(0.34,1.2,0.64,1) both;}
-
 /* 2. LOGIN LOGO BOUNCE IN */
 @keyframes logoBounceIn{
   0%{opacity:0;transform:scale(0.4) rotate(-10deg)}
@@ -2350,7 +2249,6 @@ html{scroll-behavior:smooth;}
   100%{opacity:1;transform:scale(1) rotate(0deg)}
 }
 .login-logo-img{animation:logoBounceIn 0.7s cubic-bezier(0.34,1.56,0.64,1) both 0.2s;}
-
 /* 3. LOGIN INPUTS STAGGER SLIDE IN */
 @keyframes inputSlideIn{
   from{opacity:0;transform:translateX(-16px)}
@@ -2359,14 +2257,12 @@ html{scroll-behavior:smooth;}
 .login-input-group:nth-child(1){animation:inputSlideIn 0.4s ease both 0.35s;}
 .login-input-group:nth-child(2){animation:inputSlideIn 0.4s ease both 0.45s;}
 .login-input-group:nth-child(3){animation:inputSlideIn 0.4s ease both 0.55s;}
-
 /* 4. FOOD CARD SCROLL REVEAL */
 @keyframes cardReveal{
   from{opacity:0;transform:translateY(24px) scale(0.97)}
   to{opacity:1;transform:translateY(0) scale(1)}
 }
 .card.reveal{animation:cardReveal 0.45s cubic-bezier(0.34,1.1,0.64,1) both;}
-
 /* 5. ADD TO CART BUTTON BOUNCE */
 @keyframes addBounce{
   0%{transform:scale(1)}
@@ -2376,17 +2272,14 @@ html{scroll-behavior:smooth;}
   100%{transform:scale(1)}
 }
 .card-add-btn.bounce{animation:addBounce 0.4s ease both;}
-
 /* 6. NAV BUTTON TAP SCALE */
 .nav-btn:active{transform:scale(0.88) !important;transition:transform 0.1s;}
-
 /* 7. CATEGORY CHIP STAGGER */
 @keyframes chipSlideIn{
   from{opacity:0;transform:translateY(12px)}
   to{opacity:1;transform:translateY(0)}
 }
 .brand-chip.animate{animation:chipSlideIn 0.35s ease both;}
-
 /* 8. TOAST PROGRESS BAR */
 @keyframes toastProgress{from{width:100%}to{width:0%}}
 .toast-bar{
@@ -2395,18 +2288,15 @@ html{scroll-behavior:smooth;}
   border-radius:0 0 14px 14px;
   animation:toastProgress 2s linear forwards;
 }
-
 /* 9. PAYMENT OPTION GLOW ON SELECT */
 .cart-pay-option{transition:border-color 0.25s,background 0.25s,box-shadow 0.25s;}
 .cart-pay-option.selected{box-shadow:0 0 0 3px rgba(255,77,77,0.15),0 4px 20px rgba(255,77,77,0.1);}
-
 /* 10. PROFILE PANEL SLIDE IN */
 @keyframes profileSlideIn{
   from{opacity:0;transform:translateX(40px)}
   to{opacity:1;transform:translateX(0)}
 }
 .profile-panel.panel-open{animation:profileSlideIn 0.35s cubic-bezier(0.4,0,0.2,1) both;}
-
 /* ============================================================ */
 .ai-chips{display:flex;flex-wrap:wrap;gap:8px;padding:0 16px 12px;}
 .ai-chip{
@@ -2466,28 +2356,23 @@ html{scroll-behavior:smooth;}
 }
 </style>
 </head>
-
 <body>
-
 <!-- -- APP LOADER -- -->
 <div id="appLoader">
-  <img src="assets/logo.png" class="loader-logo" alt="99Foodies Logo" onerror="this.onerror=null;this.style.display='none';document.getElementById('loaderLogoFallback').style.display='flex'">
+  <img src="https://i.ibb.co/n8bWTHyf/99foodies.png" class="loader-logo" alt="99Foodies Logo" onerror="this.onerror=null;this.style.display='none';document.getElementById('loaderLogoFallback').style.display='flex'">
   <div id="loaderLogoFallback" style="display:none;width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#ff4d4d,#ff1a1a);align-items:center;justify-content:center;font-size:22px;font-weight:900;color:#fff;">99</div>
   <div class="loader-bar-wrap"><div class="loader-bar"></div></div>
    <div class="loader-text">Loading your menu...</div>
 </div>
-
 <div class="login" id="loginPage">
   <div class="login-card">
-
     <!-- LOGO -->
     <div class="login-logo">
-      <img src="assets/logo.png" class="login-logo-img" id="loginLogoImg" alt="99Foodies Logo" onerror="this.style.display='none';document.getElementById('loginLogoFallback').style.display='flex'">
+      <img src="https://i.ibb.co/n8bWTHyf/99foodies.png" class="login-logo-img" id="loginLogoImg" alt="99Foodies Logo" onerror="this.style.display='none';document.getElementById('loginLogoFallback').style.display='flex'">
       <div id="loginLogoFallback" style="display:none;width:130px;height:130px;border-radius:50%;background:linear-gradient(135deg,#ff4d4d,#ff1a1a);align-items:center;justify-content:center;font-size:42px;font-weight:900;color:#fff;margin:0 auto 10px;box-shadow:0 0 0 3px rgba(255,180,30,0.6),0 0 25px rgba(255,150,0,0.8);">99</div>
       <h2><span class="logo-num">99</span><span class="logo-word">Foodies</span></h2>
       <p>Good Food, Great Mood!</p>
     </div>
-
     <!-- MODE TABS: Sign In / Sign Up -->
     <div style="display:flex;background:#111;border-radius:12px;padding:4px;margin-bottom:22px;border:1px solid #1a1a1a;">
       <button id="tabSignin" onclick="switchAuthTab('signin')"
@@ -2499,10 +2384,8 @@ html{scroll-behavior:smooth;}
         Sign Up
       </button>
     </div>
-
     <!-- ERROR / SUCCESS MESSAGE -->
     <div id="loginError"></div>
-
     <!-- GOOGLE SIGN IN -->
     <button class="google-signin-btn ripple-host" onclick="signInWithGoogle()">
       <svg width="20" height="20" viewBox="0 0 48 48">
@@ -2514,25 +2397,21 @@ html{scroll-behavior:smooth;}
       </svg>
       Continue with Google
     </button>
-
     <div class="login-divider-line">
       <span></span><span style="color:#333;font-size:11px;padding:0 10px;white-space:nowrap;">or with email</span><span></span>
     </div>
-
      <!-- SIGNUP EXTRA FIELD (name) - shown only on signup tab -->
      <div class="login-input-group" id="signupNameWrap" style="display:none;">
        <span class="lig-icon">&#x1F464;</span>
        <input id="authName" placeholder="Your full name" type="text" autocomplete="name"
          onkeydown="if(event.key==='Enter')document.getElementById('authEmail').focus()">
      </div>
-
      <!-- EMAIL -->
      <div class="login-input-group">
        <span class="lig-icon">&#x2709;&#xFE0F;</span>
        <input id="authEmail" placeholder="Email address" type="email" autocomplete="email"
          onkeydown="if(event.key==='Enter')document.getElementById('authPass').focus()">
      </div>
-
      <!-- PASSWORD -->
      <div class="login-input-group" style="position:relative;">
        <span class="lig-icon">&#x1F512;</span>
@@ -2542,7 +2421,6 @@ html{scroll-behavior:smooth;}
          style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:#555;font-size:16px;cursor:pointer;padding:4px;line-height:1;"
          id="passVisBtn">👁️</button>
      </div>
-
     <!-- FORGOT PASSWORD (signin only) -->
     <div id="forgotWrap" style="text-align:right;margin:-6px 0 10px;">
       <button onclick="sendPasswordReset()"
@@ -2550,32 +2428,26 @@ html{scroll-behavior:smooth;}
         Forgot password?
       </button>
     </div>
-
     <!-- MAIN ACTION BUTTON -->
     <button class="login-btn ripple-host" id="authSubmitBtn" onclick="handleAuthSubmit()">
       <span id="authBtnText">Sign In</span>
     </button>
-
      <!-- GUEST LOGIN -->
      <button class="login-btn-back" onclick="guestLogin()"
        style="margin-top:10px;display:flex;align-items:center;justify-content:center;gap:8px;">
         &#x1F440; Browse as Guest
      </button>
-
     <div class="login-footer">
       By continuing, you agree to our<br>
       <span style="color:#ff4d4d">Terms of Service</span> &amp; <span style="color:#ff4d4d">Privacy Policy</span>
     </div>
-
   </div>
 </div>
-
 <div id="main" style="display:none">
-
 <!-- --- NAVBAR --- -->
 <nav class="navbar">
   <div class="nav-brand">
-    <img src="assets/logo.png" class="nav-logo-img" alt="99Foodies Logo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="nav-logo-fallback" style="display:none;width:36px;height:36px;background:linear-gradient(135deg,#ff4d4d,#ff1a1a);border-radius:50%;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:#fff;flex-shrink:0;">99</span>
+    <img src="https://i.ibb.co/n8bWTHyf/99foodies.png" class="nav-logo-img" alt="99Foodies Logo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="nav-logo-fallback" style="display:none;width:36px;height:36px;background:linear-gradient(135deg,#ff4d4d,#ff1a1a);border-radius:50%;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:#fff;flex-shrink:0;">99</span>
     <div>
       <div class="nav-title"><span class="nav-99">99</span><span class="nav-foodies">Foodies</span></div>
        <div class="nav-sub">Good Food, Great Mind</div>
@@ -2602,14 +2474,12 @@ html{scroll-behavior:smooth;}
      <button id="profileNavBtn" onclick="toggleProfile()" class="nav-btn" title="Profile" style="background:linear-gradient(135deg,#ff4d4d,#ff1a1a);color:#fff;font-weight:800;font-size:18px;">G</button>
   </div>
 </nav>
-
 <!-- GUEST BANNER (shown only for guest users) -->
  <div id="guestBanner" style="display:none;background:linear-gradient(135deg,#1a1000,#111);border-bottom:1px solid #ff980033;padding:10px 20px;align-items:center;gap:12px;">
    <span style="font-size:16px;">👀</span>
    <div style="flex:1;font-size:12px;color:#aaa;">You're browsing as <strong style="color:#ff9800;">Guest</strong> - sign in to save orders &amp; get offers</div>
    <button onclick="showLoginFromGuest()" style="background:linear-gradient(135deg,#ff4d4d,#ff1a1a);color:#fff;border:none;border-radius:8px;padding:7px 14px;font-size:12px;font-weight:700;font-family:Poppins;cursor:pointer;white-space:nowrap;">Sign In</button>
  </div>
-
 <!-- --- HERO BANNER --- -->
 <div class="hero-banner">
   <div class="hero-content">
@@ -2621,7 +2491,7 @@ html{scroll-behavior:smooth;}
       <div class="hero-stat-div"></div>
       <div class="hero-stat"><span>30 min</span>Avg Delivery</div>
       <div class="hero-stat-div"></div>
-       <div class="hero-stat"><span>4.5?</span>Rating</div>
+       <div class="hero-stat"><span>4.5⭐</span>Rating</div>
     </div>
   </div>
   <div class="hero-img-wrap">
@@ -2629,7 +2499,6 @@ html{scroll-behavior:smooth;}
     <div class="hero-badge">FREE<br>DELIVERY</div>
   </div>
 </div>
-
 <!-- --- PROMO STRIP --- -->
 <div class="promo-strip" style="overflow:hidden;padding:10px 0;">
    <div class="promo-strip-inner">
@@ -2656,7 +2525,6 @@ html{scroll-behavior:smooth;}
     <div class="promo-dot"></div>
   </div>
 </div>
-
 <!-- Category Cards with Images -->
  <div class="section-label">&#x1F37D;&#xFE0F; What are you craving?</div>
 <div class="brand-grid" id="brandGrid">
@@ -2713,11 +2581,10 @@ html{scroll-behavior:smooth;}
     <div class="brand-card-title">Cold Drink</div>
   </div>
   <div class="brand-card" onclick="filterCat(this,'vadapav')">
-    <img src="assets/vadapav.jpg" alt="Vada Pav" class="brand-card-img" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1606491956689-2ea866880c84?w=400&h=220&fit=crop'">
+    <img src="https://i.ibb.co/6R0VVSSY/vada-pav.png" alt="Vada Pav" class="brand-card-img" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1606491956689-2ea866880c84?w=400&h=220&fit=crop'">
     <div class="brand-card-title">Vada Pav</div>
   </div>
 </div>
-
 <!-- --- FILTERS --- -->
 <div class="filters">
   <button class="filter-btn active" onclick="setFilter(this,'all')">All</button>
@@ -2725,23 +2592,18 @@ html{scroll-behavior:smooth;}
    <button class="filter-btn" onclick="setFilter(this,'drink')">&#x1F964; Drinks</button>
    <button class="filter-btn veg-filter" onclick="toggleVeg(this)">&#x1F7E2; Pure Veg</button>
 </div>
-
 <!-- --- MENU GRID --- -->
  <div class="section-label" id="menuLabel">&#x1F37D;&#xFE0F; Our Menu</div>
 <div class="container" id="menu"></div>
-
 <!-- FLOATING CART (mobile) -->
  <button class="float-cart-btn" onclick="toggleCart()" id="floatCartBtn">
    &#x1F6D2; View Cart <span id="floatCartCount" style="background:rgba(255,255,255,0.25);padding:2px 8px;border-radius:10px;font-size:12px">0</span>
  </button>
-
 </div><!-- end #main -->
-
 <!-- ------------------------------------------------------
      ALL FIXED PANELS - outside #main so blur never hits them
      ------------------------------------------------------ -->
 <div class="cart" id="cart">
-
 <!-- CART HEADER -->
 <div class="cart-header">
   <div>
@@ -2750,7 +2612,6 @@ html{scroll-behavior:smooth;}
   </div>
    <button onclick="toggleCart()" class="cart-close-btn">✕</button>
 </div>
-
 <!-- CHECKOUT PROGRESS STEPS -->
 <div style="display:flex;align-items:center;padding:12px 20px 0;gap:0;" id="checkoutSteps">
   <div style="display:flex;flex-direction:column;align-items:center;flex:1;">
@@ -2768,16 +2629,13 @@ html{scroll-behavior:smooth;}
     <div style="font-size:10px;color:#555;font-weight:700;margin-top:4px;">Payment</div>
   </div>
 </div>
-
 <!-- CART MAIN BODY (hidden when payment page is shown) -->
 <div id="cartMainBody">
-
 <!-- DELIVERY TYPE TOGGLE -->
 <div class="cart-delivery-toggle">
    <button class="cart-del-btn active" id="delBtn" onclick="setDeliveryType('delivery',this)">&#x1F6F5; Delivery</button>
    <button class="cart-del-btn" id="pickBtn" onclick="setDeliveryType('pickup',this)">&#x1F3C3; Pickup</button>
 </div>
-
 <!-- DELIVERY ADDRESS BAR -->
  <div class="cart-addr-bar" id="cartAddrBar" onclick="toggleAddrForm()">
    <span style="font-size:16px;">📍</span>
@@ -2787,11 +2645,9 @@ html{scroll-behavior:smooth;}
   </div>
    <span style="color:#ff4d4d;font-size:12px;font-weight:700;" id="cartAddrBarAction">Add</span>
 </div>
-
 <!-- ADDRESS CHOOSER (shown when an address already exists) -->
 <div id="cartAddrChooser" style="display:none;margin:10px 16px 0;">
    <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:10px;">Deliver to</div>
-
   <!-- Current saved address card -->
   <div id="chooserCurrentAddr"
     onclick="useSavedDeliveryAddr()"
@@ -2806,10 +2662,8 @@ html{scroll-behavior:smooth;}
       <div style="width:8px;height:8px;border-radius:50%;background:#0a0a0a;"></div>
     </div>
   </div>
-
   <!-- Saved profile addresses (rendered dynamically) -->
   <div id="chooserSavedList"></div>
-
   <!-- Add new address option -->
   <div onclick="showNewAddrForm()"
     style="display:flex;align-items:center;gap:12px;background:#1a1a1a;border:1.5px dashed #333;border-radius:14px;padding:14px;cursor:pointer;transition:0.2s;margin-bottom:4px;"
@@ -2821,7 +2675,6 @@ html{scroll-behavior:smooth;}
     </div>
        <span style="color:#ff4d4d;font-size:16px;">🗑️</span>
   </div>
-
   <!-- Cancel -->
   <button onclick="closeAddrChooser()"
     style="width:100%;margin-top:8px;padding:10px;background:transparent;border:1px solid #2a2a2a;color:#666;border-radius:10px;font-size:13px;font-weight:600;font-family:Poppins;cursor:pointer;transition:0.2s;"
@@ -2829,7 +2682,6 @@ html{scroll-behavior:smooth;}
     Cancel
   </button>
 </div>
-
 <!-- ADDRESS FORM (inline, shown when adding new) -->
 <div id="cartAddrForm" style="display:none;">
   <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
@@ -2837,23 +2689,18 @@ html{scroll-behavior:smooth;}
        style="width:30px;height:30px;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:8px;color:#aaa;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;">✕</button>
      <div style="font-size:13px;font-weight:700;color:#fff;">New Delivery Address</div>
   </div>
-
   <input id="addrName" type="text" placeholder="Full Name *" maxlength="50"
     style="width:100%;box-sizing:border-box;padding:11px 13px;background:#111;border:1.5px solid #2a2a2a;border-radius:10px;color:#fff;font-family:Poppins;font-size:13px;outline:none;margin-bottom:8px;"
     onfocus="this.style.borderColor='#ff4d4d'" onblur="this.style.borderColor='#2a2a2a'">
-
   <input id="addrPhone" type="tel" placeholder="Phone Number *" maxlength="10"
     style="width:100%;box-sizing:border-box;padding:11px 13px;background:#111;border:1.5px solid #2a2a2a;border-radius:10px;color:#fff;font-family:Poppins;font-size:13px;outline:none;margin-bottom:8px;"
     onfocus="this.style.borderColor='#ff4d4d'" onblur="this.style.borderColor='#2a2a2a'">
-
   <input id="addrFlat2" type="text" placeholder="Flat / House No., Floor *" maxlength="80"
     style="width:100%;box-sizing:border-box;padding:11px 13px;background:#111;border:1.5px solid #2a2a2a;border-radius:10px;color:#fff;font-family:Poppins;font-size:13px;outline:none;margin-bottom:8px;"
     onfocus="this.style.borderColor='#ff4d4d'" onblur="this.style.borderColor='#2a2a2a'">
-
   <input id="addrStreet2" type="text" placeholder="Street, Area, Landmark *" maxlength="100"
     style="width:100%;box-sizing:border-box;padding:11px 13px;background:#111;border:1.5px solid #2a2a2a;border-radius:10px;color:#fff;font-family:Poppins;font-size:13px;outline:none;margin-bottom:8px;"
     onfocus="this.style.borderColor='#ff4d4d'" onblur="this.style.borderColor='#2a2a2a'">
-
   <div style="display:flex;gap:8px;margin-bottom:12px;">
     <input id="addrCity2" type="text" placeholder="City *" maxlength="40"
       style="flex:1;padding:11px 13px;background:#111;border:1.5px solid #2a2a2a;border-radius:10px;color:#fff;font-family:Poppins;font-size:13px;outline:none;box-sizing:border-box;"
@@ -2862,9 +2709,7 @@ html{scroll-behavior:smooth;}
       style="width:100px;padding:11px 13px;background:#111;border:1.5px solid #2a2a2a;border-radius:10px;color:#fff;font-family:Poppins;font-size:13px;outline:none;box-sizing:border-box;"
       onfocus="this.style.borderColor='#ff4d4d'" onblur="this.style.borderColor='#2a2a2a'">
   </div>
-
   <div id="addrFormError" style="display:none;font-size:12px;color:#ff6b6b;margin-bottom:8px;padding:8px 12px;background:#ff4d4d18;border-radius:8px;"></div>
-
   <div style="display:flex;gap:8px;">
     <button onclick="saveDeliveryAddr()"
       style="flex:1;padding:12px;background:linear-gradient(135deg,#ff4d4d,#ff1a1a);color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;font-family:Poppins;cursor:pointer;box-shadow:0 4px 14px rgba(255,77,77,0.3);">
@@ -2876,16 +2721,13 @@ html{scroll-behavior:smooth;}
     </button>
   </div>
 </div>
-
 <!-- CART ITEMS -->
 <div id="cartItems"></div>
-
 <!-- ADD MORE ITEMS -->
 <div class="cart-add-more" onclick="toggleCart()">
   <span style="color:#ff4d4d;font-size:18px;">+</span>
   <span style="font-size:13px;font-weight:600;color:#ff4d4d;">Add more items</span>
 </div>
-
 <!-- COUPON SECTION -->
 <div class="cart-coupon-wrap">
   <div class="cart-coupon-row">
@@ -2931,29 +2773,25 @@ html{scroll-behavior:smooth;}
   </div>
   <div id="couponMsg"></div>
 </div>
-
 <!-- PRICE BREAKDOWN -->
 <div class="cart-bill">
   <div class="cart-bill-title">&#x1F9FE; Bill Details</div>
-   <div class="cart-bill-row"><span>&#x1F6D2; Item Total</span><span id="subtotal">?0</span></div>
-   <div class="cart-bill-row"><span>&#x1F697; Delivery Fee</span><span id="deliveryFee">?39</span></div>
-   <div class="cart-bill-row"><span>&#x1F4B0; Platform Fee</span><span>?10</span></div>
-   <div class="cart-bill-row"><span>&#x1F4CA; GST &amp; Charges</span><span id="taxes">?0</span></div>
-   <div class="cart-bill-row" id="discountRow" style="display:none;color:#4caf50;"><span>&#x2728; Discount</span><span id="discountAmt">-?0</span></div>
+   <div class="cart-bill-row"><span>&#x1F6D2; Item Total</span><span id="subtotal">₹0</span></div>
+   <div class="cart-bill-row"><span>&#x1F697; Delivery Fee</span><span id="deliveryFee">₹39</span></div>
+   <div class="cart-bill-row"><span>&#x1F4B0; Platform Fee</span><span>₹10</span></div>
+   <div class="cart-bill-row"><span>&#x1F4CA; GST &amp; Charges</span><span id="taxes">₹0</span></div>
+   <div class="cart-bill-row" id="discountRow" style="display:none;color:#4caf50;"><span>&#x2728; Discount</span><span id="discountAmt">-₹0</span></div>
    <div class="cart-bill-divider"></div>
-   <div class="cart-bill-row cart-bill-total"><span>&#x1F4B3; To Pay</span><span id="total">?0</span></div>
+   <div class="cart-bill-row cart-bill-total"><span>&#x1F4B3; To Pay</span><span id="total">₹0</span></div>
 </div>
-
 <!-- SAVINGS BADGE -->
  <div class="cart-savings" id="cartSavings" style="display:none;">
    You're saving <strong id="savingsAmt">0</strong> on this order!
  </div>
-
 <!-- PAYMENT METHOD SELECTOR IN CART -->
 <div style="margin:14px 20px 0;background:#1a1a1a;border-radius:16px;padding:14px;border:1px solid #222;">
   <div style="font-size:11px;font-weight:800;color:#555;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;">💳 Payment Method</div>
   <div style="display:flex;flex-direction:column;gap:8px;">
-
     <!-- UPI -->
     <label class="cart-pay-option" onclick="selectCartPay('upi')">
       <input type="radio" name="cartPayMethod" value="upi" checked style="display:none;">
@@ -2969,7 +2807,6 @@ html{scroll-behavior:smooth;}
         <div class="pay-opt-badge" style="background:linear-gradient(135deg,#00baf2,#0070ba);color:#fff;">P</div>
       </div>
     </label>
-
     <!-- Credit / Debit Card -->
     <label class="cart-pay-option" onclick="selectCartPay('cards')">
       <input type="radio" name="cartPayMethod" value="cards" style="display:none;">
@@ -2988,7 +2825,6 @@ html{scroll-behavior:smooth;}
         <div class="pay-opt-badge" style="background:#0066b2;color:#fff;">RuPay</div>
       </div>
     </label>
-
     <!-- Net Banking -->
     <label class="cart-pay-option" onclick="selectCartPay('netbanking')">
       <input type="radio" name="cartPayMethod" value="netbanking" style="display:none;">
@@ -3004,7 +2840,6 @@ html{scroll-behavior:smooth;}
         <div class="pay-opt-badge" style="background:#b5261e;color:#fff;">ICICI</div>
       </div>
     </label>
-
     <!-- Cash on Delivery -->
     <label class="cart-pay-option" onclick="selectCartPay('cod')" id="codOption">
       <input type="radio" name="cartPayMethod" value="cod" style="display:none;">
@@ -3016,13 +2851,11 @@ html{scroll-behavior:smooth;}
       </div>
       <div class="pay-opt-badges">
         <div style="font-size:9px;font-weight:700;color:#ff9800;background:#ff980015;border:1px solid #ff980033;padding:2px 7px;border-radius:10px;">+20</div></div></label></div></div>
-
 <!-- CHECKOUT BUTTON -->
 <button class="checkout-btn" onclick="initiatePayment()">
   <span>&#x1F6D2; Proceed to Pay</span>
-   <span class="checkout-btn-amt">?<span id="checkoutTotal">0</span></span>
+   <span class="checkout-btn-amt">₹<span id="checkoutTotal">0</span></span>
 </button>
-
 <!-- ASSURANCE -->
 <div class="cart-assurance">
    <div class="cart-assurance-item"><span>&#x1F512;</span><span>Secure</span></div>
@@ -3030,14 +2863,10 @@ html{scroll-behavior:smooth;}
    <div class="cart-assurance-item"><span>&#x1F6E1;&#xFE0F;</span><span>100% Refund</span></div>
    <div class="cart-assurance-item"><span>&#x1F33F;</span><span>Fresh Food</span></div>
 </div>
-
 </div><!-- end #cartMainBody -->
-
 </div><!-- end #cart -->
-
 <!-- -- PAYMENT PAGE (fixed panel, same position as cart) -- -->
 <div id="qrBox" style="display:none;padding:0 20px 20px;box-sizing:border-box;">
-
 <!-- HEADER -->
 <div style="display:flex;justify-content:space-between;align-items:center;padding:16px 0 14px;border-bottom:1px solid #1a1a1a;margin-bottom:16px;position:sticky;top:0;background:#0d0d0d;z-index:2;">
   <div style="display:flex;align-items:center;gap:10px;">
@@ -3049,7 +2878,6 @@ html{scroll-behavior:smooth;}
   </div>
    <button onclick="closeQR()" style="background:#1a1a1a;border:1px solid #222;color:#666;font-size:16px;cursor:pointer;width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;">&#x2715;</button>
 </div>
-
 <!-- AMOUNT -->
 <div style="background:linear-gradient(135deg,#0f1f16,#0a1a10);border:1px solid #1e4a2f;border-radius:16px;padding:16px 18px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;">
   <div>
@@ -3061,7 +2889,6 @@ html{scroll-behavior:smooth;}
     <div style="font-size:12px;font-weight:700;color:#00e5a0;">99Foodies Pay</div>
   </div>
 </div>
-
 <!-- PAYMENT METHOD TABS -->
 <div style="display:flex;gap:6px;margin-bottom:16px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px;">
    <button class="pay-tab active" onclick="selectPayTab(this,'upi')">&#x1F4F1; UPI</button>
@@ -3069,7 +2896,6 @@ html{scroll-behavior:smooth;}
    <button class="pay-tab" onclick="selectPayTab(this,'netbanking')">&#x1F3E6; Net Banking</button>
    <button class="pay-tab" onclick="selectPayTab(this,'cod')">&#x1F6F5; COD</button>
 </div>
-
 <!-- UPI PANEL -->
 <div id="payPanel-upi" class="pay-panel">
   <div class="pay-section-title">Pay with UPI App</div>
@@ -3087,13 +2913,11 @@ html{scroll-behavior:smooth;}
       <span>Paytm</span>
     </div>
   </div>
-
   <div class="pay-section-title">Enter UPI ID</div>
   <div style="display:flex;gap:8px;margin-bottom:16px;">
     <input id="upiIdInput" type="text" placeholder="yourname@upi" style="flex:1;padding:13px 14px;background:#111;border:1.5px solid #222;border-radius:12px;color:#fff;font-size:14px;font-family:Poppins;outline:none;" onfocus="this.style.borderColor='#ff4d4d'" onblur="this.style.borderColor='#222'">
     <button onclick="payWithUPIId()" style="padding:13px 18px;background:linear-gradient(135deg,#ff4d4d,#ff1a1a);border:none;border-radius:12px;color:#fff;font-weight:700;font-size:13px;cursor:pointer;font-family:Poppins;white-space:nowrap;">Pay Now</button>
   </div>
-
   <div class="pay-section-title">Scan & Pay</div>
   <div style="display:flex;justify-content:center;background:#111;border-radius:14px;padding:16px;margin-bottom:4px;border:1px solid #1a1a1a;">
     <div style="background:#fff;border-radius:10px;padding:8px;">
@@ -3101,10 +2925,8 @@ html{scroll-behavior:smooth;}
     </div>
   </div>
 </div>
-
 <!-- CARDS PANEL -->
 <div id="payPanel-cards" class="pay-panel" style="display:none;">
-
   <!-- Live Card Preview -->
   <div class="card-preview-wrap">
     <div class="card-preview" id="cardPreview">
@@ -3129,7 +2951,6 @@ html{scroll-behavior:smooth;}
       </div>
     </div>
   </div>
-
   <!-- Accepted Networks -->
   <div class="card-networks-row">
     <div class="card-network-chip active" id="netVisa" onclick="setCardNetwork('visa',this)">
@@ -3148,7 +2969,6 @@ html{scroll-behavior:smooth;}
       <span style="font-size:10px;font-weight:800;color:#007bc1;">AMEX</span>
     </div>
   </div>
-
   <!-- Card Form -->
   <div class="card-form-wrap">
     <!-- Card Number -->
@@ -3161,10 +2981,9 @@ html{scroll-behavior:smooth;}
           oninput="formatCardNumber(this)"
           onfocus="this.closest('.card-input-wrap').classList.add('focused')"
           onblur="this.closest('.card-input-wrap').classList.remove('focused')">
-        <span class="card-input-valid" id="cardNumValid" style="display:none;">?</span>
+        <span class="card-input-valid" id="cardNumValid" style="display:none;">✅</span>
       </div>
     </div>
-
     <!-- Card Holder -->
     <div class="card-field-group">
       <label class="card-field-label">Card Holder Name</label>
@@ -3177,7 +2996,6 @@ html{scroll-behavior:smooth;}
           onblur="this.closest('.card-input-wrap').classList.remove('focused')">
       </div>
     </div>
-
     <!-- Expiry + CVV -->
     <div style="display:flex;gap:10px;">
       <div class="card-field-group" style="flex:1;">
@@ -3206,7 +3024,6 @@ html{scroll-behavior:smooth;}
         <div class="cvv-tip" id="cvvTip">3-digit code on the back of your card (4 digits for Amex)</div>
       </div>
     </div>
-
     <!-- Save Card Toggle -->
     <div class="card-save-row">
       <div style="display:flex;align-items:center;gap:10px;">
@@ -3223,18 +3040,14 @@ html{scroll-behavior:smooth;}
       </div>
     </div>
   </div>
-
   <!-- Security Note -->
   <div class="card-security-note">
     <span>🔒</span>
     <span>Your card details are encrypted with SSL & never stored on our servers</span>
   </div>
-
 </div>
-
 <!-- NET BANKING PANEL -->
 <div id="payPanel-netbanking" class="pay-panel" style="display:none;">
-
   <!-- Popular Banks -->
   <div class="pay-section-title">Popular Banks</div>
   <div class="nb-banks-grid" id="nbBanksGrid">
@@ -3243,59 +3056,58 @@ html{scroll-behavior:smooth;}
         <span style="font-size:15px;font-weight:900;color:#fff;letter-spacing:-0.5px;">SBI</span>
       </div>
       <span class="nb-bank-name">State Bank</span>
-      <div class="nb-bank-check">?</div>
+      <div class="nb-bank-check">✓</div>
     </div>
     <div class="nb-bank-card" onclick="selectNetBank(this,'HDFC')" data-bank="HDFC">
       <div class="nb-bank-logo" style="background:linear-gradient(135deg,#004c97,#0066cc);">
         <span style="font-size:13px;font-weight:900;color:#fff;">HDFC</span>
       </div>
       <span class="nb-bank-name">HDFC Bank</span>
-      <div class="nb-bank-check">?</div>
+      <div class="nb-bank-check">✓</div>
     </div>
     <div class="nb-bank-card" onclick="selectNetBank(this,'ICICI')" data-bank="ICICI">
       <div class="nb-bank-logo" style="background:linear-gradient(135deg,#b5261e,#e03030);">
         <span style="font-size:12px;font-weight:900;color:#fff;">ICICI</span>
       </div>
       <span class="nb-bank-name">ICICI Bank</span>
-      <div class="nb-bank-check">?</div>
+      <div class="nb-bank-check">✓</div>
     </div>
     <div class="nb-bank-card" onclick="selectNetBank(this,'Axis')" data-bank="Axis">
       <div class="nb-bank-logo" style="background:linear-gradient(135deg,#97144d,#c41e6a);">
         <span style="font-size:12px;font-weight:900;color:#fff;">AXIS</span>
       </div>
       <span class="nb-bank-name">Axis Bank</span>
-      <div class="nb-bank-check">?</div>
+      <div class="nb-bank-check">✓</div>
     </div>
     <div class="nb-bank-card" onclick="selectNetBank(this,'Kotak')" data-bank="Kotak">
       <div class="nb-bank-logo" style="background:linear-gradient(135deg,#e8222a,#ff4444);">
         <span style="font-size:11px;font-weight:900;color:#fff;">KOTAK</span>
       </div>
       <span class="nb-bank-name">Kotak Bank</span>
-      <div class="nb-bank-check">?</div>
+      <div class="nb-bank-check">✓</div>
     </div>
     <div class="nb-bank-card" onclick="selectNetBank(this,'PNB')" data-bank="PNB">
       <div class="nb-bank-logo" style="background:linear-gradient(135deg,#1a5276,#2e86c1);">
         <span style="font-size:13px;font-weight:900;color:#fff;">PNB</span>
       </div>
       <span class="nb-bank-name">Punjab Natl.</span>
-      <div class="nb-bank-check">?</div>
+      <div class="nb-bank-check">✓</div>
     </div>
     <div class="nb-bank-card" onclick="selectNetBank(this,'BOB')" data-bank="BOB">
       <div class="nb-bank-logo" style="background:linear-gradient(135deg,#f57c00,#ff9800);">
         <span style="font-size:13px;font-weight:900;color:#fff;">BOB</span>
       </div>
       <span class="nb-bank-name">Bank of Baroda</span>
-      <div class="nb-bank-check">?</div>
+      <div class="nb-bank-check">✓</div>
     </div>
     <div class="nb-bank-card" onclick="selectNetBank(this,'Yes')" data-bank="Yes">
       <div class="nb-bank-logo" style="background:linear-gradient(135deg,#00529b,#0070cc);">
         <span style="font-size:12px;font-weight:900;color:#fff;">YES</span>
       </div>
       <span class="nb-bank-name">Yes Bank</span>
-      <div class="nb-bank-check">?</div>
+      <div class="nb-bank-check">✓</div>
     </div>
   </div>
-
   <!-- Other Banks Dropdown -->
   <div class="pay-section-title" style="margin-top:14px;">Other Banks</div>
   <div class="nb-other-wrap">
@@ -3315,7 +3127,6 @@ html{scroll-behavior:smooth;}
       </div>
     </div>
   </div>
-
   <!-- Selected Bank Confirmation -->
   <div class="nb-selected-bar" id="nbSelectedBar" style="display:none;">
     <div style="display:flex;align-items:center;gap:10px;">
@@ -3325,9 +3136,8 @@ html{scroll-behavior:smooth;}
         <div style="font-size:14px;font-weight:700;color:#fff;" id="nbSelectedName">Select Bank€—</div>
       </div>
     </div>
-    <div class="nb-selected-badge">? Ready</div>
+    <div class="nb-selected-badge">✅ Ready</div>
   </div>
-
   <!-- Info Strip -->
   <div class="nb-info-strip">
     <div class="nb-info-item"><span>🔒</span><span>256-bit SSL</span></div>
@@ -3336,9 +3146,7 @@ html{scroll-behavior:smooth;}
     <div class="nb-info-divider"></div>
     <div class="nb-info-item"><span>🏦</span><span>100+ banks</span></div>
   </div>
-
 </div>
-
 <!-- CASH ON DELIVERY PANEL -->
 <div id="payPanel-cod" class="pay-panel" style="display:none;">
    <div style="background:linear-gradient(135deg,#1a1500,#111);border:1px solid #ff980033;border-radius:16px;padding:20px;text-align:center;margin-bottom:14px;">
@@ -3361,29 +3169,23 @@ html{scroll-behavior:smooth;}
      </div>
   </div>
 </div>
-
 <!-- PAY BUTTON -->
 <button id="payNowBtn" onclick="processPayment()" style="width:100%;padding:16px;background:linear-gradient(135deg,#ff4d4d,#ff1a1a);color:#fff;border:none;border-radius:14px;font-size:16px;font-weight:800;cursor:pointer;font-family:Poppins;box-shadow:0 6px 24px rgba(255,77,77,0.4);margin-top:8px;margin-bottom:6px;letter-spacing:0.3px;">
    Pay &#x20B9;<span id="payBtnAmount">0</span> Securely &#x2192;
 </button>
 <div style="text-align:center;font-size:11px;color:#333;padding-bottom:8px;">&#x1F512; Encrypted &middot; Safe &middot; Instant Confirmation</div>
-
 </div>
-
 <!-- -- PAYMENT SUCCESS (fixed panel, same position as cart) -- -->
 <div id="paymentSuccess" style="display:none;">
   <div class="pay-success-wrap">
-
     <div class="pay-check-ring">
       <svg viewBox="0 0 80 80" class="pay-check-svg">
         <circle cx="40" cy="40" r="36" fill="none" stroke="#00e5a0" stroke-width="4" class="pay-check-circle"/>
         <polyline points="24,41 35,52 56,30" fill="none" stroke="#00e5a0" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" class="pay-check-tick"/>
       </svg>
     </div>
-
     <div class="pay-success-title">Payment Successful!</div>
      <div class="pay-success-sub">Your order has been placed and is being prepared &#x1F37D;&#xFE0F;</div>
-
     <div class="pay-detail-card">
       <div class="pay-detail-row">
         <span class="pay-detail-label">Order ID</span>
@@ -3410,7 +3212,6 @@ html{scroll-behavior:smooth;}
          <span class="pay-status-badge">Confirmed</span>
       </div>
     </div>
-
      <div class="pay-eta-strip">
        <div class="pay-eta-item"><span class="pay-eta-icon">&#x1F9D1;&#x200D;&#x1F373;</span><span>Preparing</span></div>
        <div class="pay-eta-line"></div>
@@ -3418,20 +3219,16 @@ html{scroll-behavior:smooth;}
        <div class="pay-eta-line"></div>
        <div class="pay-eta-item"><span class="pay-eta-icon">&#x1F4E6;</span><span>Delivered</span></div>
      </div>
-
      <p class="pay-sms-note">A confirmation SMS will be sent to your number shortly.</p>
      <button class="pay-order-more-btn" onclick="closePayment()">Order More</button>
      <button class="pay-order-more-btn" onclick="openTracking(currentTrackingOrderId)"
        style="margin-top:10px;background:linear-gradient(135deg,#0d2e1f,#1a3a2f);color:#00e5a0;box-shadow:0 4px 16px rgba(0,229,160,0.2);">
        Track My Order
      </button>
-
   </div>
 </div>
-
 <!-- -- LIVE ORDER TRACKING PAGE -- -->
 <div class="track-page" id="trackPage">
-
   <!-- HEADER -->
   <div style="position:sticky;top:0;z-index:10;background:rgba(10,10,10,0.97);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid #1a1a1a;padding:16px 20px 14px;">
     <div style="display:flex;align-items:center;gap:12px;">
@@ -3446,7 +3243,6 @@ html{scroll-behavior:smooth;}
       </div>
     </div>
   </div>
-
   <!-- ETA BAR -->
   <div class="eta-bar" id="etaBar" style="margin-top:20px;">
      <div class="eta-icon">&#x1F6F5;</div>
@@ -3459,7 +3255,6 @@ html{scroll-behavior:smooth;}
        <div style="font-size:14px;font-weight:700;color:#fff;" id="etaTime">-</div>
     </div>
   </div>
-
   <!-- PROGRESS BAR -->
   <div class="track-progress-wrap">
     <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
@@ -3470,7 +3265,6 @@ html{scroll-behavior:smooth;}
       <div class="track-progress-fill" id="trackProgressFill"></div>
     </div>
   </div>
-
   <!-- FAKE MAP -->
   <div class="track-map" id="trackMap">
     <div class="map-grid"></div>
@@ -3484,7 +3278,6 @@ html{scroll-behavior:smooth;}
      <div class="map-rider" id="mapRider" style="left:20px;">&#x1F6F5;</div>
     <div class="map-label" id="mapLabel">Rider heading to you</div>
   </div>
-
   <!-- RIDER CARD -->
   <div class="rider-card" id="riderCard">
     <div class="rider-avatar">Rider</div>
@@ -3492,15 +3285,13 @@ html{scroll-behavior:smooth;}
       <div class="rider-name" id="riderName">Preparing your order</div>
       <div class="rider-sub" id="riderSub">Your food is being freshly made</div>
     </div>
-     <div class="rider-call" id="riderCallBtn" style="display:none;" onclick="showToast('Calling rider...')">??</div>
+     <div class="rider-call" id="riderCallBtn" style="display:none;" onclick="showToast('📞 Calling rider...')">📞</div>
   </div>
-
   <!-- TIMELINE -->
   <div style="padding:0 20px 8px;font-size:11px;font-weight:700;color:#555;letter-spacing:1px;text-transform:uppercase;">Order Timeline</div>
   <div class="track-timeline" id="trackTimeline">
     <!-- Rendered by JS -->
   </div>
-
   <!-- ORDER SUMMARY -->
   <div style="margin:0 20px 20px;background:#111;border:1px solid #1a1a1a;border-radius:16px;padding:16px;">
     <div style="font-size:11px;font-weight:700;color:#555;letter-spacing:1px;text-transform:uppercase;margin-bottom:12px;">Order Summary</div>
@@ -3511,7 +3302,6 @@ html{scroll-behavior:smooth;}
       <span style="color:#ff4d4d;" id="trackOrderTotal">&#x20B9;0</span>
     </div>
   </div>
-
   <!-- HELP -->
   <div style="margin:0 20px 40px;display:flex;gap:10px;">
      <button onclick="showToast('Calling support...')"
@@ -3525,11 +3315,8 @@ html{scroll-behavior:smooth;}
        &#x26A0;&#xFE0F; Report Issue
      </button>
   </div>
-
 </div>
-
 <div class="reviews" id="reviews">
-
   <!-- STICKY HEADER -->
   <div class="reviews-header">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
@@ -3551,7 +3338,6 @@ html{scroll-behavior:smooth;}
       </div>
     </div>
   </div>
-
   <!-- FILTER CHIPS -->
   <div class="review-filters">
     <button class="review-filter-btn active" onclick="setReviewFilter(this)">All</button>
@@ -3560,7 +3346,6 @@ html{scroll-behavior:smooth;}
     <button class="review-filter-btn" onclick="setReviewFilter(this)">Packaging</button>
     <button class="review-filter-btn" onclick="setReviewFilter(this)">Value</button>
   </div>
-
   <!-- WRITE A REVIEW -->
   <div class="write-review-bar" onclick="toggleReviewForm()">
     <div style="display:flex;align-items:center;gap:10px">
@@ -3569,11 +3354,9 @@ html{scroll-behavior:smooth;}
      </div>
      <span style="color:#ff4d4d;font-size:13px;font-weight:600">+ Add</span>
   </div>
-
   <!-- REVIEW FORM (hidden by default) -->
   <div class="review-form-box" id="reviewFormBox">
     <div style="font-size:13px;font-weight:600;color:#aaa;margin-bottom:10px">Your Rating</div>
-
     <!-- STAR PICKER -->
     <div class="star-picker" id="starPicker">
       <span onclick="setRating(1)">&#9733;</span>
@@ -3583,7 +3366,6 @@ html{scroll-behavior:smooth;}
       <span onclick="setRating(5)">&#9733;</span>
     </div>
     <div id="ratingLabel" style="font-size:12px;color:#888;margin:6px 0 14px;min-height:16px"></div>
-
     <!-- CATEGORY TAGS -->
     <div style="font-size:13px;font-weight:600;color:#aaa;margin-bottom:8px">What did you like?</div>
     <div class="review-tag-picker">
@@ -3592,18 +3374,14 @@ html{scroll-behavior:smooth;}
       <span class="rtag" onclick="toggleTag(this)">&#x1F4E6; Packaging</span>
       <span class="rtag" onclick="toggleTag(this)">&#x1F4B0; Value</span>
     </div>
-
     <!-- NAME -->
     <input class="review-input" id="reviewName" type="text" placeholder="Your name (optional)" maxlength="30">
-
     <!-- REVIEW TEXT -->
     <textarea class="review-input" id="reviewText" placeholder="Share your experience... (optional)" rows="3" maxlength="200"></textarea>
     <div style="text-align:right;font-size:11px;color:#555;margin-top:-8px;margin-bottom:10px"><span id="charCount">0</span>/200</div>
-
     <!-- SUBMIT -->
     <button class="review-submit-btn" onclick="submitReview()">Submit Review</button>
   </div>
-
   <!-- REVIEW CARDS -->
   <div class="review-card" data-category="food quality delivery">
     <div class="reviewer-row">
@@ -3624,7 +3402,6 @@ html{scroll-behavior:smooth;}
       <span style="font-size:12px;color:#555;cursor:pointer">Report</span>
     </div>
   </div>
-
   <div class="review-card" data-category="food quality packaging">
     <div class="reviewer-row">
       <div class="reviewer-avatar" style="background:#2196f3">R</div>
@@ -3644,7 +3421,6 @@ html{scroll-behavior:smooth;}
       <span style="font-size:12px;color:#555;cursor:pointer">Report</span>
     </div>
   </div>
-
   <div class="review-card" data-category="food quality value">
     <div class="reviewer-row">
       <div class="reviewer-avatar" style="background:#ff9800">A</div>
@@ -3664,7 +3440,6 @@ html{scroll-behavior:smooth;}
       <span style="font-size:12px;color:#555;cursor:pointer">Report</span>
     </div>
   </div>
-
   <div class="review-card" data-category="food quality delivery value">
     <div class="reviewer-row">
       <div class="reviewer-avatar" style="background:#9c27b0">K</div>
@@ -3684,7 +3459,6 @@ html{scroll-behavior:smooth;}
       <span style="font-size:12px;color:#555;cursor:pointer">Report</span>
     </div>
   </div>
-
   <div class="review-card" data-category="food quality packaging delivery">
     <div class="reviewer-row">
       <div class="reviewer-avatar" style="background:#00bcd4">S</div>
@@ -3704,23 +3478,17 @@ html{scroll-behavior:smooth;}
       <span style="font-size:12px;color:#555;cursor:pointer">Report</span>
     </div>
   </div>
-
 </div>
-
 <div class="contact" id="contact">
-
   <div class="contact-header">
     <div style="display:flex;justify-content:space-between;align-items:center">
       <h3>Contact Us</h3>
       <button onclick="toggleContact()" style="background:none;border:none;color:#aaa;font-size:22px;cursor:pointer;line-height:1;padding:0">&#x2715;</button>
     </div>
   </div>
-
   <div class="contact-body">
-
     <!-- -- GET IN TOUCH -- -->
     <div class="contact-section-title">Get in Touch</div>
-
     <a class="contact-item" href="tel:YOUR_PHONE_NUMBER">
       <div class="contact-item-icon" style="background:#1e3a2f">&#x1F4DE;</div>
       <div class="contact-item-info">
@@ -3729,7 +3497,6 @@ html{scroll-behavior:smooth;}
       </div>
       <div class="contact-item-arrow">&#x203A;</div>
     </a>
-
     <a class="contact-item" href="mailto:YOUR_SUPPORT_EMAIL">
       <div class="contact-item-icon" style="background:#1a1e3a">&#x1F4E7;</div>
       <div class="contact-item-info">
@@ -3738,7 +3505,6 @@ html{scroll-behavior:smooth;}
       </div>
       <div class="contact-item-arrow">&#x203A;</div>
     </a>
-
     <div class="contact-item" style="cursor:default">
       <div class="contact-item-icon" style="background:#2a1a1a">&#x1F4CD;</div>
       <div class="contact-item-info">
@@ -3746,10 +3512,8 @@ html{scroll-behavior:smooth;}
         <div class="contact-item-value">YOUR_LOCATION</div>
       </div>
     </div>
-
     <!-- -- RESTAURANT OWNER -- -->
     <div class="contact-section-title" style="margin-top:20px">Restaurant Owner</div>
-
     <div class="contact-item" style="cursor:default">
       <div style="width:44px;height:44px;border-radius:14px;background:linear-gradient(135deg,#ff4d4d,#ff1a1a);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;color:#fff;flex-shrink:0;">
         &#x1F468;&#x200D;&#x1F373;
@@ -3760,10 +3524,8 @@ html{scroll-behavior:smooth;}
       </div>
       <div style="background:#0d2e1f;border:1px solid #00e5a033;color:#00e5a0;font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;white-space:nowrap;">Verified &#x2713;</div>
     </div>
-
     <!-- -- OPERATING HOURS -- -->
     <div class="contact-section-title" style="margin-top:20px">Operating Hours</div>
-
     <div style="background:#111;border:1px solid #1a1a1a;border-radius:14px;overflow:hidden;">
       <div style="display:flex;justify-content:space-between;align-items:center;padding:13px 16px;border-bottom:1px solid #1a1a1a;">
         <span style="font-size:13px;color:#aaa;font-weight:500;">Mon – Fri</span>
@@ -3787,10 +3549,8 @@ html{scroll-behavior:smooth;}
         </div>
       </div>
     </div>
-
     <!-- -- FOLLOW US -- -->
     <div class="contact-section-title" style="margin-top:20px">Follow Us</div>
-
     <a class="contact-item" href="https://www.instagram.com/YOUR_INSTAGRAM_ID" target="_blank" rel="noopener" style="background:linear-gradient(135deg,#1a0d1a,#2a1020);border-color:#c13584aa;">
       <div class="contact-item-icon" style="background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045);font-size:22px;">&#x1F4F7;</div>
       <div class="contact-item-info">
@@ -3799,7 +3559,6 @@ html{scroll-behavior:smooth;}
       </div>
       <div class="contact-item-arrow">&#x203A;</div>
     </a>
-
     <a class="contact-item" href="https://wa.me/YOUR_WHATSAPP_NUMBER" target="_blank" rel="noopener" style="background:#0d1f14;border-color:#25d36644;">
       <div class="contact-item-icon" style="background:#1e3a2f;font-size:22px;">&#x1F4AC;</div>
       <div class="contact-item-info">
@@ -3808,22 +3567,17 @@ html{scroll-behavior:smooth;}
       </div>
       <div class="contact-item-arrow">&#x203A;</div>
     </a>
-
     <!-- -- SATISFACTION -- -->
     <div style="background:#1a1a1a;border-radius:12px;padding:14px;margin-top:16px;text-align:center">
       <div style="font-size:20px;margin-bottom:6px">&#x1F6E1;&#xFE0F;</div>
       <div style="font-size:13px;font-weight:600;color:#fff;margin-bottom:4px">100% Satisfaction Guaranteed</div>
       <div style="font-size:11px;color:#666;line-height:1.5">Not happy with your order? We'll make it right. Contact us within 30 minutes of delivery.</div>
     </div>
-
   </div>
 </div>
-
 </div>
-
 <!-- ===== PROFILE PANEL ===== -->
 <div class="profile-panel" id="profilePanel">
-
   <!-- HEADER -->
   <div class="profile-header">
     <div style="display:flex;justify-content:space-between;align-items:center">
@@ -3838,10 +3592,8 @@ html{scroll-behavior:smooth;}
       </div>
     </div>
   </div>
-
   <!-- PROFILE BODY -->
   <div class="profile-body">
-
     <!-- AVATAR + NAME HERO -->
     <div class="profile-hero">
        <div class="profile-avatar-wrap">
@@ -3870,19 +3622,15 @@ html{scroll-behavior:smooth;}
         </div>
       </div>
     </div>
-
     <!-- TABS -->
     <div class="profile-tabs">
       <button class="profile-tab active" onclick="switchProfileTab(this,'info')">&#x2139;&#xFE0F; Info</button>
       <button class="profile-tab" onclick="switchProfileTab(this,'addresses')">&#x1F4CD; Addresses</button>
       <button class="profile-tab" onclick="switchProfileTab(this,'orders')">&#x1F4E6; Orders</button>
     </div>
-
     <!-- TAB: INFO -->
     <div class="profile-tab-content" id="tab-info">
-
       <div class="profile-section-title">&#x1F464; Basic Information</div>
-
       <!-- VIEW MODE -->
       <div id="profileViewMode">
         <div class="profile-info-row">
@@ -3908,7 +3656,6 @@ html{scroll-behavior:smooth;}
         </div>
         <button class="profile-edit-btn" onclick="toggleEditMode(true)">&#x270F;&#xFE0F; Edit Profile</button>
       </div>
-
       <!-- EDIT MODE -->
       <div id="profileEditMode" style="display:none">
         <div class="profile-section-title">Edit Profile</div>
@@ -3923,15 +3670,11 @@ html{scroll-behavior:smooth;}
           <button class="profile-cancel-btn" onclick="toggleEditMode(false)">Cancel</button>
         </div>
       </div>
-
     </div>
-
     <!-- TAB: ADDRESSES -->
     <div class="profile-tab-content" id="tab-addresses" style="display:none">
-
       <div class="profile-section-title">&#x1F4CD; Saved Addresses</div>
       <div id="addressList"></div>
-
       <!-- ADD ADDRESS FORM -->
       <div class="add-address-bar" onclick="toggleAddressForm()">
         <span style="font-size:18px">&#x2795;</span>
@@ -3949,14 +3692,12 @@ html{scroll-behavior:smooth;}
         <input class="profile-input" id="addrPin" placeholder="PIN Code" type="tel" maxlength="6">
         <button class="profile-save-btn" onclick="saveAddress()">&#x1F4CD; Save Address</button>
       </div>
-
     </div>
-
     <!-- TAB: ORDER HISTORY -->
     <div class="profile-tab-content" id="tab-orders" style="display:none">
       <!-- Quick summary + open full page -->
          <div style="text-align:center;padding:24px 20px 20px;">
-         <div style="font-size:52px;margin-bottom:12px;">??</div>
+         <div style="font-size:52px;margin-bottom:12px;">📋</div>
          <div style="font-size:16px;font-weight:800;color:#fff;margin-bottom:6px;">Your Order History</div>
          <div style="font-size:13px;color:#666;margin-bottom:20px;line-height:1.6;">View all your past orders, bills,<br>items and reorder in one tap.</div>
          <button onclick="openOrderHistory()" style="width:100%;padding:15px;background:linear-gradient(135deg,#ff4d4d,#ff1a1a);color:#fff;border:none;border-radius:14px;font-size:15px;font-weight:800;font-family:Poppins;cursor:pointer;box-shadow:0 6px 20px rgba(255,77,77,0.35);transition:0.2s;display:flex;align-items:center;justify-content:center;gap:10px;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">
@@ -3964,17 +3705,13 @@ html{scroll-behavior:smooth;}
            <span id="ohTabBadge" style="background:rgba(255,255,255,0.2);padding:3px 10px;border-radius:20px;font-size:13px;font-weight:800;">0</span>
          </button>
        </div>
-
       <!-- Recent 2 orders preview -->
       <div style="padding:0 16px 24px;" id="ohRecentPreview"></div>
     </div>
-
   </div>
 </div>
-
 <!-- -- ORDER HISTORY FULL PAGE -- -->
 <div class="oh-page" id="ohPage">
-
   <!-- STICKY HEADER -->
   <div class="oh-header">
     <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
@@ -3985,7 +3722,6 @@ html{scroll-behavior:smooth;}
       </div>
        <button onclick="clearOrderHistory()" style="background:transparent;border:1px solid #2a2a2a;color:#555;font-size:11px;font-weight:600;font-family:Poppins;padding:7px 12px;border-radius:10px;cursor:pointer;transition:0.2s;" onmouseover="this.style.borderColor='#ff4d4d44';this.style.color='#ff4d4d'" onmouseout="this.style.borderColor='#2a2a2a';this.style.color='#555'">&#x1F5D1;&#xFE0F; Clear</button>
     </div>
-
     <!-- FILTER CHIPS -->
      <div class="oh-filter-row" id="ohFilterRow">
        <button class="oh-filter-chip active" onclick="ohFilter(this,'all')">&#x1F4CB; All Orders</button>
@@ -3995,7 +3731,6 @@ html{scroll-behavior:smooth;}
        <button class="oh-filter-chip" onclick="ohFilter(this,'cod')">&#x1F91D; COD</button>
      </div>
   </div>
-
   <!-- STATS BAR -->
   <div class="oh-stats-bar" id="ohStatsBar" style="margin-top:20px;">
     <div class="oh-stat">
@@ -4011,15 +3746,11 @@ html{scroll-behavior:smooth;}
       <div class="oh-stat-lbl">Avg Order</div>
     </div>
   </div>
-
   <!-- ORDER LIST -->
   <div id="ohList" style="padding:0 16px 100px;"></div>
-
 </div>
-
 <!-- -- AI FOOD RECOMMENDATION PANEL -- -->
 <div class="ai-panel" id="aiPanel">
-
   <!-- HEADER -->
   <div class="ai-header">
     <div style="display:flex;align-items:center;justify-content:space-between;">
@@ -4030,10 +3761,8 @@ html{scroll-behavior:smooth;}
       <button onclick="toggleAIPanel()" style="background:none;border:none;color:#555;font-size:20px;cursor:pointer;padding:4px;line-height:1;">&#x2715;</button>
     </div>
   </div>
-
   <!-- CHAT MESSAGES -->
   <div class="ai-chat" id="aiChat"></div>
-
   <!-- QUICK SUGGESTION CHIPS -->
   <div class="ai-chips" id="aiChips">
     <button class="ai-chip" onclick="sendAIMessage('Recommend something for me')">&#x2728; Recommend for me</button>
@@ -4043,13 +3772,11 @@ html{scroll-behavior:smooth;}
     <button class="ai-chip" onclick="sendAIMessage('I am vegetarian, what should I order?')">&#x1F7E2; Veg options</button>
     <button class="ai-chip" onclick="sendAIMessage('What goes well with pizza?')">&#x1F355; Pizza combos</button>
   </div>
-
   <!-- API KEY NOTICE (shown when no key set) -->
   <div class="ai-key-notice" id="aiKeyNotice" style="display:none;">
     &#x26A0;&#xFE0F; Add your OpenAI API key in the code to enable real AI.<br>
     Find: <code style="color:#ff9800;">OPENAI_API_KEY = "YOUR_KEY"</code>
   </div>
-
   <!-- INPUT -->
   <div class="ai-input-wrap">
     <div class="ai-input-row">
@@ -4059,18 +3786,13 @@ html{scroll-behavior:smooth;}
     </div>
     <div style="text-align:center;font-size:10px;color:#333;margin-top:6px;">AI may make mistakes - Always check allergens</div>
   </div>
-
 </div>
-
 <!-- DIM OVERLAY - sits above #main, below panels -->
 <div id="blurOverlay" onclick="closeAllPanels()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:1000;transition:opacity 0.3s ease;"></div>
-
 <!-- TOAST -->
 <div id="toast" class="toast"></div>
-
 <!-- SOUND (Web Audio API - no external file needed) -->
 <audio id="sound" style="display:none"></audio>
-
 <script>
 // Web Audio click sound - no external file, no 404
 function playClickSound(){
@@ -4089,7 +3811,6 @@ function playClickSound(){
     osc.stop(ctx.currentTime + 0.12);
   } catch(e){}
 }
-
 // 99Foodies menu - 130 items across 13 categories
 const items=[
 {n:"Margherita Pizza",p:199,t:"food",cat:"pizza",img:"https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=400&fit=crop",v:true,spicy:0,desc:"Classic tomato base, fresh mozzarella & basil"},
@@ -4222,25 +3943,23 @@ const items=[
 {n:"Maaza",p:60,t:"drink",cat:"colddrink",img:"https://images.unsplash.com/photo-1625772299848-391b6a87d7b3?w=400&fit=crop",v:true,spicy:0,desc:"Chilled Maaza mango drink 250ml"},
 {n:"Slice",p:60,t:"drink",cat:"colddrink",img:"https://images.unsplash.com/photo-1527960669566-f882ba85a4c6?w=400&fit=crop",v:true,spicy:0,desc:"Chilled Slice mango drink 250ml"},
 {n:"7UP",p:60,t:"drink",cat:"colddrink",img:"https://images.unsplash.com/photo-1560508180-03f285f67ded?w=400&fit=crop",v:true,spicy:0,desc:"Chilled 7UP lemon-lime 500ml"},
-{n:"Regular Vada Pav",p:20,t:"food",cat:"vadapav",img:"assets/vadapav.jpg",v:true,spicy:1,desc:"Classic Mumbai-style vada pav with green chutney & dry garlic chutney"},
-{n:"Grill Vada Pav",p:30,t:"food",cat:"vadapav",img:"assets/vadapav.jpg",v:true,spicy:1,desc:"Crispy grilled vada pav toasted on tawa with butter"},
-{n:"Cheese Vada Pav",p:40,t:"food",cat:"vadapav",img:"assets/vadapav.jpg",v:true,spicy:1,desc:"Vada pav loaded with melted cheese & chutneys"},
-{n:"Butter Vada Pav",p:25,t:"food",cat:"vadapav",img:"assets/vadapav.jpg",v:true,spicy:1,desc:"Soft pav slathered with butter, crispy vada inside"},
-{n:"Butter Cheese Vada Pav",p:50,t:"food",cat:"vadapav",img:"assets/vadapav.jpg",v:true,spicy:1,desc:"Buttery pav with melted cheese & spicy vada"},
-{n:"Garlic Vada Pav",p:30,t:"food",cat:"vadapav",img:"assets/vadapav.jpg",v:true,spicy:2,desc:"Vada pav with special garlic chutney for extra punch"},
-{n:"Garlic Cheese Vada Pav",p:45,t:"food",cat:"vadapav",img:"assets/vadapav.jpg",v:true,spicy:2,desc:"Garlic chutney vada pav topped with melted cheese"},
-{n:"Mexican Vada Pav",p:50,t:"food",cat:"vadapav",img:"assets/vadapav.jpg",v:true,spicy:3,desc:"Spicy Mexican-style vada pav with jalapeños & salsa"},
-{n:"Mexican Cheese Vada Pav",p:60,t:"food",cat:"vadapav",img:"assets/vadapav.jpg",v:true,spicy:3,desc:"Mexican vada pav with extra cheese & spicy salsa"},
-{n:"Achari Vada Pav",p:35,t:"food",cat:"vadapav",img:"assets/vadapav.jpg",v:true,spicy:2,desc:"Tangy pickle-flavoured vada pav with achari masala"},
-{n:"Achari Cheese Vada Pav",p:50,t:"food",cat:"vadapav",img:"assets/vadapav.jpg",v:true,spicy:2,desc:"Achari vada pav with melted cheese for a tangy cheesy bite"}
+{n:"Regular Vada Pav",p:20,t:"food",cat:"vadapav",img:"https://i.ibb.co/6R0VVSSY/vada-pav.png",v:true,spicy:1,desc:"Classic Mumbai-style vada pav with green chutney & dry garlic chutney"},
+{n:"Grill Vada Pav",p:30,t:"food",cat:"vadapav",img:"https://i.ibb.co/6R0VVSSY/vada-pav.png",v:true,spicy:1,desc:"Crispy grilled vada pav toasted on tawa with butter"},
+{n:"Cheese Vada Pav",p:40,t:"food",cat:"vadapav",img:"https://i.ibb.co/6R0VVSSY/vada-pav.png",v:true,spicy:1,desc:"Vada pav loaded with melted cheese & chutneys"},
+{n:"Butter Vada Pav",p:25,t:"food",cat:"vadapav",img:"https://i.ibb.co/6R0VVSSY/vada-pav.png",v:true,spicy:1,desc:"Soft pav slathered with butter, crispy vada inside"},
+{n:"Butter Cheese Vada Pav",p:50,t:"food",cat:"vadapav",img:"https://i.ibb.co/6R0VVSSY/vada-pav.png",v:true,spicy:1,desc:"Buttery pav with melted cheese & spicy vada"},
+{n:"Garlic Vada Pav",p:30,t:"food",cat:"vadapav",img:"https://i.ibb.co/6R0VVSSY/vada-pav.png",v:true,spicy:2,desc:"Vada pav with special garlic chutney for extra punch"},
+{n:"Garlic Cheese Vada Pav",p:45,t:"food",cat:"vadapav",img:"https://i.ibb.co/6R0VVSSY/vada-pav.png",v:true,spicy:2,desc:"Garlic chutney vada pav topped with melted cheese"},
+{n:"Mexican Vada Pav",p:50,t:"food",cat:"vadapav",img:"https://i.ibb.co/6R0VVSSY/vada-pav.png",v:true,spicy:3,desc:"Spicy Mexican-style vada pav with jalapeños & salsa"},
+{n:"Mexican Cheese Vada Pav",p:60,t:"food",cat:"vadapav",img:"https://i.ibb.co/6R0VVSSY/vada-pav.png",v:true,spicy:3,desc:"Mexican vada pav with extra cheese & spicy salsa"},
+{n:"Achari Vada Pav",p:35,t:"food",cat:"vadapav",img:"https://i.ibb.co/6R0VVSSY/vada-pav.png",v:true,spicy:2,desc:"Tangy pickle-flavoured vada pav with achari masala"},
+{n:"Achari Cheese Vada Pav",p:50,t:"food",cat:"vadapav",img:"https://i.ibb.co/6R0VVSSY/vada-pav.png",v:true,spicy:2,desc:"Achari vada pav with melted cheese for a tangy cheesy bite"}
 ];
-
 let cart=[];
 let cartQty={};
 let current=items;
 let appliedDiscount = 0;
 let freeDelivery = false;
-
 // ===== USER PROFILE DATA =====
 let userProfile = {
   name: "",
@@ -4263,7 +3982,6 @@ let orderHistory = JSON.parse(localStorage.getItem("99f_orders_v2") || "[]");
     } catch(e){}
   }
 })();
-
 // Fix broken orders in localStorage (null totals, missing item names/images)
 (function fixBrokenOrders(){
   let changed = false;
@@ -4293,19 +4011,14 @@ let orderHistory = JSON.parse(localStorage.getItem("99f_orders_v2") || "[]");
   if(changed) localStorage.setItem("99f_orders_v2", JSON.stringify(orderHistory));
 })();
 let freeshippingUsed = localStorage.getItem("99f_freeship") === "true";
-
 // ===== GOOGLE SIGN-IN + QUICK LOGIN =====
-
 // ===== REAL FIREBASE AUTH SYSTEM =====
-
 let _authMode = "signin"; // "signin" | "signup"
-
 // -- Tab switcher --------------------------------------------------------------
 function switchAuthTab(mode){
   _authMode = mode;
   clearLoginError();
   let isSignup = mode === "signup";
-
   // Tab styles
   let tabSI = document.getElementById("tabSignin");
   let tabSU = document.getElementById("tabSignup");
@@ -4313,18 +4026,14 @@ function switchAuthTab(mode){
   tabSI.style.color         = isSignup ? "#555" : "#fff";
   tabSU.style.background    = isSignup ? "linear-gradient(135deg,#ff4d4d,#ff1a1a)" : "transparent";
   tabSU.style.color         = isSignup ? "#fff" : "#555";
-
   // Show/hide name field & forgot password
   document.getElementById("signupNameWrap").style.display = isSignup ? "block" : "none";
   document.getElementById("forgotWrap").style.display     = isSignup ? "none"  : "block";
-
   // Button label
   document.getElementById("authBtnText").innerText = isSignup ? "Create Account" : "Sign In";
-
   // Autocomplete hint
   document.getElementById("authPass").setAttribute("autocomplete", isSignup ? "new-password" : "current-password");
 }
-
 // -- Password visibility toggle ------------------------------------------------
 function togglePassVis(){
   let inp = document.getElementById("authPass");
@@ -4333,7 +4042,6 @@ function togglePassVis(){
   inp.type = isHidden ? "text" : "password";
   btn.innerText = isHidden ? "Hide" : "Show";
 }
-
 // -- Show / clear error --------------------------------------------------------
 function showLoginError(msg, isSuccess){
   let e = document.getElementById("loginError");
@@ -4352,7 +4060,6 @@ function clearLoginError(){
   let e = document.getElementById("loginError");
   e.innerText = ""; e.style.display = "none";
 }
-
 // -- Button loading state ------------------------------------------------------
 function setAuthLoading(on){
   let btn  = document.getElementById("authSubmitBtn");
@@ -4364,7 +4071,6 @@ function setAuthLoading(on){
     text.innerText = _authMode === "signup" ? "Create Account" : "Sign In";
   }
 }
-
 // -- Firebase error -> human message -------------------------------------------
 function firebaseErrMsg(code){
   const map = {
@@ -4385,21 +4091,17 @@ function firebaseErrMsg(code){
   };
   return map[code] || "&#x26A0;&#xFE0F; Something went wrong. Please try again.";
 }
-
 // -- MAIN SUBMIT HANDLER -------------------------------------------------------
 async function handleAuthSubmit(){
   clearLoginError();
   let email = document.getElementById("authEmail").value.trim();
   let pass  = document.getElementById("authPass").value;
   let name  = _authMode === "signup" ? document.getElementById("authName").value.trim() : "";
-
   // Client-side validation
   if(!email || !email.includes("@")){ showLoginError("Enter a valid email address."); return; }
   if(!pass || pass.length < 6)      { showLoginError("Password must be at least 6 characters."); return; }
   if(_authMode === "signup" && !name){ showLoginError("Please enter your full name."); return; }
-
   setAuthLoading(true);
-
   try {
     let result;
     if(_authMode === "signup"){
@@ -4413,7 +4115,6 @@ async function handleAuthSubmit(){
       logEvent("sign_up", { method: "email" });
       showLoginError("Account created! Welcome to 99Foodies", true);
       setTimeout(() => enterSite(), 900);
-
     } else {
       // -- SIGN IN -------------------------------------------------------------
       result = await firebase.auth().signInWithEmailAndPassword(email, pass);
@@ -4423,14 +4124,12 @@ async function handleAuthSubmit(){
       logEvent("login", { method: "email" });
       enterSite();
     }
-
   } catch(err){
     console.error("Auth error:", err.code, err.message);
     showLoginError(firebaseErrMsg(err.code));
     setAuthLoading(false);
   }
 }
-
 // -- FORGOT PASSWORD -----------------------------------------------------------
 async function sendPasswordReset(){
   let email = document.getElementById("authEmail").value.trim();
@@ -4451,7 +4150,6 @@ async function sendPasswordReset(){
     showLoginError(firebaseErrMsg(err.code));
   }
 }
-
 // -- GOOGLE SIGN-IN ------------------------------------------------------------
 async function signInWithGoogle(){
   let btn = document.querySelector(".google-signin-btn");
@@ -4474,7 +4172,6 @@ async function signInWithGoogle(){
     showLoginError(firebaseErrMsg(err.code));
   }
 }
-
 // -- GUEST LOGIN ---------------------------------------------------------------
 function guestLogin(){
   userProfile.name    = "Guest";
@@ -4484,7 +4181,6 @@ function guestLogin(){
   enterSite();
   showToast("Browsing as Guest - sign in to save your orders");
 }
-
 // -- AUTO-LOGIN: restore session if Firebase still has a user ------------------
 firebase.auth().onAuthStateChanged(function(user){
   let loginPage = document.getElementById("loginPage");
@@ -4498,7 +4194,6 @@ firebase.auth().onAuthStateChanged(function(user){
   // Silently ignore auth state errors on load (e.g. unauthorized domain)
   console.warn("Auth state error:", error.code);
 });
-
 // -- SIGN OUT (called from profile panel) -------------------------------------
 function signOut(){
   firebase.auth().signOut().then(() => {
@@ -4515,14 +4210,12 @@ function signOut(){
     showToast("Signed out successfully");
   }).catch(err => showToast("Sign out failed: " + err.message));
 }
-
 // -- KEEP quickLogin as fallback (no longer shown in UI but kept for safety) ---
 function quickLogin(){
   let name = (document.getElementById("authName") || {}).value || "User";
   userProfile.name = name;
   enterSite();
 }
-
 function enterSite(){
   document.getElementById("loginPage").style.display = "none";
   let main = document.getElementById("main");
@@ -4532,10 +4225,8 @@ function enterSite(){
   refreshProfileUI();
   let guestBanner = document.getElementById("guestBanner");
   if(guestBanner) guestBanner.style.display = userProfile.isGuest ? "flex" : "none";
-
   // Request notification permission after login
   if(!userProfile.isGuest) requestNotificationPermission();
-
   // Silently pre-fetch orders from Firestore in background
   // so the order history page is instant when the user opens it
   let user = firebase.auth().currentUser;
@@ -4585,7 +4276,6 @@ function showLoginFromGuest(){
   document.getElementById("loginPhone").value = "";
   clearLoginError();
 }
-
 // -- Checkout step indicator ---------------------------------------------------
 function updateCheckoutStep(step){
   // step: 1=cart, 2=address, 3=payment
@@ -4600,7 +4290,7 @@ function updateCheckoutStep(step){
       num.style.border = "none";
       num.style.color = "#fff";
       num.style.boxShadow = "0 2px 8px rgba(76,175,80,0.4)";
-      num.innerText = "0";
+      num.innerText = "✓";
       lbl.style.color = "#4caf50";
     } else if(i + 1 === step){
       // active
@@ -4629,11 +4319,9 @@ function updateCheckoutStep(step){
         : "#2a2a2a";
   });
 }
-
 let vegOnly = false;
 let activeCat = "all";
 let activeType = "all";
-
 // Category background images - shown when category is selected
 const catBgImages = {
   all:       "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1400&fit=crop",
@@ -4643,7 +4331,7 @@ const catBgImages = {
   sandwich:  "https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=1400&fit=crop",
   dosa:      "https://images.unsplash.com/photo-1668236543090-82eba5ee5976?w=1400&fit=crop",
   idli:      "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=1400&fit=crop",
-  vadapav:   "assets/vadapav.jpg",
+  vadapav:   "https://i.ibb.co/6R0VVSSY/vada-pav.png",
   pavbhaji:  "https://images.unsplash.com/photo-1606491956689-2ea866880c84?w=1400&fit=crop",
   samosa:    "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=1400&fit=crop",
   water:     "https://images.unsplash.com/photo-1548839140-29a749e1cf4d?w=1400&fit=crop",
@@ -4652,7 +4340,6 @@ const catBgImages = {
   shake:     "https://images.unsplash.com/photo-1553361371-9b22f78e8b1d?w=1400&fit=crop",
   colddrink: "https://images.unsplash.com/photo-1629203851122-3726ecdf080e?w=1400&fit=crop",
 };
-
 function setCatBackground(cat){
   const url = catBgImages[cat] || catBgImages.all;
   document.body.style.backgroundImage =
@@ -4664,7 +4351,6 @@ function setCatBackground(cat){
   document.body.style.backgroundPosition = "center";
   document.body.style.transition = "background-image 0.5s ease";
 }
-
 function show(list){
   let html = "";
   if(list.length === 0){
@@ -4700,14 +4386,13 @@ function show(list){
             <div class="card-price">&#x20B9;${i.p}</div>
             <div style="font-size:10px;color:#444;margin-top:1px">onwards</div>
           </div>
-          <button class="card-add-btn ripple-host${inCart?' in-cart':''}" onclick="add('${i.n}',${i.p})">${inCart?'? Added':'Add +'}</button>
+          <button class="card-add-btn ripple-host${inCart?' in-cart':''}" onclick="add('${i.n}',${i.p})">${inCart?'✅ Added':'Add +'}</button>
         </div>
       </div>`;
     });
   }
   document.getElementById("menu").innerHTML = html;
 }
-
 function applyFilters(){
   let list = items;
   if(activeCat !== "all") list = list.filter(i => i.cat === activeCat || i.t === activeCat);
@@ -4717,7 +4402,6 @@ function applyFilters(){
   const catLabels = {all:"Our Menu",pizza:"Pizzas",burger:"Burgers",pasta:"Pasta",sandwich:"Sandwiches",dosa:"Dosa",idli:"Idli",pavbhaji:"Pav Bhaji",samosa:"Samosa",vadapav:"Vada Pav",water:"Water",tea:"Tea",coffee:"Coffee",shake:"Shakes",colddrink:"Cold Drinks"};
   document.getElementById("menuLabel").innerText = catLabels[activeCat] || "Our Menu";
 }
-
 function filterCat(el, cat){
   activeCat = cat;
   activeType = "all";
@@ -4733,7 +4417,6 @@ function filterCat(el, cat){
     if(menuEl) menuEl.scrollIntoView({behavior:"smooth", block:"start"});
   }, 80);
 }
-
 function setFilter(el, type){
   activeType = type;
   activeCat = "all";
@@ -4744,22 +4427,18 @@ function setFilter(el, type){
   if(firstBrandCard) firstBrandCard.classList.add("active");
   applyFilters();
 }
-
 function toggleVeg(el){
   vegOnly = !vegOnly;
   el.classList.toggle("active", vegOnly);
   applyFilters();
 }
-
 function showAll(){activeCat="all";activeType="all";vegOnly=false;applyFilters();}
 function showFood(){activeType="food";activeCat="all";applyFilters();}
 function showDrinks(){activeType="drink";activeCat="all";applyFilters();}
-
 function search(v){
   let f = items.filter(i => i.n.toLowerCase().includes(v.toLowerCase()) || (i.desc||"").toLowerCase().includes(v.toLowerCase()));
   show(f);
 }
-
 function toggleCart(){
 let c=document.getElementById("cart");
 let open=c.classList.contains("panel-open");
@@ -4786,46 +4465,38 @@ if(!open){
   updateCheckoutStep(savedDeliveryAddr ? 3 : 1);
 }
 }
-
 function add(n,p){
 let itemData = items.find(i => i.n === n);
 let img = itemData ? itemData.img : "";
 let isVeg = itemData ? itemData.v : false;
-
 if(!cartQty[n]){cartQty[n]={p:p,q:0,img:img};cart.push({n,p,img,v:isVeg})}
 cartQty[n].q++;
 logEvent("add_to_cart", { item_name: n, price: p, currency: "INR" });
 update();
 applyFilters(); // refresh card buttons
-
 /* SOUND */
 playClickSound();
-
 /* SHAKE + BOUNCE BADGE */
 let cartBtn=document.getElementById("cartBtn");
 cartBtn.classList.add("shake");
 setTimeout(()=>cartBtn.classList.remove("shake"),400);
-
 /* Badge pop animation */
 let badge = document.getElementById("cartCount");
 badge.style.animation = "none";
 badge.offsetHeight; // reflow
 badge.style.animation = "popIn 0.35s ease";
-
 /* Float btn pulse */
 let floatBtn = document.getElementById("floatCartBtn");
 if(floatBtn){
   floatBtn.style.transform = "scale(1.08)";
   setTimeout(()=>floatBtn.style.transform="",300);
 }
-
 /* TOAST */
 let t=document.getElementById("toast");
 t.innerText = n + " added - ₹" + p;
 t.classList.add("show");
 setTimeout(()=>t.classList.remove("show"),2000);
 }
-
 function update(){
 let html="",sum=0;
 if(cart.length === 0){
@@ -4863,7 +4534,6 @@ if(cart.length === 0){
   html += `</div>`;
 }
 cartItems.innerHTML=html;
-
 // Calculate totals
 let subtotal = sum;
 let deliveryFee = sum > 0 ? (freeDelivery ? 0 : 39) : 0;
@@ -4871,7 +4541,6 @@ let platformFee = sum > 0 ? 10 : 0;
 let taxes = Math.round(subtotal * 0.09); // 9% tax
 let total = subtotal + deliveryFee + platformFee + taxes - appliedDiscount;
 if(total < 0) total = 0;
-
 // Update all price elements
 document.getElementById("subtotal").innerText = "" + subtotal;
 document.getElementById("deliveryFee").innerText = freeDelivery && sum > 0 ? "FREE" : "" + deliveryFee;
@@ -4881,7 +4550,6 @@ document.getElementById("checkoutTotal").innerText = cartPayMethod === "cod" ? t
 document.getElementById("cartCount").innerText = cart.length;
 let floatCount = document.getElementById("floatCartCount");
 if(floatCount) floatCount.innerText = cart.length;
-
 // Show/hide discount row
 let discountRow = document.getElementById("discountRow");
 let discountAmt = document.getElementById("discountAmt");
@@ -4891,7 +4559,6 @@ if(appliedDiscount > 0 && sum > 0){
 } else {
   discountRow.style.display = "none";
 }
-
 // Savings badge
 let savings = appliedDiscount + (freeDelivery && sum > 0 ? 39 : 0);
 let savingsEl = document.getElementById("cartSavings");
@@ -4903,7 +4570,6 @@ if(savingsEl && savings > 0 && sum > 0){
   savingsEl.style.display = "none";
 }
 }
-
 function changeQty(n,delta){
 cartQty[n].q+=delta;
 if(cartQty[n].q<=0){
@@ -4914,7 +4580,6 @@ showToast(n + " removed");
 update();
 applyFilters();
 }
-
 // REMOVE ITEM FUNCTION
 function removeItem(n){
 if(cartQty[n]){
@@ -4931,7 +4596,6 @@ applyFilters();
 showToast(n + " removed from cart");
 }
 }
-
 // COUPON DROPDOWN
 function showCouponDropdown(){
   document.getElementById("couponDropdown").classList.add("show");
@@ -4951,13 +4615,11 @@ function filterCoupons(val){
     opt.style.display = tag.includes(val.toUpperCase()) ? "" : "none";
   });
 }
-
 // COUPON FUNCTION
 function applyCoupon(){
 let code = document.getElementById("couponInput").value.trim().toUpperCase();
 let msg = document.getElementById("couponMsg");
 hideCouponDropdown();
-
 // Valid coupons
 const coupons = {
 "FOOD50":   {discount: 50,  min: 200},
@@ -4965,18 +4627,17 @@ const coupons = {
 "SAVE10":   {discount: 10,  min: 50},
 "FREESHIP": {discount: 0,   min: 0, freeDelivery: true}
 };
-
 if(coupons[code]){
   // Block FREESHIP if already used
   if(code === "FREESHIP" && freeshippingUsed){
     appliedDiscount = 0;
     freeDelivery = false;
     msg.className = "error";
-    msg.innerText = "?? FREESHIP can only be used on your 1st order";
+    msg.innerText = "❌ FREESHIP can only be used on your 1st order";
     update();
     return;
   }
-  let subtotal = parseInt(document.getElementById("subtotal").innerText.replace("?",""));
+  let subtotal = parseInt(document.getElementById("subtotal").innerText.replace("₹",""));
   if(subtotal >= coupons[code].min){
     appliedDiscount = coupons[code].discount;
     freeDelivery = !!coupons[code].freeDelivery;
@@ -4989,14 +4650,14 @@ if(coupons[code]){
     appliedDiscount = 0;
     freeDelivery = false;
     msg.className = "error";
-    msg.innerText = "?? Min order ?" + coupons[code].min + " required";
+    msg.innerText = "❌ Min order ₹" + coupons[code].min + " required";
     update();
   }
 } else if(code) {
   appliedDiscount = 0;
   freeDelivery = false;
   msg.className = "error";
-  msg.innerText = "? Invalid coupon code";
+  msg.innerText = "❌ Invalid coupon code";
   update();
 } else {
   appliedDiscount = 0;
@@ -5005,11 +4666,9 @@ if(coupons[code]){
   update();
 }
 }
-
 function showQR(){
 document.getElementById("qrBox").style.display="block";
 }
-
 // -- Cart Payment Method Selector ---------------------------------------------
 let cartPayMethod = "upi";
 function selectCartPay(method){
@@ -5024,7 +4683,6 @@ function selectCartPay(method){
   let option = radio ? radio.closest(".cart-pay-option") : null;
   if(radio) radio.classList.add("checked");
   if(option) option.classList.add("selected");
-
   // Update checkout button amount - COD adds 20
   let totalEl = document.getElementById("total");
   let checkoutTotalEl = document.getElementById("checkoutTotal");
@@ -5045,37 +4703,31 @@ function selectCartPay(method){
       }
     } else {
       checkoutTotalEl.innerText = baseTotal;
-      checkoutBtn.querySelector("span:first-child").innerText = "?? Proceed to Pay";
+      checkoutBtn.querySelector("span:first-child").innerText = "🛒 Proceed to Pay";
       let badge = checkoutBtn.querySelector(".cod-badge");
       if(badge) badge.remove();
     }
   }
 }
-
 // -- Delivery Type Toggle ------------------------------------------------------
 // Set UPI as default selected on load
 document.addEventListener("DOMContentLoaded", () => selectCartPay("upi"));
-
 // -- DELIVERY ADDRESS ----------------------------------------------------------
 let savedDeliveryAddr = null;
-
 // -- HELPERS: hide all address UI panels --------------------------------------
 function hideAllAddrPanels(){
   document.getElementById("cartAddrChooser").style.display = "none";
   document.getElementById("cartAddrForm").style.display    = "none";
 }
-
 // -- MAIN ENTRY: tap on address bar -------------------------------------------
 function toggleAddrForm(){
   let chooser = document.getElementById("cartAddrChooser");
   let form    = document.getElementById("cartAddrForm");
-
   // If chooser or form already open ? close everything
   if(chooser.style.display !== "none" || form.style.display !== "none"){
     hideAllAddrPanels();
     return;
   }
-
   // Has a current delivery address OR profile has saved addresses -> show chooser
   if(savedDeliveryAddr || savedAddresses.length > 0){
     openAddrChooser();
@@ -5084,13 +4736,10 @@ function toggleAddrForm(){
     showNewAddrForm();
   }
 }
-
 // -- OPEN CHOOSER -------------------------------------------------------------
 function openAddrChooser(){
   updateCheckoutStep(2);
-
   let icons = { Home:"Home", Work:"Work", Other:"Other" };
-
   // -- CASE A: active delivery address exists -> show it as "current" ----------
   let currentHtml = "";
   if(savedDeliveryAddr){
@@ -5102,7 +4751,6 @@ function openAddrChooser(){
     // No active address - hide the "current" card
     document.getElementById("chooserCurrentAddr").style.display = "none";
   }
-
   // -- Build list of profile addresses (exclude the one already active) --------
   let listEl = document.getElementById("chooserSavedList");
   let others = savedAddresses.filter(sa => {
@@ -5110,13 +4758,11 @@ function openAddrChooser(){
     let a = savedDeliveryAddr;
     return !(sa.flat === a.flat && sa.street === a.street && sa.city === a.city);
   });
-
   if(others.length > 0){
     // Section label only when there's also a "current" card above
     let sectionLabel = savedDeliveryAddr
       ? `<div style="font-size:10px;font-weight:700;color:#555;letter-spacing:1px;text-transform:uppercase;margin:4px 0 8px;">Other saved addresses</div>`
       : `<div style="font-size:10px;font-weight:700;color:#555;letter-spacing:1px;text-transform:uppercase;margin:0 0 8px;">Your saved addresses</div>`;
-
     listEl.innerHTML = sectionLabel + others.map(sa => {
       let realIdx = savedAddresses.indexOf(sa);
       let line = [sa.flat, sa.street, sa.city, sa.pin ? "- " + sa.pin : ""].filter(Boolean).join(", ");
@@ -5125,7 +4771,7 @@ function openAddrChooser(){
       <div onclick="selectSavedAddr(${realIdx})"
         style="display:flex;align-items:flex-start;gap:12px;background:#1a1a1a;border:1.5px solid ${isDefault ? '#ff4d4d33' : '#2a2a2a'};border-radius:14px;padding:14px;margin-bottom:8px;cursor:pointer;transition:0.2s;"
         onmouseover="this.style.borderColor='#ff4d4d55'" onmouseout="this.style.borderColor='${isDefault ? '#ff4d4d33' : '#2a2a2a'}'">
-        <div style="width:36px;height:36px;border-radius:10px;background:#2a1a1a;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">${icons[sa.type]||'?'}</div>
+        <div style="width:36px;height:36px;border-radius:10px;background:#2a1a1a;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">${icons[sa.type]||'🏠'}</div>
         <div style="flex:1;min-width:0;">
           <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">
             <span style="font-size:11px;color:#ff4d4d;font-weight:700;">${sa.type}</span>
@@ -5139,21 +4785,17 @@ function openAddrChooser(){
   } else {
     listEl.innerHTML = "";
   }
-
   document.getElementById("cartAddrChooser").style.display = "block";
   document.getElementById("cartAddrForm").style.display    = "none";
-
   let cartPanel = document.getElementById("cart");
   if(cartPanel) cartPanel.scrollTo({top: 0, behavior:"smooth"});
 }
-
 // -- USE CURRENT SAVED ADDRESS (no change) ------------------------------------
 function useSavedDeliveryAddr(){
   hideAllAddrPanels();
   showToast("📍 Delivering to " + (savedDeliveryAddr.city || "saved address"));
   updateCheckoutStep(3);
 }
-
 // -- SELECT A DIFFERENT SAVED PROFILE ADDRESS ---------------------------------
 function selectSavedAddr(idx){
   let a = savedAddresses[idx];
@@ -5167,12 +4809,10 @@ function selectSavedAddr(idx){
   showToast("📍 Delivering to " + a.city);
   updateCheckoutStep(3);
 }
-
 // -- CLOSE CHOOSER WITHOUT CHANGE ---------------------------------------------
 function closeAddrChooser(){
   hideAllAddrPanels();
 }
-
 // -- SHOW BLANK NEW ADDRESS FORM -----------------------------------------------
 function showNewAddrForm(){
   // Clear form fields
@@ -5181,24 +4821,19 @@ function showNewAddrForm(){
     if(el) el.value = "";
   });
   document.getElementById("addrFormError").style.display = "none";
-
   // Pre-fill name/phone from profile if available
   if(userProfile.name)  document.getElementById("addrName").value  = userProfile.name;
   if(userProfile.phone) document.getElementById("addrPhone").value = userProfile.phone;
-
   // Show/hide back button (only if there's something to go back to)
   let backBtn = document.getElementById("addrFormBackBtn");
   if(backBtn) backBtn.style.display = (savedDeliveryAddr || savedAddresses.length > 0) ? "flex" : "none";
-
   document.getElementById("cartAddrChooser").style.display = "none";
   document.getElementById("cartAddrForm").style.display    = "block";
   updateCheckoutStep(2);
-
   // Scroll cart to top
   let cartPanel = document.getElementById("cart");
   if(cartPanel) cartPanel.scrollTo({top: 0, behavior:"smooth"});
 }
-
 // -- BACK FROM FORM TO CHOOSER -------------------------------------------------
 function backToChooser(){
   if(savedDeliveryAddr || savedAddresses.length > 0){
@@ -5207,7 +4842,6 @@ function backToChooser(){
     hideAllAddrPanels();
   }
 }
-
 function saveDeliveryAddr(){
   let name   = document.getElementById("addrName").value.trim();
   let phone  = document.getElementById("addrPhone").value.trim();
@@ -5215,17 +4849,14 @@ function saveDeliveryAddr(){
   let street = document.getElementById("addrStreet2").value.trim();
   let city   = document.getElementById("addrCity2").value.trim();
   let pin    = document.getElementById("addrPin2").value.trim();
-
   if(!name)                         { showAddrError("Please enter your full name"); return; }
   if(!phone || phone.length !== 10) { showAddrError("Please enter a valid 10-digit phone number"); return; }
   if(!flat)                         { showAddrError("Please enter flat / house number"); return; }
   if(!street)                       { showAddrError("Please enter street / area"); return; }
   if(!city)                         { showAddrError("Please enter city"); return; }
   if(!pin || pin.length !== 6)      { showAddrError("Please enter a valid 6-digit PIN code"); return; }
-
   document.getElementById("addrFormError").style.display = "none";
   savedDeliveryAddr = { name, phone, flat, street, city, pin };
-
   // Also save to profile Addresses (avoid duplicates)
   let alreadySaved = savedAddresses.some(a =>
     a.flat === flat && a.street === street && a.city === city && a.pin === pin
@@ -5235,7 +4866,6 @@ function saveDeliveryAddr(){
     if(savedAddresses.length === 1) defaultAddressIdx = 0;
     renderAddresses();
   }
-
   let addrLine = flat + ", " + street + ", " + city + " - " + pin;
   document.getElementById("cartAddrText").innerText = addrLine;
   document.getElementById("cartAddrBar").style.border = "1.5px solid #4caf5044";
@@ -5244,13 +4874,11 @@ function saveDeliveryAddr(){
   showToast("📍 Delivering to " + city + "!");
   updateCheckoutStep(3);
 }
-
 function showAddrError(msg){
   let errEl = document.getElementById("addrFormError");
   errEl.innerText = msg;
   errEl.style.display = "block";
 }
-
 function setDeliveryType(type, el){
   document.querySelectorAll(".cart-del-btn").forEach(b => b.classList.remove("active"));
   el.classList.add("active");
@@ -5264,10 +4892,8 @@ function setDeliveryType(type, el){
     if(addrBar) addrBar.style.display = "flex";
   }
 }
-
 // -- PAYMENT METHOD LOGIC ------------------------------------------------------
 let selectedPayMethod = "upi";
-
 function selectPayTab(el, method){
   selectedPayMethod = method;
   document.querySelectorAll(".pay-tab").forEach(t => t.classList.remove("active"));
@@ -5275,7 +4901,6 @@ function selectPayTab(el, method){
   document.querySelectorAll(".pay-panel").forEach(p => p.style.display = "none");
   document.getElementById("payPanel-" + method).style.display = "block";
 }
-
 function openUPIApp(app){
   let total = document.getElementById("scanAmount").innerText;
    let upiBase = "upi://pay?pa=" + encodeURIComponent(APP_CONFIG.app.upiId) + "&pn=99Foodies&am=" + total + "&cu=INR&tn=99Foodies%20Order";
@@ -5293,7 +4918,6 @@ function openUPIApp(app){
     }
   }, 2500);
 }
-
 function payWithUPIId(){
   let upiId = document.getElementById("upiIdInput").value.trim();
   if(!upiId || !upiId.includes("@")){
@@ -5315,13 +4939,11 @@ function payWithUPIId(){
     }
   }, 2500);
 }
-
 function selectBank(el, bank){
   document.querySelectorAll(".bank-btn").forEach(b => b.classList.remove("active"));
   el.classList.add("active");
   showToast(bank + " selected");
 }
-
 // ===== PROFESSIONAL CARD PANEL JS =====
 function formatCardNumber(input){
   let v = input.value.replace(/\D/g,'').substring(0,16);
@@ -5341,20 +4963,17 @@ function formatCardNumber(input){
   else if(v.startsWith('6')) setCardNetworkAuto('rupay');
   else if(v.startsWith('3')) setCardNetworkAuto('amex');
 }
-
 function formatExpiry(input){
   let v = input.value.replace(/\D/g,'').substring(0,4);
   if(v.length >= 3) v = v.substring(0,2) + ' / ' + v.substring(2);
   input.value = v;
   document.getElementById('cardExpiryDisplay').innerText = v || 'MM / YY';
 }
-
 function setCardNetwork(net, el){
   document.querySelectorAll('.card-network-chip').forEach(c => c.classList.remove('active'));
   el.classList.add('active');
   updateCardNetworkLogo(net);
 }
-
 function setCardNetworkAuto(net){
   document.querySelectorAll('.card-network-chip').forEach(c => c.classList.remove('active'));
   let map = {visa:'netVisa', mc:'netMC', rupay:'netRupay', amex:'netAmex'};
@@ -5362,7 +4981,6 @@ function setCardNetworkAuto(net){
   if(el) el.classList.add('active');
   updateCardNetworkLogo(net);
 }
-
 function updateCardNetworkLogo(net){
   let logo = document.getElementById('cardNetworkLogo');
   if(net === 'visa') logo.innerHTML = '<div class="card-network-visa">VISA</div>';
@@ -5370,29 +4988,24 @@ function updateCardNetworkLogo(net){
   else if(net === 'rupay') logo.innerHTML = '<span style="font-size:12px;font-weight:900;color:#fff;background:#0066b2;padding:3px 7px;border-radius:5px;">RuPay</span>';
   else if(net === 'amex') logo.innerHTML = '<span style="font-size:12px;font-weight:900;color:#fff;background:#007bc1;padding:3px 7px;border-radius:5px;">AMEX</span>';
 }
-
 function flipCardBack(){
   document.getElementById('cardPreview').classList.add('flipped');
 }
 function flipCardFront(){
   document.getElementById('cardPreview').classList.remove('flipped');
 }
-
 function toggleCvvVisibility(){
   let inp = document.getElementById('cardCvvInput');
   let btn = document.getElementById('cvvToggleBtn');
   if(inp.type === 'password'){ inp.type='text'; btn.style.opacity='1'; }
   else { inp.type='password'; btn.style.opacity='0.5'; }
 }
-
 function toggleCvvTip(){
   document.getElementById('cvvTip').classList.toggle('show');
 }
-
 function toggleSaveCard(el){
   el.classList.toggle('on');
 }
-
 // ===== PROFESSIONAL NET BANKING JS =====
 const NB_OTHER_BANKS = [
   'Allahabad Bank','Andhra Bank','Bank of India','Bank of Maharashtra',
@@ -5405,22 +5018,18 @@ const NB_OTHER_BANKS = [
   'DCB Bank','Dhanlaxmi Bank','IDFC First Bank','J&K Bank',
   'Nainital Bank','Tamilnad Mercantile Bank','Ujjivan Small Finance Bank'
 ];
-
 let selectedNbBank = null;
-
 function selectNetBank(el, bank){
   document.querySelectorAll('.nb-bank-card').forEach(b => b.classList.remove('active'));
   el.classList.add('active');
   selectedNbBank = bank;
   showNbSelectedBar(bank);
-  showToast('?? ' + bank + ' selected');
+  showToast('✅ ' + bank + ' selected');
 }
-
 function showNbSelectedBar(bank){
   document.getElementById('nbSelectedBar').style.display = 'flex';
   document.getElementById('nbSelectedName').innerText = bank;
 }
-
 function toggleNbDropdown(){
   let dd = document.getElementById('nbDropdown');
   let arrow = document.getElementById('nbOtherArrow');
@@ -5434,7 +5043,6 @@ function toggleNbDropdown(){
     arrow.style.transform = '';
   }
 }
-
 function populateNbDropdown(banks){
   let list = document.getElementById('nbDropdownList');
   list.innerHTML = banks.map(b => `
@@ -5442,12 +5050,10 @@ function populateNbDropdown(banks){
       <span>✅</span><span>${b}</span>
     </div>`).join('');
 }
-
 function filterNbBanks(q){
   let filtered = NB_OTHER_BANKS.filter(b => b.toLowerCase().includes(q.toLowerCase()));
   populateNbDropdown(filtered);
 }
-
 function selectOtherBank(bank){
   document.querySelectorAll('.nb-bank-card').forEach(b => b.classList.remove('active'));
   selectedNbBank = bank;
@@ -5455,15 +5061,13 @@ function selectOtherBank(bank){
   document.getElementById('nbDropdown').style.display = 'none';
   document.getElementById('nbOtherArrow').style.transform = '';
   showNbSelectedBar(bank);
-  showToast('?? ' + bank + ' selected');
+  showToast('✅ ' + bank + ' selected');
 }
-
 function selectWallet(el, wallet){
   document.querySelectorAll(".wallet-btn").forEach(w => w.classList.remove("active"));
   el.classList.add("active");
   showToast(wallet + " selected");
 }
-
 function processPayment(){
   let total = document.getElementById("scanAmount").innerText;
   if(selectedPayMethod === "cod"){
@@ -5492,7 +5096,6 @@ function processPayment(){
     setTimeout(confirmPaymentDone, 1500);
   }
 }
-
 // PAYMENT FLOW
 // --------------------------------------------------------------
 //  RAZORPAY PAYMENT INTEGRATION
@@ -5500,22 +5103,18 @@ function processPayment(){
 //  https://dashboard.razorpay.com ? Settings ? API Keys
 // --------------------------------------------------------------
 const RAZORPAY_KEY = APP_CONFIG.razorpay.keyId;
-
 let qrInstance = null;
-
 function initiatePayment(){
   let total = parseInt(document.getElementById("total").innerText.replace("",""));
   if(total <= 0){
     showToast("Add items to cart first!");
     return;
   }
-
   // Guest checkout - prompt to sign in or continue
   if(userProfile.isGuest){
     let proceed = confirm("You're browsing as Guest.\n\nSign in to save your order history, or tap OK to continue as guest.");
     if(!proceed) return;
   }
-
   // Check delivery address (only for delivery mode, not pickup)
   let isPickup = document.getElementById("pickBtn") && document.getElementById("pickBtn").classList.contains("active");
   if(!isPickup && !savedDeliveryAddr){
@@ -5526,7 +5125,6 @@ function initiatePayment(){
     showToast("Please add a delivery address first");
     return;
   }
-
   // -- COD: no Razorpay needed -----------------------------------------------
   if(cartPayMethod === "cod"){
     let codTotal = total + 20;
@@ -5535,16 +5133,13 @@ function initiatePayment(){
     }
     return;
   }
-
   // -- RAZORPAY CHECKOUT -----------------------------------------------------
   let user    = firebase.auth().currentUser;
   let name    = userProfile.name  || (user ? user.displayName : "") || "Customer";
   let email   = userProfile.email || (user ? user.email : "")       || "";
   let phone   = userProfile.phone || "";
-
   // Map our payment method to Razorpay method
   let rzpMethod = { upi:"upi", cards:"card", netbanking:"netbanking", wallet:"wallet", emi:"emi" };
-
   let options = {
     key:         RAZORPAY_KEY,
     amount:      total * 100,          // Razorpay takes paise (1 = 100 paise)
@@ -5552,20 +5147,17 @@ function initiatePayment(){
     name:        "99Foodies",
     description: cart.map(i => i.n).join(", ").substring(0, 255),
     image:       "https://via.placeholder.com/80x80/ff4d4d/ffffff?text=99F",
-
     // Pre-fill customer details
     prefill: {
       name:    name,
       email:   email,
       contact: phone ? "+91" + phone : ""
     },
-
     // Theme matching app
     theme: {
       color:        "#ff4d4d",
       backdrop_color: "rgba(0,0,0,0.85)"
     },
-
     // Notes saved with payment in Razorpay dashboard
     notes: {
       order_id:    "pending",          // updated after order is created
@@ -5575,7 +5167,6 @@ function initiatePayment(){
                      : "Pickup",
       items:       cart.map(i => `${i.n} x${cartQty[i.n]?cartQty[i.n].q:1}`).join(", ").substring(0, 255)
     },
-
     // -- SUCCESS HANDLER ---------------------------------------------------
     handler: function(response){
       // response.razorpay_payment_id  - unique payment ID from Razorpay
@@ -5585,7 +5176,6 @@ function initiatePayment(){
       let method = getRazorpayMethodLabel();
       onPaymentSuccess(total, payId, method);
     },
-
     // -- FAILURE / DISMISS -------------------------------------------------
     modal: {
       ondismiss: function(){
@@ -5593,38 +5183,33 @@ function initiatePayment(){
       }
     }
   };
-
   // Pre-select payment method if user already chose one in cart
   if(rzpMethod[cartPayMethod]){
     options.method = rzpMethod[cartPayMethod];
   }
-
   // Check if Razorpay key is set
   if(!RAZORPAY_KEY || RAZORPAY_KEY === "YOUR_RAZORPAY_KEY_ID"){
     // -- DEMO MODE: no real key yet - simulate payment ---------------------
     showRazorpayDemoModal(total);
     return;
   }
-
   try {
     let rzp = new Razorpay(options);
     rzp.on("payment.failed", function(resp){
-      showToast("❌ Payment failed: " + (resp.error.description || "Try again"));
+      showToast("âŒ Payment failed: " + (resp.error.description || "Try again"));
       logEvent("payment_failed", { reason: resp.error.code });
     });
     rzp.open();
   } catch(e){
     console.error("Razorpay error:", e);
-    showToast("❌ Payment gateway error. Try again.");
+    showToast("âŒ Payment gateway error. Try again.");
   }
 }
-
 // -- GET PAYMENT METHOD LABEL FROM RAZORPAY RESPONSE --------------------------
 function getRazorpayMethodLabel(){
   let map = { upi:"UPI", cards:"Credit/Debit Card", netbanking:"Net Banking", wallet:"Wallet", emi:"EMI", cod:"Cash on Delivery" };
   return map[cartPayMethod] || "Razorpay";
 }
-
 // -- DEMO MODAL (shown when no Razorpay key is set yet) -----------------------
 function showRazorpayDemoModal(total){
   let modal = document.createElement("div");
@@ -5641,7 +5226,7 @@ function showRazorpayDemoModal(total){
       <div style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px;">Razorpay Demo Mode</div>
       <div style="font-size:13px;color:#888;margin-bottom:20px;line-height:1.6;">
         Add your Razorpay Key ID in the code to enable real payments.<br><br>
-        <span style="color:#ff9800;font-weight:600;">Amount: ?${total}</span>
+        <span style="color:#ff9800;font-weight:600;">Amount: ₹${total}</span>
       </div>
       <div style="background:#1a1a1a;border-radius:12px;padding:14px;margin-bottom:20px;text-align:left;">
         <div style="font-size:11px;color:#555;font-weight:700;letter-spacing:1px;margin-bottom:8px;">HOW TO ENABLE</div>
@@ -5659,21 +5244,18 @@ function showRazorpayDemoModal(total){
         </button>
         <button onclick="document.getElementById('rzpDemoModal').remove();onPaymentSuccess(${total},'demo_'+Date.now(),'Demo Payment')"
           style="flex:1;padding:12px;background:linear-gradient(135deg,#ff4d4d,#ff1a1a);border:none;color:#fff;border-radius:12px;font-size:13px;font-weight:700;font-family:Poppins;cursor:pointer;box-shadow:0 4px 14px rgba(255,77,77,0.4);">
-          Simulate ?
+          Simulate Payment
         </button>
       </div>
     </div>`;
   document.body.appendChild(modal);
 }
-
 // -- UNIFIED PAYMENT SUCCESS HANDLER ------------------------------------------
 // Called by: Razorpay handler, COD confirm, demo simulate
 function onPaymentSuccess(paidAmt, paymentId, methodLabel){
   // Save order to localStorage + Firestore
   addToOrderHistory(paidAmt);
-
   let latestOrder = orderHistory[0];
-
   // Update Firestore doc with Razorpay payment ID
   if(paymentId && latestOrder && window._fbDb){
     let user = firebase.auth().currentUser;
@@ -5690,38 +5272,29 @@ function onPaymentSuccess(paidAmt, paymentId, methodLabel){
       .then(snap => snap.forEach(doc => doc.ref.update({ razorpayPaymentId: paymentId, status: "Paid" })))
       .catch(()=>{});
   }
-
   // Show success screen
   document.getElementById("qrBox").style.display        = "none";
   document.getElementById("paymentSuccess").style.display = "block";
   document.getElementById("paidAmount").innerText        = paidAmt;
-  document.getElementById("successOrderId").innerText    = latestOrder ? latestOrder.id : "#99F-???";
-
+  document.getElementById("successOrderId").innerText    = latestOrder ? latestOrder.id : "#99F-000";
   let dtEl = document.getElementById("successDateTime");
   if(dtEl && latestOrder) dtEl.innerText = latestOrder.date + " - " + latestOrder.time;
-
   let pmEl = document.getElementById("successPayMethod");
   if(pmEl) pmEl.innerText = methodLabel || getRazorpayMethodLabel();
-
   // Analytics
   logEvent("purchase_complete", { payment_id: paymentId, amount: paidAmt, method: methodLabel });
-
   // Push notification - order confirmed
   if(latestOrder) notifyOrderPlaced(latestOrder.id, paidAmt);
-
   showToast("Payment successful! Order confirmed.");
 }
-
 // -- LEGACY: kept for any old references --------------------------------------
 function confirmPaymentDone(){
   let paidAmt = document.getElementById("scanAmount").innerText;
   onPaymentSuccess(parseInt(paidAmt), "manual_" + Date.now(), getRazorpayMethodLabel());
 }
-
 function closeQR(){
   document.getElementById("qrBox").style.display="none";
 }
-
 function closePayment(){
 cart = [];
 cartQty = {};
@@ -5744,7 +5317,6 @@ showToast("Order placed! Thank you!");
 // Scroll back to top of menu
 window.scrollTo({top:0, behavior:"smooth"});
 }
-
 // -- DIM / UNDIM HELPERS -------------------------------------------------------
 function dimMain(){
   document.getElementById("blurOverlay").style.display = "block";
@@ -5753,21 +5325,18 @@ function undimMain(){
   document.getElementById("blurOverlay").style.display = "none";
   document.getElementById("main").classList.remove("panel-dimmed");
 }
-
 function toggleReviews(){
 let r=document.getElementById("reviews");
 let open=r.classList.contains("panel-open");
 closeAllPanels();
 if(!open){r.classList.add("panel-open");dimMain();}
 }
-
 function toggleContact(){
 let c=document.getElementById("contact");
 let open=c.classList.contains("panel-open");
 closeAllPanels();
 if(!open){c.classList.add("panel-open");dimMain();}
 }
-
 function closeAllPanels(){
 document.getElementById("cart").classList.remove("panel-open");
 document.getElementById("reviews").classList.remove("panel-open");
@@ -5777,7 +5346,6 @@ document.getElementById("qrBox").style.display="none";
 document.getElementById("paymentSuccess").style.display="none";
 undimMain();
 }
-
 // TOAST HELPER
 function showToast(msg){
   let t=document.getElementById("toast");
@@ -5786,10 +5354,8 @@ function showToast(msg){
   t.classList.add("show");
   setTimeout(()=>t.classList.remove("show"),2000);
 }
-
 // REVIEW HELPERS
 let selectedRating = 0;
-
 function toggleReviewForm(){
   let box = document.getElementById("reviewFormBox");
   box.classList.toggle("open");
@@ -5802,7 +5368,6 @@ function toggleReviewForm(){
   let av = document.getElementById("writeAvatar");
   if(av) av.innerText = name ? name.charAt(0).toUpperCase() : "U";
 }
-
 function setRating(val){
   selectedRating = val;
   const labels = ["","Terrible","Poor","Okay","Good","Excellent"];
@@ -5811,18 +5376,15 @@ function setRating(val){
     s.classList.toggle("active", i < val);
   });
 }
-
 function toggleTag(el){
   el.classList.toggle("selected");
 }
-
 // -- SUBMIT REVIEW -> FIRESTORE -------------------------------------
 async function submitReview(){
   if(selectedRating === 0){
     showToast("Please select a star rating!");
     return;
   }
-
   let user    = firebase.auth().currentUser;
   let name    = document.getElementById("reviewName").value.trim()
                 || (user ? (user.displayName || userProfile.name) : userProfile.name)
@@ -5831,11 +5393,9 @@ async function submitReview(){
   let tags    = [];
   document.querySelectorAll(".rtag.selected").forEach(t => tags.push(t.innerText));
   let catStr  = tags.map(t => t.replace(/[^\w\s]/g,"").trim().toLowerCase()).join(" ") || "food quality";
-
   // Disable button while saving
   let btn = document.querySelector(".review-submit-btn");
   if(btn){ btn.disabled = true; btn.innerText = "Submitting..."; }
-
   // -- Save to Firestore ------------------------------------------
   let reviewDoc = {
     rating:    selectedRating,
@@ -5850,7 +5410,6 @@ async function submitReview(){
     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
     clientTime: new Date().toISOString()
   };
-
   let savedDocId = null;
   try {
     let ref = await window._fbDb.collection("reviews").add(reviewDoc);
@@ -5861,26 +5420,23 @@ async function submitReview(){
     console.warn("Firestore review save failed:", err.message);
     // Continue - still show review in UI even if Firestore fails
   }
-
   // -- Render new card in UI --------------------------------------
   const colors = ["#e91e63","#2196f3","#ff9800","#9c27b0","#00bcd4","#4caf50","#ff5722"];
   let color   = colors[Math.floor(Math.random() * colors.length)];
   let initial = name.charAt(0).toUpperCase();
-  let stars   = "?".repeat(selectedRating) + (selectedRating < 5
-    ? '<span style="color:#444">' + "?".repeat(5 - selectedRating) + "</span>" : "");
+  let stars   = "⭐".repeat(selectedRating) + (selectedRating < 5
+    ? '<span style="color:#444">' + "⭐".repeat(5 - selectedRating) + "</span>" : "");
   let tagsHtml = tags.map(t => `<span class="review-dish-tag">${t}</span>`).join("");
-
   let avatarHtml = (user && user.photoURL)
     ? `<img src="${user.photoURL}" style="width:38px;height:38px;border-radius:50%;object-fit:cover;" onerror="this.outerHTML='<div class=reviewer-avatar style=background:${color}>${initial}</div>'">`
     : `<div class="reviewer-avatar" style="background:${color}">${initial}</div>`;
-
   let newCard = `
   <div class="review-card" data-category="${catStr}" data-docid="${savedDocId||""}" style="animation:fadeInCard 0.4s ease">
     <div class="reviewer-row">
       ${avatarHtml}
       <div class="reviewer-info">
         <div class="reviewer-name">${name}
-          <span style="background:#1a2e3a;color:#00bcd4;font-size:10px;padding:2px 8px;border-radius:10px;font-weight:600;margin-left:6px">New ?</span>
+          <span style="background:#1a2e3a;color:#00bcd4;font-size:10px;padding:2px 8px;border-radius:10px;font-weight:600;margin-left:6px">New</span>
         </div>
         <div class="reviewer-meta">Just now</div>
       </div>
@@ -5892,10 +5448,8 @@ async function submitReview(){
       <span class="review-helpful" onclick="likeReview(this,'${savedDocId||""}')">Helpful (0)</span>
     </div>
   </div>`;
-
   let formBox = document.getElementById("reviewFormBox");
   formBox.insertAdjacentHTML("afterend", newCard);
-
   // -- Reset form -------------------------------------------------
   selectedRating = 0;
   document.getElementById("ratingLabel").innerText = "";
@@ -5905,14 +5459,11 @@ async function submitReview(){
   document.getElementById("reviewText").value = "";
   document.getElementById("charCount").innerText = "0";
   document.getElementById("reviewFormBox").classList.remove("open");
-
   if(btn){ btn.disabled = false; btn.innerText = "Submit Review"; }
   showToast("✅ Review submitted! Thank you.");
-
   // Refresh rating summary
   loadReviewStats();
 }
-
 // -- LOAD REVIEWS FROM FIRESTORE -----------------------------------
 async function loadReviewsFromFirestore(){
   try {
@@ -5920,15 +5471,11 @@ async function loadReviewsFromFirestore(){
       .orderBy("createdAt","desc")
       .limit(30)
       .get();
-
     if(snap.empty) return;
-
     // Remove existing static review cards (keep the form)
     document.querySelectorAll(".review-card").forEach(c => c.remove());
-
     let formBox = document.getElementById("reviewFormBox");
     const colors = ["#e91e63","#2196f3","#ff9800","#9c27b0","#00bcd4","#4caf50","#ff5722"];
-
     snap.forEach(doc => {
       let r = doc.data();
       let name    = r.name || "Anonymous";
@@ -5938,7 +5485,6 @@ async function loadReviewsFromFirestore(){
         ? '<span style="color:#444">' + "⭐".repeat(5-(r.rating||5)) + "</span>" : "");
       let tagsHtml = (r.tags||[]).map(t => `<span class="review-dish-tag">${t}</span>`).join("");
       let catStr  = r.category || "food quality";
-
       // Format date
       let dateStr = "Recently";
       if(r.createdAt && r.createdAt.toDate){
@@ -5949,11 +5495,9 @@ async function loadReviewsFromFirestore(){
         else if(diff < 1440) dateStr = Math.floor(diff/60) + " hr ago";
         else               dateStr = Math.floor(diff/1440) + " days ago";
       }
-
       let avatarHtml = r.avatarUrl
         ? `<img src="${r.avatarUrl}" style="width:38px;height:38px;border-radius:50%;object-fit:cover;" onerror="this.outerHTML='<div class=reviewer-avatar style=background:${color}>${initial}</div>'">`
         : `<div class="reviewer-avatar" style="background:${color}">${initial}</div>`;
-
       let card = document.createElement("div");
       card.className = "review-card";
       card.setAttribute("data-category", catStr);
@@ -5974,24 +5518,20 @@ async function loadReviewsFromFirestore(){
             Helpful (${r.helpful||0})
           </span>
         </div>`;
-
       // Insert after form box
       formBox.insertAdjacentElement("afterend", card);
     });
-
     loadReviewStats();
     console.log("✅ Loaded " + snap.size + " reviews from Firestore");
   } catch(err){
     console.warn("Could not load reviews:", err.message);
   }
 }
-
 // -- LOAD RATING STATS ---------------------------------------------
 async function loadReviewStats(){
   try {
     let snap = await window._fbDb.collection("reviews").get();
     if(snap.empty) return;
-
     let total = snap.size;
     let sum   = 0;
     let dist  = {1:0,2:0,3:0,4:0,5:0};
@@ -6001,14 +5541,11 @@ async function loadReviewStats(){
       dist[r] = (dist[r]||0) + 1;
     });
     let avg = (sum / total).toFixed(1);
-
     // Update rating summary UI
     let bigEl = document.querySelector(".rating-big");
     if(bigEl) bigEl.childNodes[0].textContent = avg;
-
     let countEl = document.querySelector(".rating-big span");
     if(countEl) countEl.textContent = total + " ratings";
-
     // Update bar fills
     let bars = document.querySelectorAll(".bar-fill");
     let counts = document.querySelectorAll(".bar-count");
@@ -6019,7 +5556,6 @@ async function loadReviewStats(){
     });
   } catch(e){}
 }
-
 // -- HELPFUL BUTTON -> FIRESTORE ------------------------------------
 async function likeReview(el, docId){
   el.classList.toggle("liked");
@@ -6030,7 +5566,6 @@ async function likeReview(el, docId){
     liked ? count++ : count--;
     el.innerText = "Helpful (" + count + ")";
     if(liked) el.classList.add("liked");
-
     // Update Firestore helpful count
     if(docId){
       try {
@@ -6041,7 +5576,6 @@ async function likeReview(el, docId){
     }
   }
 }
-
 // -- LOAD REVIEWS WHEN PANEL OPENS --------------------------------
 let _reviewsLoaded = false;
 let _origToggleReviews = window.toggleReviews;
@@ -6058,7 +5592,6 @@ if(typeof _origToggleReviews === "function"){
 function setReviewFilter(btn){
   document.querySelectorAll(".review-filter-btn").forEach(b=>b.classList.remove("active"));
   btn.classList.add("active");
-
   let filter = btn.innerText.trim().toLowerCase();
   document.querySelectorAll(".review-card").forEach(card => {
     if(filter === "all"){
@@ -6069,7 +5602,6 @@ function setReviewFilter(btn){
     }
   });
 }
-
 // Close coupon dropdown on outside click
 document.addEventListener("click", function(e){
   let dropdown = document.getElementById("couponDropdown");
@@ -6078,9 +5610,7 @@ document.addEventListener("click", function(e){
     hideCouponDropdown();
   }
 });
-
 // ===== PROFILE FUNCTIONS =====
-
 function toggleProfile(){
   let p = document.getElementById("profilePanel");
   let open = p.classList.contains("panel-open");
@@ -6091,7 +5621,6 @@ function toggleProfile(){
     refreshProfileUI();
   }
 }
-
 function refreshProfileUI(){
   // Avatar
   let av = document.getElementById("profileAvatar");
@@ -6131,14 +5660,12 @@ function refreshProfileUI(){
   renderAddresses();
   renderOrderHistory();
 }
-
 function switchProfileTab(btn, tab){
   document.querySelectorAll(".profile-tab").forEach(b => b.classList.remove("active"));
   btn.classList.add("active");
   document.querySelectorAll(".profile-tab-content").forEach(c => c.style.display = "none");
   document.getElementById("tab-" + tab).style.display = "block";
 }
-
 function toggleEditMode(on){
   document.getElementById("profileViewMode").style.display = on ? "none" : "block";
   document.getElementById("profileEditMode").style.display = on ? "block" : "none";
@@ -6148,7 +5675,6 @@ function toggleEditMode(on){
     document.getElementById("editEmail").value = userProfile.email;
   }
 }
-
 function saveProfile(){
   let name = document.getElementById("editName").value.trim();
   let phone = document.getElementById("editPhone").value.trim();
@@ -6162,7 +5688,6 @@ function saveProfile(){
   refreshProfileUI();
   showToast("✅ Profile updated!");
 }
-
 function changeAvatar(input){
   let file = input.files[0];
   if(!file) return;
@@ -6174,18 +5699,15 @@ function changeAvatar(input){
   };
   reader.readAsDataURL(file);
 }
-
 // --- ADDRESSES ---
 function toggleAddressForm(){
   document.getElementById("addressFormBox").classList.toggle("open");
 }
-
 function selectAddrType(btn, type){
   selectedAddrType = type;
   document.querySelectorAll(".addr-type-btn").forEach(b => b.classList.remove("active"));
   btn.classList.add("active");
 }
-
 function saveAddress(){
   let flat = document.getElementById("addrFlat").value.trim();
   let street = document.getElementById("addrStreet").value.trim();
@@ -6202,7 +5724,6 @@ function saveAddress(){
   refreshProfileUI();
   showToast("✅ Address saved!");
 }
-
 function renderAddresses(){
   let list = document.getElementById("addressList");
   if(!list) return;
@@ -6227,7 +5748,6 @@ function renderAddresses(){
     </div>`).join("");
   document.getElementById("profileSavedCount").innerText = savedAddresses.length;
 }
-
 function useAddressForDelivery(i){
   let a = savedAddresses[i];
   if(!a) return;
@@ -6247,13 +5767,11 @@ function useAddressForDelivery(i){
     }
   }, 400);
 }
-
 function setDefaultAddress(i){
   defaultAddressIdx = i;
   renderAddresses();
   showToast("Default address updated!");
 }
-
 function deleteAddress(i){
   savedAddresses.splice(i, 1);
   if(defaultAddressIdx >= savedAddresses.length) defaultAddressIdx = 0;
@@ -6261,7 +5779,6 @@ function deleteAddress(i){
   document.getElementById("profileSavedCount").innerText = savedAddresses.length;
   showToast("Address removed");
 }
-
 // -- ORDER ID GENERATOR --------------------------------------------------------
 function generateOrderId(){
   // Format: 99F-YYYYMMDD-XXXX  (date + 4 random alphanumeric chars)
@@ -6273,7 +5790,6 @@ function generateOrderId(){
   let rand = Array.from({length:4}, ()=> chars[Math.floor(Math.random()*chars.length)]).join("");
   return "99F-" + datePart + "-" + rand;
 }
-
 // -- SAVE ORDER TO LOCALSTORAGE ------------------------------------------------
 function saveOrdersToStorage(){
   try {
@@ -6284,11 +5800,9 @@ function saveOrdersToStorage(){
     try { localStorage.setItem("99f_orders_v2", JSON.stringify(orderHistory)); } catch(e2){}
   }
 }
-
 // -- ADD ORDER TO HISTORY ------------------------------------------------------
 function addToOrderHistory(total){
   let now = new Date();
-
   // Build rich items array
   let itemsList = cart.map(i => ({
     name:  i.n,
@@ -6297,7 +5811,6 @@ function addToOrderHistory(total){
     img:   i.img || "",
     veg:   i.v
   }));
-
   // Recalculate bill breakdown
   let subtotal     = itemsList.reduce((s, i) => s + i.price * i.qty, 0);
   let isPickup     = document.getElementById("pickBtn") && document.getElementById("pickBtn").classList.contains("active");
@@ -6306,11 +5819,9 @@ function addToOrderHistory(total){
   let taxes        = Math.round(subtotal * 0.09);
   let discount     = appliedDiscount || 0;
   let grandTotal   = parseInt(total); // use the passed total (may include COD charge)
-
   // Payment method label
   let methodLabels = {upi:"UPI / QR Code", cards:"Credit / Debit Card", netbanking:"Net Banking", cod:"Cash on Delivery"};
   let payMethod    = methodLabels[cartPayMethod] || "UPI";
-
   // Delivery address snapshot
   let addrSnap = "";
   if(isPickup){
@@ -6319,7 +5830,6 @@ function addToOrderHistory(total){
     let a = savedDeliveryAddr;
     addrSnap = [a.flat, a.street, a.city, a.pin ? "- " + a.pin : ""].filter(Boolean).join(", ");
   }
-
   let order = {
     id:          generateOrderId(),
     timestamp:   now.toISOString(),
@@ -6338,19 +5848,14 @@ function addToOrderHistory(total){
     status:      "Confirmed",
     coupon:      document.getElementById("couponInput") ? document.getElementById("couponInput").value.trim().toUpperCase() : ""
   };
-
   orderHistory.unshift(order);
-
   // Mark free shipping coupon as used after first order
   freeshippingUsed = true;
   localStorage.setItem("99f_freeship", "true");
-
   // 1. Save to localStorage (instant, offline-safe)
   saveOrdersToStorage();
-
   // 2. Save to Firestore (real database)
   saveOrderToFirestore(order);
-
   // Analytics - purchase event (standard GA4 e-commerce event)
   logEvent("purchase", {
     transaction_id: order.id,
@@ -6363,21 +5868,17 @@ function addToOrderHistory(total){
       quantity:  i.qty
     }))
   });
-
   // Update profile counter
   let countEl = document.getElementById("profileOrderCount");
   if(countEl) countEl.innerText = orderHistory.length;
-
   // Refresh recent preview in profile tab
   renderRecentOrderPreview();
 }
-
 // -- SAVE ORDER TO FIRESTORE ---------------------------------------------------
 async function saveOrderToFirestore(order){
   try {
     let db   = window._fbDb;
     let user = firebase.auth().currentUser;
-
     // Build the Firestore document - strip image URLs to save space
     let doc = {
       orderId:     order.id,
@@ -6385,13 +5886,11 @@ async function saveOrderToFirestore(order){
       clientTime:  order.timestamp,                                 // client ISO string backup
       date:        order.date,
       time:        order.time,
-
       // User info
       uid:         user ? user.uid   : "guest",
       userEmail:   user ? (user.email || "") : "guest",
       userName:    user ? (user.displayName || userProfile.name || "") : "Guest",
       userPhone:   userProfile.phone || "",
-
       // Order details
       items: order.items.map(i => ({
         name:  i.name,
@@ -6411,28 +5910,23 @@ async function saveOrderToFirestore(order){
       payMethod:   order.payMethod,
       address:     order.address,
       status:      "Confirmed",
-
       // Meta
       appVersion:  "99Foodies-v1",
       source:      "web"
     };
-
     // Save to top-level "orders" collection
     let ref = await db.collection("orders").add(doc);
-    console.log("✅ Order saved to Firestore:", ref.id, "?", order.id);
-
+    console.log("✅ Order saved to Firestore:", ref.id, "->", order.id);
     // Also save under user's own sub-collection (easy to query per user)
     if(user){
       await db.collection("users").doc(user.uid)
               .collection("orders").doc(order.id).set(doc);
     }
-
   } catch(err){
     // Firestore failure must NEVER break the order flow - just log it
     console.warn("Firestore save failed (order still saved locally):", err.message);
   }
 }
-
 // -- OPEN / CLOSE ORDER HISTORY PAGE -----------------------------------------
 function openOrderHistory(){
   let page = document.getElementById("ohPage");
@@ -6443,7 +5937,6 @@ function openOrderHistory(){
 function closeOrderHistory(){
   document.getElementById("ohPage").classList.remove("open");
 }
-
 // -- FILTER STATE -------------------------------------------------------------
 let ohActiveFilter = "all";
 function ohFilter(btn, filter){
@@ -6452,12 +5945,10 @@ function ohFilter(btn, filter){
   btn.classList.add("active");
   renderOHPage(filter);   // re-filter already-loaded data (no new fetch)
 }
-
 // -- FETCH FROM FIRESTORE + MERGE WITH LOCALSTORAGE ---------------------------
 async function fetchAndRenderOrders(filter){
   let container = document.getElementById("ohList");
   if(!container) return;
-
   // Show skeleton while loading
   container.innerHTML = `
     <div style="padding:0 4px;">
@@ -6474,12 +5965,9 @@ async function fetchAndRenderOrders(filter){
           <div class="skeleton" style="width:60%;height:12px;border-radius:6px;"></div>
         </div>`).join("")}
     </div>`;
-
   // Update subtitle
   document.getElementById("ohSubtitle").innerText = "Fetching your orders...";
-
   let user = firebase.auth().currentUser;
-
   if(user && !userProfile.isGuest){
     // -- LOGGED-IN: fetch from Firestore --------------------------------------
     try {
@@ -6488,7 +5976,6 @@ async function fetchAndRenderOrders(filter){
                              .collection("orders")
                              .limit(50)
                              .get();
-
       let firestoreOrders = [];
       snapshot.forEach(doc => {
         let d = doc.data();
@@ -6513,38 +6000,29 @@ async function fetchAndRenderOrders(filter){
           coupon:      d.coupon      || ""
         });
       });
-
       // Merge: Firestore is source of truth; add any local-only orders not yet synced
       let localIds = new Set(firestoreOrders.map(o => o.id));
       let localOnly = orderHistory.filter(o => !localIds.has(o.id));
       let merged = [...firestoreOrders, ...localOnly];
-
       // Sort by timestamp desc
       merged.sort((a, b) => (b.timestamp || "").localeCompare(a.timestamp || ""));
-
       // Update in-memory + localStorage with merged data
       orderHistory = merged;
       saveOrdersToStorage();
-
       console.log(`✅ Loaded ${firestoreOrders.length} orders from Firestore, ${localOnly.length} local-only`);
-
     } catch(err){
       console.warn("Firestore fetch failed, showing local orders:", err.message);
       // Fall through - orderHistory still has localStorage data
     }
-
   } else {
     // -- GUEST: small delay to feel like it's "loading" -----------------------
     await new Promise(r => setTimeout(r, 400));
   }
-
   // Render whatever we have
   renderOHPage(filter || ohActiveFilter);
-
   // Refresh profile tab preview too
   renderRecentOrderPreview();
 }
-
 // -- COMPUTE STATS -------------------------------------------------------------
 function computeOHStats(list){
   let count = list.length;
@@ -6557,11 +6035,9 @@ function computeOHStats(list){
     ? "No orders yet"
     : count + " order" + (count > 1 ? "s" : "") + " placed";
 }
-
 // -- RENDER FULL ORDER HISTORY PAGE -------------------------------------------
 function renderOHPage(filter){
   filter = filter || ohActiveFilter;
-
   // Filter list
   let list = orderHistory.filter(o => {
     if(filter === "all")       return true;
@@ -6571,12 +6047,9 @@ function renderOHPage(filter){
     if(filter === "cod")       return (o.payMethod||"").toLowerCase().includes("cash");
     return true;
   });
-
   computeOHStats(list);
-
   let container = document.getElementById("ohList");
   if(!container) return;
-
   if(list.length === 0){
     container.innerHTML = `
       <div style="text-align:center;padding:60px 20px;">
@@ -6587,24 +6060,20 @@ function renderOHPage(filter){
       </div>`;
     return;
   }
-
   container.innerHTML = list.map((o, idx) => buildOHCard(o, idx)).join("");
 }
-
 // -- BUILD ONE ORDER CARD ------------------------------------------------------
 function buildOHCard(o, idx){
   // Real index in orderHistory array (needed for reorder)
   let realIdx = orderHistory.indexOf(o);
-
   // Status config
   let statusCfg = {
     "Confirmed":{"cls":"confirmed","dot":"green","icon":"✅"},
     "Delivered": {"cls":"delivered","dot":"green","icon":"✅"},
     "Pending":   {"cls":"pending",  "dot":"orange","icon":"⏳"},
-    "Cancelled": {"cls":"cancelled","dot":"red",   "icon":"❌"}
+    "Cancelled": {"cls":"cancelled","dot":"red",   "icon":"âŒ"}
   };
   let sc = statusCfg[o.status] || statusCfg["Confirmed"];
-
   // Item thumbnails (up to 4)
   let thumbsHtml = "";
   if(Array.isArray(o.items) && o.items.length > 0){
@@ -6621,69 +6090,60 @@ function buildOHCard(o, idx){
     let imgSrc = getFoodPlaceholder(o.itemsText);
     thumbsHtml = `<img class="oh-thumb" src="${imgSrc}" alt="food" onerror="this.src='https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=100&h=100&fit=crop'">`;
   }
-
   // Items text
   let itemsText = Array.isArray(o.items) && o.items.length > 0
     ? o.items.map(i => `${i.name || i.n || ''} x${i.qty||1}`).join("  ·  ")
     : (o.itemsText || "");
-
   // Bill rows
   let billRows = "";
   if(o.subtotal !== undefined){
-    billRows += `<div class="oh-bill-row"><span>Item Total</span><span>?${o.subtotal}</span></div>`;
+    billRows += `<div class="oh-bill-row"><span>Item Total</span><span>₹${o.subtotal}</span></div>`;
     if(o.deliveryFee > 0){
-      billRows += `<div class="oh-bill-row"><span>Delivery Fee</span><span>?${o.deliveryFee}</span></div>`;
+      billRows += `<div class="oh-bill-row"><span>Delivery Fee</span><span>₹${o.deliveryFee}</span></div>`;
     } else {
       billRows += `<div class="oh-bill-row saving"><span>Delivery</span><span>FREE</span></div>`;
     }
-    billRows += `<div class="oh-bill-row"><span>&#x1F4B0; Platform Fee</span><span>?${o.platformFee||10}</span></div>`;
-    billRows += `<div class="oh-bill-row"><span>&#x1F4CA; GST & Charges</span><span>?${o.taxes||0}</span></div>`;
+    billRows += `<div class="oh-bill-row"><span>&#x1F4B0; Platform Fee</span><span>₹${o.platformFee||10}</span></div>`;
+    billRows += `<div class="oh-bill-row"><span>&#x1F4CA; GST & Charges</span><span>₹${o.taxes||0}</span></div>`;
     if(o.discount > 0){
-      billRows += `<div class="oh-bill-row saving"><span>&#x2728; Discount${o.coupon ? ' ('+o.coupon+')' : ''}</span><span>-?${o.discount}</span></div>`;
+      billRows += `<div class="oh-bill-row saving"><span>&#x2728; Discount${o.coupon ? ' ('+o.coupon+')' : ''}</span><span>-₹${o.discount}</span></div>`;
     }
     billRows += `<div style="height:1px;background:#2a2a2a;margin:8px 0;"></div>`;
-    billRows += `<div class="oh-bill-row total"><span>Total Paid</span><span style="color:#ff4d4d;">?${o.total || 0}</span></div>`;
+    billRows += `<div class="oh-bill-row total"><span>Total Paid</span><span style="color:#ff4d4d;">₹${o.total || 0}</span></div>`;
   }
-
   // Address + pay method
   let metaHtml = "";
   if(o.address) metaHtml += `<div style="display:flex;align-items:flex-start;gap:7px;font-size:12px;color:#666;margin-top:10px;"><span style="flex-shrink:0;">&#x1F4CD;</span><span>${o.address}</span></div>`;
   if(o.payMethod) metaHtml += `<div style="display:flex;align-items:center;gap:7px;font-size:12px;color:#666;margin-top:5px;"><span>&#x1F4B3;</span><span>${o.payMethod}</span></div>`;
-
   // Delay for stagger animation
   let delay = Math.min(idx * 0.06, 0.4);
-
   return `
   <div class="order-history-card" style="animation-delay:${delay}s;">
-
     <!-- TOP BAR: order id + status -->
     <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px 0;">
       <div>
         <div style="font-size:11px;font-weight:800;color:#fff;letter-spacing:0.5px;font-family:monospace;">${o.id}</div>
-        <div style="font-size:10px;color:#555;margin-top:2px;">?? ${o.date}${o.time ? ' ?? ' + o.time : ''}</div>
+        <div style="font-size:10px;color:#555;margin-top:2px;">📅 ${o.date}${o.time ? ' · ' + o.time : ''}</div>
       </div>
       <span class="order-status-badge ${sc.cls}">
         <span class="oh-status-dot ${sc.dot}"></span>${o.status || "Confirmed"}
       </span>
     </div>
-
     <!-- FOOD THUMBNAILS -->
     ${thumbsHtml ? `<div class="oh-thumb-row">${thumbsHtml}</div>` : ""}
-
     <!-- ITEMS TEXT -->
     <div style="padding:0 16px 12px;font-size:12px;color:#777;line-height:1.7;border-bottom:1px solid #222;">
       ${itemsText}
     </div>
-
     <!-- AMOUNT + DATE ROW -->
     <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;">
       <div>
-        <div style="font-size:22px;font-weight:900;color:#fff;letter-spacing:-0.5px;">?${o.total || 0}</div>
+        <div style="font-size:22px;font-weight:900;color:#fff;letter-spacing:-0.5px;">₹${o.total || 0}</div>
         <div style="font-size:10px;color:#555;margin-top:1px;">${Array.isArray(o.items) ? o.items.length + ' item' + (o.items.length > 1 ? 's' : '') : (o.itemsText ? '1 item' : '')}</div>
       </div>
       <div style="display:flex;gap:8px;">
         <button onclick="toggleOHDetail(${realIdx})" id="ohdetail-btn-${realIdx}"
-          style="padding:9px 14px;border-radius:10px;background:#1a1a1a;border:1px solid #2a2a2a;color:#aaa;font-size:12px;font-weight:600;font-family:Poppins;cursor:pointer;transition:0.2s;">?? Bill</button>
+          style="padding:9px 14px;border-radius:10px;background:#1a1a1a;border:1px solid #2a2a2a;color:#aaa;font-size:12px;font-weight:600;font-family:Poppins;cursor:pointer;transition:0.2s;">🧾 Bill</button>
         <button onclick="reorder(${realIdx})"
           style="padding:9px 16px;border-radius:10px;background:linear-gradient(135deg,#ff4d4d22,#ff1a1a11);border:1px solid #ff4d4d44;color:#ff4d4d;font-size:12px;font-weight:700;font-family:Poppins;cursor:pointer;transition:0.2s;"
           onmouseover="this.style.background='#ff4d4d33'" onmouseout="this.style.background='linear-gradient(135deg,#ff4d4d22,#ff1a1a11)'">🔄 Reorder? Reorder</button>
@@ -6693,7 +6153,6 @@ function buildOHCard(o, idx){
           onmouseover="this.style.background='#0d2e1f44'" onmouseout="this.style.background='#0d2e1f22'">📍 Track</button>` : ""}
       </div>
     </div>
-
     <!-- EXPANDABLE BILL DETAIL -->
     <div id="ohdetail-${realIdx}" style="display:none;padding:0 16px 14px;border-top:1px solid #1a1a1a;margin-top:0;">
       <div style="padding-top:12px;">
@@ -6701,10 +6160,8 @@ function buildOHCard(o, idx){
         ${metaHtml}
       </div>
     </div>
-
   </div>`;
 }
-
 // -- TOGGLE BILL DETAIL --------------------------------------------------------
 function toggleOHDetail(idx){
   let detail = document.getElementById("ohdetail-" + idx);
@@ -6718,11 +6175,10 @@ function toggleOHDetail(idx){
     btn.style.borderColor = open ? "#2a2a2a" : "#ff4d4d44";
   }
 }
-
 // -- FOOD IMAGE PLACEHOLDER ----------------------------------------------------
 function getFoodPlaceholder(name){
   let n = (name||"").toLowerCase();
-  if(n.includes("vada") || n.includes("vadapav")) return "assets/vadapav.jpg";
+  if(n.includes("vada") || n.includes("vadapav")) return "https://i.ibb.co/6R0VVSSY/vada-pav.png";
   if(n.includes("pizza"))                        return "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=100&h=100&fit=crop";
   if(n.includes("burger"))                       return "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=100&h=100&fit=crop";
   if(n.includes("pasta") || n.includes("noodle")) return "https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=100&h=100&fit=crop";
@@ -6740,7 +6196,6 @@ function getFoodPlaceholder(name){
   if(n.includes("fries") || n.includes("chips")) return "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=100&h=100&fit=crop";
   return "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=100&h=100&fit=crop";
 }
-
 // -- RENDER RECENT PREVIEW (2 orders in profile tab) --------------------------
 function renderRecentOrderPreview(){
   let el = document.getElementById("ohRecentPreview");
@@ -6771,18 +6226,16 @@ function renderRecentOrderPreview(){
           <div style="font-size:10px;color:#555;margin-top:2px;">${o.date}${o.time ? " · " + o.time : ""}</div>
         </div>
         <div style="text-align:right;flex-shrink:0;">
-          <div style="font-size:14px;font-weight:800;color:#fff;">?${o.total || 0}</div>
+          <div style="font-size:14px;font-weight:800;color:#fff;">₹${o.total || 0}</div>
           <div style="font-size:10px;color:#00e5a0;margin-top:2px;">&#x2713; ${o.status||'Confirmed'}</div>
         </div>
       </div>`).join("")}
     ${orderHistory.length > 2 ? `<div style="text-align:center;padding:8px 0;font-size:12px;color:#ff4d4d;font-weight:600;cursor:pointer;" onclick="openOrderHistory()">View all ${orderHistory.length} orders &#x2192;</div>` : ""}`;
 }
-
 // -- LEGACY renderOrderHistory (kept for compat) -------------------------------
 function renderOrderHistory(){
   renderRecentOrderPreview();
 }
-
 // -- CLEAR ORDER HISTORY -------------------------------------------------------
 function clearOrderHistory(){
   if(orderHistory.length === 0){ showToast("No orders to clear"); return; }
@@ -6795,7 +6248,6 @@ function clearOrderHistory(){
   renderOHPage("all");        // refresh full page if open
   showToast("Order history cleared");
 }
-
 // -- REORDER -------------------------------------------------------------------
 function reorder(idx){
   let order = orderHistory[idx];
@@ -6823,7 +6275,6 @@ function reorder(idx){
   setTimeout(() => toggleCart(), 380);
 }
 </script>
-
 <!-- -- LIVE ORDER TRACKING JS -- -->
 <script>
 // ------------------------------------------------------------------
@@ -6831,13 +6282,11 @@ function reorder(idx){
 //  Real: Firestore listener for status changes
 //  Fake: Auto-progression simulation + animated map rider
 // ------------------------------------------------------------------
-
 let currentTrackingOrderId = null;
 let trackingUnsubscribe    = null;   // Firestore real-time listener
 let trackingSimTimer       = null;   // fake auto-progression timer
 let etaCountdownTimer      = null;   // ETA countdown interval
 let riderAnimTimer         = null;   // map rider animation
-
 // -- TRACKING STEPS CONFIG -----------------------------------------
 const TRACK_STEPS = [
   {
@@ -6885,15 +6334,12 @@ const TRACK_STEPS = [
     riderInfo:{ name:"Order Delivered!", sub:"Rate your experience below", showCall:false }
   }
 ];
-
 // -- OPEN TRACKING PAGE --------------------------------------------
 function openTracking(orderId){
   if(!orderId){ showToast("No order to track"); return; }
   currentTrackingOrderId = orderId;
-
   document.getElementById("trackPage").classList.add("open");
   document.getElementById("trackOrderId").innerText = "Order " + orderId;
-
   // Load order data
   let order = orderHistory.find(o => o.id === orderId);
   if(order){
@@ -6904,30 +6350,24 @@ function openTracking(orderId){
     document.getElementById("trackOrderItems").innerText = itemsText;
     document.getElementById("trackOrderTotal").innerText = "" + order.total;
   }
-
   // Set initial status
   let currentStatus = order ? (order.status || "Confirmed") : "Confirmed";
   renderTrackingUI(currentStatus);
-
   // Start real-time Firestore listener
   startFirestoreListener(orderId);
-
   // Start fake auto-progression (simulates status changes)
   startFakeProgression(currentStatus);
 }
-
 function closeTracking(){
   document.getElementById("trackPage").classList.remove("open");
   stopTracking();
 }
-
 function stopTracking(){
   if(trackingUnsubscribe){ trackingUnsubscribe(); trackingUnsubscribe = null; }
   if(trackingSimTimer)   { clearTimeout(trackingSimTimer);  trackingSimTimer = null; }
   if(etaCountdownTimer)  { clearInterval(etaCountdownTimer); etaCountdownTimer = null; }
   if(riderAnimTimer)     { clearTimeout(riderAnimTimer);    riderAnimTimer = null; }
 }
-
 // -- FIRESTORE REAL-TIME LISTENER ---------------------------------
 function startFirestoreListener(orderId){
   if(trackingUnsubscribe) trackingUnsubscribe();
@@ -6949,7 +6389,6 @@ function startFirestoreListener(orderId){
     console.warn("[Tracking] Could not start listener:", e.message);
   }
 }
-
 // -- FAKE AUTO-PROGRESSION -----------------------------------------
 // Simulates realistic order progression when no admin updates status
 const FAKE_DELAYS = {
@@ -6957,18 +6396,15 @@ const FAKE_DELAYS = {
   "Preparing":        25000,   // 25s -> Out for Delivery
   "Out for Delivery": 35000,   // 35s -> Delivered
 };
-
 function startFakeProgression(currentStatus){
   if(trackingSimTimer) clearTimeout(trackingSimTimer);
   let delay = FAKE_DELAYS[currentStatus];
   if(!delay) return; // already delivered
-
   trackingSimTimer = setTimeout(() => {
     let steps = TRACK_STEPS.map(s => s.key);
     let idx   = steps.indexOf(currentStatus);
     if(idx < 0 || idx >= steps.length - 1) return;
     let nextStatus = steps[idx + 1];
-
     // Update Firestore (if logged in)
     let user = firebase.auth().currentUser;
     if(user && currentTrackingOrderId){
@@ -6978,12 +6414,10 @@ function startFakeProgression(currentStatus){
           if(!snap.empty) snap.docs[0].ref.update({status: nextStatus});
         }).catch(()=>{});
     }
-
     // Update UI directly (Firestore listener will also fire)
     renderTrackingUI(nextStatus);
     let o = orderHistory.find(x => x.id === currentTrackingOrderId);
     if(o) o.status = nextStatus;
-
     // Send FCM notification for status change
     if(user){
       sendNotificationToUser(user.uid,
@@ -6995,7 +6429,6 @@ function startFakeProgression(currentStatus){
         { orderId: currentTrackingOrderId, type: nextStatus.toLowerCase().replace(/ /g,"_") }
       );
     }
-
     // Show in-app notification
     showFCMNotification(
       nextStatus === "Out for Delivery" ? "Out for Delivery!" :
@@ -7004,31 +6437,24 @@ function startFakeProgression(currentStatus){
       nextStatus === "Delivered"        ? "Enjoy your meal!" : "Status: " + nextStatus,
       {}
     );
-
     // Continue progression
     startFakeProgression(nextStatus);
   }, delay);
 }
-
 // -- RENDER TRACKING UI --------------------------------------------
 function renderTrackingUI(status){
   let stepIdx = TRACK_STEPS.findIndex(s => s.key === status);
   if(stepIdx < 0) stepIdx = 0;
   let step = TRACK_STEPS[stepIdx];
-
   // Status label
   document.getElementById("trackStatusLabel").innerText = status;
-
   // ETA
   updateETA(step.eta);
-
   // Progress bar
   document.getElementById("trackProgressFill").style.width = step.progress + "%";
   document.getElementById("trackProgressPct").innerText    = step.progress + "%";
-
   // Map rider animation
   animateRider(step.riderPos, step.mapLabel);
-
   // Rider card
   let ri = step.riderInfo;
   document.getElementById("riderName").innerText    = ri.name;
@@ -7036,17 +6462,14 @@ function renderTrackingUI(status){
   document.getElementById("riderCallBtn").style.display = ri.showCall ? "flex" : "none";
   document.getElementById("riderCard").querySelector(".rider-avatar").innerText =
     status === "Out for Delivery" ? "🛵" :
-    status === "Delivered"        ? "✅" : "👨‍🍳";
-
+    status === "Delivered"        ? "✅" : "👨â€🍳";
   // ETA bar icon
   document.querySelector(".eta-icon").innerText =
     status === "Out for Delivery" ? "&#x1F6F5;" :
     status === "Delivered"        ? "✅" : "⏳";
-
   // Timeline
   renderTimeline(stepIdx);
 }
-
 // -- TIMELINE ------------------------------------------------------
 function renderTimeline(activeIdx){
   let now = new Date();
@@ -7059,7 +6482,7 @@ function renderTimeline(activeIdx){
     }
     return `
     <div class="track-step ${cls}">
-      <div class="track-dot">${i < activeIdx ? "?" : s.icon}</div>
+      <div class="track-dot">${i < activeIdx ? "✓" : s.icon}</div>
       <div class="track-info">
         <div class="track-label">${s.label}</div>
         <div class="track-sublabel">${s.sub}</div>
@@ -7069,21 +6492,17 @@ function renderTimeline(activeIdx){
   }).join("");
   document.getElementById("trackTimeline").innerHTML = html;
 }
-
 // -- ETA COUNTDOWN -------------------------------------------------
 function updateETA(minutes){
   if(etaCountdownTimer) clearInterval(etaCountdownTimer);
-
   let remaining = minutes * 60; // seconds
   let etaTime   = new Date(Date.now() + remaining * 1000);
   document.getElementById("etaTime").innerText = etaTime.toLocaleTimeString("en-IN",{hour:"2-digit",minute:"2-digit",hour12:true});
-
   if(minutes <= 0){
     document.getElementById("etaMinutes").innerText = "0";
     document.getElementById("etaBar").style.background = "linear-gradient(135deg,#0d2e1f,#111)";
     return;
   }
-
   function tick(){
     let mins = Math.floor(remaining / 60);
     let secs = remaining % 60;
@@ -7093,7 +6512,6 @@ function updateETA(minutes){
   tick();
   etaCountdownTimer = setInterval(tick, 1000);
 }
-
 // -- MAP RIDER ANIMATION -------------------------------------------
 function animateRider(targetLeft, label){
   let rider = document.getElementById("mapRider");
@@ -7101,7 +6519,6 @@ function animateRider(targetLeft, label){
   if(rider) rider.style.left = targetLeft;
   if(lbl)   lbl.innerText    = label;
 }
-
 // -- WIRE INTO onPaymentSuccess ------------------------------------
 // Store the order ID so "Track My Order" button works
 let _origOnPaymentSuccess = window.onPaymentSuccess;
@@ -7113,7 +6530,6 @@ if(typeof _origOnPaymentSuccess === "function"){
   };
 }
 </script>
-
 <!-- -- FCM PUSH NOTIFICATIONS -- -->
 <script>
 // ------------------------------------------------------------------
@@ -7121,30 +6537,25 @@ if(typeof _origOnPaymentSuccess === "function"){
 //  VAPID Key: get from Firebase Console → Project Settings →
 //  Cloud Messaging ? Web Push certificates ? Generate key pair
 // ------------------------------------------------------------------
-
 // Replace with your VAPID key from Firebase Console
 // Firebase Console → Project Settings → Cloud Messaging →
 // Web configuration ? Generate key pair ? copy the key
 const FCM_VAPID_KEY = APP_CONFIG.fcm.vapidKey;
-
 // -- REQUEST PERMISSION + GET TOKEN -------------------------------------------
 async function initFCM(){
   try {
     // Only run if messaging is supported
     if(!firebase.messaging.isSupported()) return;
-
     const permission = await Notification.requestPermission();
     if(permission !== "granted"){
       console.log("FCM: Notification permission denied");
       return;
     }
-
     // Get FCM token
     const token = await window._fbMsg.getToken({
       vapidKey:          FCM_VAPID_KEY,
       serviceWorkerRegistration: await navigator.serviceWorker.getRegistration("/firebase-messaging-sw.js")
     });
-
     if(token){
       console.log("✅ FCM Token:", token.slice(0,20) + "...");
       await saveFCMToken(token);
@@ -7154,13 +6565,11 @@ async function initFCM(){
     console.warn("FCM init failed:", err.message);
   }
 }
-
 // -- SAVE TOKEN TO FIRESTORE ---------------------------------------------------
 async function saveFCMToken(token){
   try {
     let user = firebase.auth().currentUser;
     let uid  = user ? user.uid : "guest_" + Date.now();
-
     await window._fbDb.collection("fcmTokens").doc(uid).set({
       token:     token,
       uid:       uid,
@@ -7169,20 +6578,17 @@ async function saveFCMToken(token){
       updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
       platform:  /iPhone|iPad|Android/.test(navigator.userAgent) ? "mobile" : "desktop"
     }, { merge: true });
-
     console.log("✅ FCM token saved to Firestore");
   } catch(e){
     console.warn("FCM token save failed:", e.message);
   }
 }
-
 // -- FOREGROUND NOTIFICATION UI ------------------------------------------------
 // Shows a beautiful in-app notification banner when app is open
 function showFCMNotification(title, body, data){
   // Remove any existing notification
   let existing = document.getElementById("fcmBanner");
   if(existing) existing.remove();
-
   let banner = document.createElement("div");
   banner.id = "fcmBanner";
   banner.style.cssText = `
@@ -7196,18 +6602,16 @@ function showFCMNotification(title, body, data){
     transition:transform 0.4s cubic-bezier(0.34,1.3,0.64,1);
     cursor:pointer;
   `;
-
   // Icon based on notification type
-  let icon = "[Bell]";
+  let icon = "🔔";
   let borderColor = "#ff4d4d";
   if(body && body.toLowerCase().includes("deliver")){
-    icon = "[Truck]"; borderColor = "#00e5a0";
+    icon = "🛵"; borderColor = "#00e5a0";
   } else if(body && body.toLowerCase().includes("prepar")){
     icon = "🛵"; borderColor = "#ff9800";
   } else if(body && body.toLowerCase().includes("confirm")){
     icon = "✅"; borderColor = "#4caf50";
   }
-
   banner.style.borderColor = borderColor + "44";
   banner.innerHTML = `
     <div style="width:44px;height:44px;border-radius:12px;background:${borderColor}22;
@@ -7222,23 +6626,19 @@ function showFCMNotification(title, body, data){
       style="background:none;border:none;color:#555;font-size:18px;cursor:pointer;
       padding:4px;flex-shrink:0;line-height:1;">✕</button>
   `;
-
   // Click opens order history
   banner.addEventListener("click", e => {
     if(e.target.tagName === "BUTTON") return;
     banner.remove();
     openOrderHistory();
   });
-
   document.body.appendChild(banner);
-
   // Slide in
   requestAnimationFrame(() => {
     requestAnimationFrame(() => {
       banner.style.transform = "translateX(-50%) translateY(0)";
     });
   });
-
   // Auto-dismiss after 5 seconds
   setTimeout(() => {
     if(document.getElementById("fcmBanner")){
@@ -7246,11 +6646,9 @@ function showFCMNotification(title, body, data){
       setTimeout(() => banner.remove(), 400);
     }
   }, 5000);
-
   // Also play the click sound
   playClickSound();
 }
-
 // -- SEND NOTIFICATION (called from admin panel or on order events) ------------
 // This sends via Firestore trigger - the actual FCM send happens server-side
 // For client-side demo: writes to "notifications" collection which
@@ -7270,20 +6668,17 @@ async function sendNotificationToUser(uid, title, body, data){
     console.warn("Notification queue failed:", e.message);
   }
 }
-
 // -- AUTO-NOTIFY ON ORDER EVENTS -----------------------------------------------
 // Called automatically when order is placed
 function notifyOrderPlaced(orderId, total){
   let user = firebase.auth().currentUser;
   if(!user) return;
-
   // Foreground: show in-app banner immediately
   showFCMNotification(
     "Order Confirmed!",
     "Your order " + orderId + " of Rs." + total + " is confirmed and being prepared.",
     { orderId: orderId }
   );
-
   // Queue for background push (when user closes app)
   sendNotificationToUser(user.uid,
     "Order Confirmed!",
@@ -7291,7 +6686,6 @@ function notifyOrderPlaced(orderId, total){
     { orderId: orderId, type: "order_placed" }
   );
 }
-
 // -- INIT FCM AFTER LOGIN ------------------------------------------------------
 // Called from enterSite() - request permission after user is logged in
 // (browsers require a user gesture before showing permission prompt)
@@ -7306,7 +6700,6 @@ function requestNotificationPermission(){
     }
   }, 3000);
 }
-
 // -- FRIENDLY PERMISSION PROMPT ------------------------------------------------
 function showNotificationPrompt(){
   let prompt = document.createElement("div");
@@ -7321,7 +6714,7 @@ function showNotificationPrompt(){
     animation:slideUp 0.4s cubic-bezier(0.34,1.3,0.64,1);
   `;
   prompt.innerHTML = `
-    <div style="font-size:28px;flex-shrink:0;"></div>
+    <div style="font-size:28px;flex-shrink:0;">🔔</div>
     <div style="flex:1;">
       <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:3px;">Enable Notifications</div>
       <div style="font-size:11px;color:#666;line-height:1.5;">Get updates on your order status - preparing, out for delivery & more</div>
@@ -7342,19 +6735,16 @@ function showNotificationPrompt(){
     </div>
   `;
   document.body.appendChild(prompt);
-
   // Auto-dismiss after 8 seconds
   setTimeout(() => {
     let el = document.getElementById("notifPrompt");
     if(el) el.remove();
   }, 8000);
 }
-
 // -- WIRE INTO enterSite -------------------------------------------------------
 // Patch enterSite to also request notification permission
 let _origEnterSite = window.enterSite;
 </script>
-
 <!-- -- AI FOOD RECOMMENDATION JS -- -->
 <script>
 // ------------------------------------------------------------------
@@ -7362,19 +6752,15 @@ let _origEnterSite = window.enterSite;
 //  Get your API key: https://platform.openai.com/api-keys
 //  Replace the key below - keep it secret in production!
 // ------------------------------------------------------------------
-
 const OPENAI_API_KEY = APP_CONFIG.openai.apiKey;
 const OPENAI_MODEL   = APP_CONFIG.openai.model;
-
 let aiChatHistory = []; // keeps conversation context
 let aiPanelOpen   = false;
-
 // -- OPEN / CLOSE PANEL --------------------------------------------
 function toggleAIPanel(){
   let panel = document.getElementById("aiPanel");
   aiPanelOpen = !aiPanelOpen;
   panel.classList.toggle("open", aiPanelOpen);
-
   if(aiPanelOpen){
     dimMain();
     // First open - show welcome message
@@ -7384,18 +6770,15 @@ function toggleAIPanel(){
     undimMain();
   }
 }
-
 // -- INIT CHAT WITH WELCOME ----------------------------------------
 function initAIChat(){
   let hour = new Date().getHours();
   let greeting = hour < 12 ? "Good morning" : hour < 17 ? "Good afternoon" : "Good evening";
   let name = userProfile.name && userProfile.name !== "Guest" ? ", " + userProfile.name.split(" ")[0] : "";
-
   // Check API key
   if(!OPENAI_API_KEY){
     document.getElementById("aiKeyNotice").style.display = "block";
   }
-
   addAIMessage("ai",
     greeting + name + "! I'm your personal food assistant.\n\n" +
     "I can help you:\n" +
@@ -7406,7 +6789,6 @@ function initAIChat(){
     "What are you craving today?"
   );
 }
-
 // -- BUILD SYSTEM PROMPT -------------------------------------------
 function buildSystemPrompt(){
   // Summarise order history
@@ -7418,29 +6800,23 @@ function buildSystemPrompt(){
     let top = Object.entries(freq).sort((a,b)=>b[1]-a[1]).slice(0,5).map(([n,c])=>n+" (x"+c+")").join(", ");
     orderSummary = "Past orders: " + top + ". Total orders: " + orderHistory.length + ".";
   }
-
   // Cart context
   let cartContext = cart.length > 0
     ? "Currently in cart: " + cart.map(i => i.n).join(", ") + "."
     : "Cart is empty.";
-
   // Time context
   let hour = new Date().getHours();
   let mealTime = hour < 11 ? "breakfast" : hour < 15 ? "lunch" : hour < 18 ? "snack time" : "dinner";
-
   // Menu summary (categories + price range)
   let cats = [...new Set(items.map(i => i.cat))];
   let minP = Math.min(...items.map(i => i.p));
   let maxP = Math.max(...items.map(i => i.p));
   let vegCount = items.filter(i => i.v).length;
-
   // Top 20 items for context (name, price, cat, veg, desc)
   let menuSample = items.slice(0,20).map(i =>
     `${i.n} (${i.p}, ${i.cat}, ${i.v?"veg":"non-veg"}, spicy:${i.spicy}/3)`
   ).join("; ");
-
   return `You are a friendly, enthusiastic food recommendation AI for 99Foodies, a food delivery app in Valsad, Gujarat, India.
-
 RESTAURANT INFO:
 - Name: 99Foodies
 - Location: Valsad, Gujarat
@@ -7448,18 +6824,15 @@ RESTAURANT INFO:
 - Price range: ${minP} - ${maxP}
 - Veg items: ${vegCount} out of ${items.length} total
 - Current time: ${mealTime}
-
 MENU SAMPLE (top 20 items):
 ${menuSample}
-
 USER CONTEXT:
 - Name: ${userProfile.name || "Guest"}
 - ${orderSummary}
 - ${cartContext}
-
 INSTRUCTIONS:
 1. Recommend 2-3 specific dishes from the menu by EXACT name
-2. Always mention the price ()
+2. Always mention the price (₹)
 3. Be warm, conversational, and enthusiastic - like a knowledgeable friend
 4. Keep responses concise (max 120 words)
 5. When recommending, format each item as: **Item Name** (price) - reason
@@ -7469,30 +6842,23 @@ INSTRUCTIONS:
 9. Use emojis naturally but not excessively
 10. NEVER make up items not in the menu`;
 }
-
 // -- SEND MESSAGE --------------------------------------------------
 async function sendAIMessage(text){
   let input = document.getElementById("aiInput");
   let msg   = text || input.value.trim();
   if(!msg) return;
-
   // Clear input & chips
   input.value = "";
   document.getElementById("aiChips").style.display = "none";
-
   // Show user message
   addAIMessage("user", msg);
-
   // Add to history
   aiChatHistory.push({ role: "user", content: msg });
-
   // Show typing
   let typingId = showTyping();
-
   // Disable send
   let btn = document.getElementById("aiSendBtn");
   btn.disabled = true;
-
   try {
     let reply;
     if(!OPENAI_API_KEY){
@@ -7503,35 +6869,28 @@ async function sendAIMessage(text){
       // -- REAL GPT CALL ---------------------------------------------
       reply = await callOpenAI(msg);
     }
-
     removeTyping(typingId);
     addAIMessage("ai", reply);
     aiChatHistory.push({ role: "assistant", content: reply });
-
     // Extract mentioned items and show as cards
     let mentioned = extractMentionedItems(reply);
     if(mentioned.length > 0) renderAIFoodCards(mentioned);
-
     // Log analytics
     logEvent("ai_recommendation", { query: msg.slice(0,50), items_shown: mentioned.length });
-
   } catch(err){
     removeTyping(typingId);
     addAIMessage("ai", "Sorry, I'm having trouble connecting right now. Try again in a moment!");
     console.error("AI error:", err);
   }
-
   btn.disabled = false;
   input.focus();
 }
-
 // -- CALL OPENAI API -----------------------------------------------
 async function callOpenAI(userMsg){
   let messages = [
     { role: "system", content: buildSystemPrompt() },
     ...aiChatHistory.slice(-8) // keep last 8 messages for context
   ];
-
   let res = await fetch("https://api.openai.com/v1/chat/completions", {
     method: "POST",
     headers: {
@@ -7545,30 +6904,25 @@ async function callOpenAI(userMsg){
       temperature: 0.8
     })
   });
-
   if(!res.ok){
     let err = await res.json().catch(()=>({}));
     throw new Error(err.error?.message || "API error " + res.status);
   }
-
   let data = await res.json();
   return data.choices[0].message.content.trim();
 }
-
 // -- LOCAL FALLBACK (no API key) -----------------------------------
 function generateLocalRecommendation(query){
   let q = query.toLowerCase();
   let hour = new Date().getHours();
   let isVeg = userProfile.isVeg || false;
-
   // Analyse query intent
   let wantsSpicy   = q.includes("spicy") || q.includes("hot");
-  let wantsBudget  = q.includes("cheap") || q.includes("budget") || q.includes("?") || q.includes("under");
+  let wantsBudget  = q.includes("cheap") || q.includes("budget") || q.includes("₹") || q.includes("under");
   let wantsVeg     = q.includes("veg") || q.includes("vegetarian");
   let wantsPopular = q.includes("popular") || q.includes("best") || q.includes("recommend");
   let wantsCombo   = q.includes("combo") || q.includes("meal") || q.includes("together");
   let wantsDrink   = q.includes("drink") || q.includes("cold") || q.includes("juice") || q.includes("coffee");
-
   // Filter items
   let pool = items.filter(i => {
     if(wantsVeg && !i.v) return false;
@@ -7577,48 +6931,38 @@ function generateLocalRecommendation(query){
     if(!wantsDrink && i.t === "drink") return false;
     return true;
   });
-
   if(pool.length === 0) pool = items.filter(i => i.t === "food");
-
   // Sort by relevance
   if(wantsBudget) pool.sort((a,b) => a.p - b.p);
   else if(wantsPopular) pool = pool.slice(0, 15); // first items are "popular"
   else pool.sort(() => Math.random() - 0.5);
-
   let picks = pool.slice(0, 3);
-
   // Build response
   let mealTime = hour < 11 ? "breakfast" : hour < 15 ? "lunch" : hour < 18 ? "snack" : "dinner";
-
   // Personalise based on order history
   let historyNote = "";
   if(orderHistory.length > 0){
     let lastCat = orderHistory[0].items?.[0]?.name || "";
     historyNote = lastCat ? ` Since you enjoyed ${lastCat} last time, you might love these too!` : "";
   }
-
   let recs = picks.map(i =>
     `**${i.n}** (${i.p}) - ${i.desc || "A customer favourite!"}`
   ).join("\n");
-
   let intros = [
     `Great choice for ${mealTime}!${historyNote} Here's what I'd suggest:`,
     `Based on your taste, these are perfect right now:`,
     `Here are my top picks for you today:`,
     `You're going to love these!`
   ];
-
   return intros[Math.floor(Math.random() * intros.length)] + "\n\n" + recs +
     "\n\nWant me to suggest a drink to go with it?";
 }
-
 // -- EXTRACT MENTIONED ITEMS FROM AI REPLY -------------------------
 function extractMentionedItems(text){
   return items.filter(item =>
     text.toLowerCase().includes(item.n.toLowerCase())
   ).slice(0, 3);
 }
-
 // -- RENDER FOOD CARDS ---------------------------------------------
 function renderAIFoodCards(foodItems){
   let chat = document.getElementById("aiChat");
@@ -7626,7 +6970,6 @@ function renderAIFoodCards(foodItems){
   wrap.style.cssText = "display:flex;flex-direction:column;gap:8px;margin-left:42px;";
   wrap.className = "ai-msg";
   wrap.style.animation = "aiMsgIn 0.3s ease both";
-
   foodItems.forEach(item => {
     let card = document.createElement("div");
     card.className = "ai-food-card";
@@ -7646,37 +6989,30 @@ function renderAIFoodCards(foodItems){
       </div>`;
     wrap.appendChild(card);
   });
-
   chat.appendChild(wrap);
   chat.scrollTop = chat.scrollHeight;
 }
-
 // -- ADD ITEM FROM AI CARD -----------------------------------------
 function addFromAI(name, price){
   add(name, price);
   // Confirm in chat
   addAIMessage("ai", `✅ **${name}** added to your cart!\n\nAnything else you'd like to add?`);
 }
-
 // -- CHAT HELPERS --------------------------------------------------
 function addAIMessage(role, text){
   let chat = document.getElementById("aiChat");
   let div  = document.createElement("div");
   div.className = "ai-msg " + (role === "user" ? "user" : "");
-
   // Format **bold** markdown
   let formatted = text
     .replace(/\*\*(.*?)\*\*/g, '<strong style="color:#fff;">$1</strong>')
     .replace(/\n/g, "<br>");
-
   div.innerHTML = `
     <div class="ai-avatar">${role === "user" ? "U" : "AI"}</div>
     <div class="ai-bubble">${formatted}</div>`;
-
   chat.appendChild(div);
   chat.scrollTop = chat.scrollHeight;
 }
-
 function showTyping(){
   let chat = document.getElementById("aiChat");
   let id   = "typing-" + Date.now();
@@ -7692,12 +7028,10 @@ function showTyping(){
   chat.scrollTop = chat.scrollHeight;
   return id;
 }
-
 function removeTyping(id){
   let el = document.getElementById(id);
   if(el) el.remove();
 }
-
 // -- CLOSE AI PANEL WHEN OTHER PANELS OPEN ------------------------
 let _origCloseAllPanels = window.closeAllPanels;
 if(typeof _origCloseAllPanels === "function"){
@@ -7708,7 +7042,6 @@ if(typeof _origCloseAllPanels === "function"){
   };
 }
 </script>
-
 <!-- -- UI POLISH JS -- -->
 <script>
 // -- APP LOADER DISMISS --------------------------------------------------------
@@ -7724,7 +7057,6 @@ if(typeof _origCloseAllPanels === "function"){
     setTimeout(dismissLoader, 1500);
   }
 })();
-
 // -- RIPPLE EFFECT -------------------------------------------------------------
 document.addEventListener("click", function(e){
   let btn = e.target.closest(".ripple-host");
@@ -7739,7 +7071,6 @@ document.addEventListener("click", function(e){
   btn.appendChild(circle);
   circle.addEventListener("animationend", () => circle.remove());
 });
-
 // -- ADD ripple-host TO KEY BUTTONS --------------------------------------------
 document.addEventListener("DOMContentLoaded", function(){
   // Checkout, login, filter buttons
@@ -7747,15 +7078,13 @@ document.addEventListener("DOMContentLoaded", function(){
     el.classList.add("ripple-host");
   });
 });
-
 // -- CHECKOUT BUTTON PULSE WHEN CART HAS ITEMS ---------------------------------
 function updateCheckoutBtnState(){
   let btn = document.querySelector(".checkout-btn");
   if(!btn) return;
-  let total = parseInt(document.getElementById("total")?.innerText?.replace("","")) || 0;
+  let total = parseInt(document.getElementById("total")?.innerText?.replace("₹","")) || 0;
   btn.classList.toggle("ready", total > 0);
 }
-
 // -- PATCH update() TO ALSO CALL PULSE STATE -----------------------------------
 let _origUpdate = window.update;
 if(typeof _origUpdate === "function"){
@@ -7764,7 +7093,6 @@ if(typeof _origUpdate === "function"){
     updateCheckoutBtnState();
   };
 }
-
 // -- SMOOTH NUMBER COUNT-UP FOR STATS -----------------------------------------
 function countUp(el, target, prefix, duration){
   if(!el) return;
@@ -7782,7 +7110,6 @@ function countUp(el, target, prefix, duration){
   }
   requestAnimationFrame(step);
 }
-
 // Patch computeOHStats to animate numbers
 let _origComputeOHStats = window.computeOHStats;
 if(typeof _origComputeOHStats === "function"){
@@ -7797,7 +7124,6 @@ if(typeof _origComputeOHStats === "function"){
     countUp(document.getElementById("ohStatAvg"),    avg,    "₹", 600);
   };
 }
-
 // -- SCROLL-TRIGGERED CARD REVEAL (Intersection Observer) ---------------------
 (function(){
   if(!window.IntersectionObserver) return;
@@ -7810,7 +7136,6 @@ if(typeof _origComputeOHStats === "function"){
       }
     });
   }, {threshold: 0.08});
-
   // Observe brand cards
   document.querySelectorAll(".brand-card").forEach((el, i) => {
     el.style.opacity = "0";
@@ -7819,13 +7144,12 @@ if(typeof _origComputeOHStats === "function"){
     io.observe(el);
   });
 })();
-
 // -- HERO STATS COUNT-UP ON LOAD -----------------------------------------------
 document.addEventListener("DOMContentLoaded", function(){
   let heroStats = [
     {selector:".hero-stat:nth-child(1) span", target:500, suffix:"+"},
     {selector:".hero-stat:nth-child(3) span", target:30,  suffix:" min"},
-    {selector:".hero-stat:nth-child(5) span", target:4.5, suffix:"?", isFloat:true},
+    {selector:".hero-stat:nth-child(5) span", target:4.5, suffix:"⭐", isFloat:true},
   ];
   heroStats.forEach(({selector, target, suffix, isFloat}) => {
     let el = document.querySelector(selector);
@@ -7844,7 +7168,6 @@ document.addEventListener("DOMContentLoaded", function(){
   });
 });
 </script>
-
 <!-- -- PWA: SERVICE WORKER + INSTALL PROMPT -- -->
 <script>
 // -- Register Service Worker ---------------------------------------------------
@@ -7855,23 +7178,19 @@ if("serviceWorker" in navigator && location.protocol !== "file:"){
       .catch(err => console.log("SW error:", err));
   });
 }
-
 // -- Install Prompt Banner -----------------------------------------------------
 let deferredPrompt = null;
-
 window.addEventListener("beforeinstallprompt", e => {
   e.preventDefault();
   deferredPrompt = e;
   // Show install banner after 3 seconds
   setTimeout(showInstallBanner, 3000);
 });
-
 function showInstallBanner(){
   if(!deferredPrompt) return;
   let banner = document.getElementById("installBanner");
   if(banner) banner.style.display = "flex";
 }
-
 function installApp(){
   if(!deferredPrompt) return;
   deferredPrompt.prompt();
@@ -7883,18 +7202,15 @@ function installApp(){
     document.getElementById("installBanner").style.display = "none";
   });
 }
-
 function dismissInstall(){
   document.getElementById("installBanner").style.display = "none";
 }
-
 // -- Detect if already installed -----------------------------------------------
 window.addEventListener("appinstalled", () => {
   showToast("✅ App installed! Open from your home screen.");
   deferredPrompt = null;
 });
 </script>
-
 <!-- -- INSTALL BANNER -- -->
 <div id="installBanner" style="
   display:none;position:fixed;bottom:0;left:0;right:0;z-index:9998;
@@ -7921,6 +7237,5 @@ window.addEventListener("appinstalled", () => {
     font-size:20px;cursor:pointer;padding:4px;flex-shrink:0;
   ">✕</button>
 </div>
-
 </body>
 </html>
