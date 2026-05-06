@@ -122,10 +122,10 @@ overflow-x:hidden;
 box-sizing:border-box;
 }
 .login-card{
-background:rgba(40,22,8,0.88);
+background:rgba(120,80,20,0.35);
 backdrop-filter:blur(20px);
 -webkit-backdrop-filter:blur(20px);
-border:1px solid rgba(255,255,255,0.07);
+border:1px solid rgba(200,160,60,0.25);
 border-radius:28px;
 padding:36px 28px 32px;
 width:calc(100% - 60px);
@@ -329,8 +329,8 @@ box-sizing:border-box;
 .nav-logo-img{
   width:48px;height:48px;
   object-fit:contain;border-radius:50%;
-  background:#1a0a00;
-  filter:drop-shadow(0 2px 8px rgba(255,165,0,0.3));
+  background:transparent;
+  filter:drop-shadow(0 0 10px rgba(200,168,75,0.6)) drop-shadow(0 0 20px rgba(200,168,75,0.3));
 }
 .nav-title{
   font-size:22px;
@@ -340,18 +340,22 @@ box-sizing:border-box;
   letter-spacing:0px;
   line-height:1;
   display:block;
-  background:linear-gradient(135deg,#ffffff 0%,#ffe8a0 50%,#ffb347 100%);
+}
+.nav-title .nav-99{
+  font-size:26px;
+  background:linear-gradient(135deg,#f5d78e 0%,#c8a84b 50%,#f5d78e 100%);
   -webkit-background-clip:text;
   -webkit-text-fill-color:transparent;
   background-clip:text;
 }
-.nav-title .nav-99{
-  font-size:26px;
-}
 .nav-title .nav-foodies{
   font-size:22px;
+  background:linear-gradient(135deg,#f5d78e 0%,#c8a84b 50%,#f5d78e 100%);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
 }
-.nav-sub{font-size:11px;color:#ff4d4d;font-weight:600}
+.nav-sub{font-size:11px;color:#888;font-weight:500;letter-spacing:0.3px;}
 .nav-search-wrap{flex:1;position:relative;max-width:420px;margin:0 auto;min-width:0;}
 .nav-search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:14px}
 .search{
@@ -2447,10 +2451,10 @@ html{scroll-behavior:smooth;}
 <!-- --- NAVBAR --- -->
 <nav class="navbar">
   <div class="nav-brand">
-    <img src="https://i.ibb.co/n8bWTHyf/99foodies.png" class="nav-logo-img" alt="99Foodies Logo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="nav-logo-fallback" style="display:none;width:36px;height:36px;background:linear-gradient(135deg,#ff4d4d,#ff1a1a);border-radius:50%;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:#fff;flex-shrink:0;">99</span>
+    <img src="assets/logo.png" class="nav-logo-img" alt="99Foodies Logo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="nav-logo-fallback" style="display:none;width:48px;height:48px;background:linear-gradient(135deg,#c8a84b,#f5d78e);border-radius:50%;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:#1a1a1a;flex-shrink:0;">99</span>
     <div>
       <div class="nav-title"><span class="nav-99">99</span><span class="nav-foodies">Foodies</span></div>
-       <div class="nav-sub">Good Food, Great Mind</div>
+      <div class="nav-sub">Good Food, Great Mood!</div>
     </div>
   </div>
    <div class="nav-search-wrap">
