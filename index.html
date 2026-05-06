@@ -116,6 +116,11 @@ background-size:cover;
 background-attachment:fixed;
 }
 
+/* Fix background-attachment:fixed on iOS Safari */
+@supports (-webkit-touch-callout: none) {
+  body { background-attachment: scroll; }
+}
+
 /* LOGIN FLOW */
 .login{
 position:fixed;top:0;left:0;width:100%;height:100%;
@@ -159,7 +164,8 @@ box-sizing:border-box;
 .login-logo-img{
   width:130px;height:130px;
   display:block;margin:0 auto 10px;
-  object-fit:cover;border-radius:50%;
+  object-fit:contain;border-radius:50%;
+  background:#1a0a00;
   box-shadow:0 0 0 3px rgba(255,180,30,0.6), 0 0 25px rgba(255,150,0,0.8), 0 0 50px rgba(220,100,0,0.4);
 }
 .login-logo h2{
@@ -346,7 +352,8 @@ box-sizing:border-box;
 .nav-brand{display:flex;align-items:center;gap:10px;flex-shrink:0}
 .nav-logo-img{
   width:48px;height:48px;
-  object-fit:cover;border-radius:50%;
+  object-fit:contain;border-radius:50%;
+  background:#1a0a00;
   filter:drop-shadow(0 2px 8px rgba(255,165,0,0.3));
 }
 .nav-title{
@@ -467,19 +474,22 @@ box-sizing:border-box;
 @keyframes spin-slow{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
 @media(max-width:600px){
   .nav-search-wrap{display:none !important;flex:0 !important;width:0 !important;margin:0 !important;padding:0 !important;}
-  .navbar{padding:10px 12px;gap:8px;}
-  .nav-btn{width:38px;height:38px;font-size:16px;}
-  .nav-actions{gap:6px;margin-left:auto;}
-  .nav-logo-img{width:36px;height:36px;flex-shrink:0;}
-  .nav-brand{gap:7px;}
-  .nav-title{font-size:18px;}
-  .nav-title .nav-99{font-size:20px;}
-  .nav-title .nav-foodies{font-size:18px;}
-  .nav-sub{font-size:10px;}
-  .hero-banner{padding:20px 16px}
-  .hero-title{font-size:24px;-webkit-text-fill-color:#fff}
-  .hero-img{width:130px;height:110px}
-  .hero-badge{width:46px;height:46px;font-size:9px}
+  .navbar{padding:8px 10px;gap:6px;flex-wrap:nowrap;}
+  .nav-brand{gap:6px;flex-shrink:0;min-width:0;}
+  .nav-logo-img{width:36px;height:36px;flex-shrink:0;min-width:36px;}
+  .nav-title{font-size:16px;white-space:nowrap;}
+  .nav-title .nav-99{font-size:18px;}
+  .nav-title .nav-foodies{font-size:16px;}
+  .nav-sub{display:none;}
+  .nav-actions{gap:4px;flex-shrink:0;margin-left:auto;}
+  .nav-btn{width:36px;height:36px;font-size:15px;border-radius:10px;}
+  .hero-banner{padding:16px 12px;min-height:auto;}
+  .hero-title{font-size:22px;-webkit-text-fill-color:#fff;letter-spacing:-0.5px;}
+  .hero-sub{font-size:12px;margin-bottom:14px;}
+  .hero-img{width:120px;height:100px;border-radius:16px;}
+  .hero-badge{width:44px;height:44px;font-size:8px;}
+  .hero-stats{gap:12px;}
+  .hero-stat span{font-size:16px;}
 }
 
 /* BRAND CAROUSEL */
@@ -1914,7 +1924,8 @@ overflow:hidden;
 #appLoader.hidden{opacity:0;visibility:hidden;pointer-events:none;}
 .loader-logo{
   width:80px;height:80px;
-  object-fit:cover;border-radius:50%;
+  object-fit:contain;border-radius:50%;
+  background:#1a0a00;
   animation:loaderPop 0.6s cubic-bezier(0.34,1.56,0.64,1) both;
 }
 @keyframes loaderPop{
@@ -2460,7 +2471,8 @@ html{scroll-behavior:smooth;}
 
 <!-- -- APP LOADER -- -->
 <div id="appLoader">
-  <img src="assets/logo.png" class="loader-logo" alt="99Foodies Logo">
+  <img src="assets/logo.png" class="loader-logo" alt="99Foodies Logo" onerror="this.onerror=null;this.style.display='none';document.getElementById('loaderLogoFallback').style.display='flex'">
+  <div id="loaderLogoFallback" style="display:none;width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#ff4d4d,#ff1a1a);align-items:center;justify-content:center;font-size:22px;font-weight:900;color:#fff;">99</div>
   <div class="loader-bar-wrap"><div class="loader-bar"></div></div>
    <div class="loader-text">Loading your menu...</div>
 </div>
@@ -2470,7 +2482,8 @@ html{scroll-behavior:smooth;}
 
     <!-- LOGO -->
     <div class="login-logo">
-      <img src="assets/logo.png" class="login-logo-img" alt="99Foodies Logo">
+      <img src="assets/logo.png" class="login-logo-img" id="loginLogoImg" alt="99Foodies Logo" onerror="this.style.display='none';document.getElementById('loginLogoFallback').style.display='flex'">
+      <div id="loginLogoFallback" style="display:none;width:130px;height:130px;border-radius:50%;background:linear-gradient(135deg,#ff4d4d,#ff1a1a);align-items:center;justify-content:center;font-size:42px;font-weight:900;color:#fff;margin:0 auto 10px;box-shadow:0 0 0 3px rgba(255,180,30,0.6),0 0 25px rgba(255,150,0,0.8);">99</div>
       <h2><span class="logo-num">99</span><span class="logo-word">Foodies</span></h2>
       <p>Good Food, Great Mood!</p>
     </div>
@@ -2562,7 +2575,7 @@ html{scroll-behavior:smooth;}
 <!-- --- NAVBAR --- -->
 <nav class="navbar">
   <div class="nav-brand">
-    <img src="assets/logo.png" class="nav-logo-img" alt="99Foodies Logo">
+    <img src="assets/logo.png" class="nav-logo-img" alt="99Foodies Logo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="nav-logo-fallback" style="display:none;width:36px;height:36px;background:linear-gradient(135deg,#ff4d4d,#ff1a1a);border-radius:50%;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:#fff;flex-shrink:0;">99</span>
     <div>
       <div class="nav-title"><span class="nav-99">99</span><span class="nav-foodies">Foodies</span></div>
        <div class="nav-sub">Good Food, Great Mind</div>
@@ -2700,7 +2713,7 @@ html{scroll-behavior:smooth;}
     <div class="brand-card-title">Cold Drink</div>
   </div>
   <div class="brand-card" onclick="filterCat(this,'vadapav')">
-    <img src="assets/vadapav.png" alt="Vada Pav" class="brand-card-img">
+    <img src="assets/vadapav.png" alt="Vada Pav" class="brand-card-img" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1606491956689-2ea866880c84?w=400&h=220&fit=crop'">
     <div class="brand-card-title">Vada Pav</div>
   </div>
 </div>
@@ -4645,7 +4658,9 @@ function setCatBackground(cat){
   document.body.style.backgroundImage =
     `linear-gradient(rgba(0,0,0,0.82),rgba(0,0,0,0.82)), url('${url}')`;
   document.body.style.backgroundSize = "cover";
-  document.body.style.backgroundAttachment = "fixed";
+  // Use scroll on iOS (fixed is broken on Safari mobile)
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+  document.body.style.backgroundAttachment = isIOS ? "scroll" : "fixed";
   document.body.style.backgroundPosition = "center";
   document.body.style.transition = "background-image 0.5s ease";
 }
