@@ -120,17 +120,18 @@ overflow-y:auto;
 overflow-x:hidden;
 -webkit-overflow-scrolling:touch;
 box-sizing:border-box;
+padding:0 0 env(safe-area-inset-bottom);
 }
 .login-card{
-background:rgba(120,80,20,0.35);
-backdrop-filter:blur(20px);
--webkit-backdrop-filter:blur(20px);
-border:1px solid rgba(200,160,60,0.25);
+background:rgba(0,0,0,0.45);
+backdrop-filter:blur(24px);
+-webkit-backdrop-filter:blur(24px);
+border:1px solid rgba(255,255,255,0.08);
 border-radius:28px;
 padding:36px 28px 32px;
-width:calc(100% - 60px);
+width:calc(100% - 40px);
 max-width:390px;
-margin:50px auto;
+margin:40px auto;
 box-shadow:0 30px 80px rgba(0,0,0,0.6);
 position:relative;
 overflow:hidden;
@@ -141,7 +142,7 @@ box-sizing:border-box;
   top:-90px;left:50%;
   transform:translateX(-50%);
   width:260px;height:260px;
-  background:radial-gradient(circle, rgba(255,180,30,0.55) 0%, rgba(230,120,0,0.35) 35%, rgba(160,60,0,0.15) 60%, transparent 75%);
+  background:radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 70%);
   pointer-events:none;
   z-index:0;
   border-radius:50%;
@@ -309,8 +310,16 @@ box-sizing:border-box;
   text-align:center;margin-top:20px;color:#444;font-size:11px;line-height:1.6;
 }
 @media(max-width:420px){
-  .login-card{padding:28px 20px 24px;border-radius:20px;}
-  .otp-box{width:44px;height:52px;font-size:20px;}
+  .login-card{padding:24px 16px 20px;border-radius:20px;width:calc(100% - 24px);margin:24px auto;}
+  .login-logo-img{width:100px;height:100px;}
+  .login-logo h2{font-size:0;}
+  .logo-num,.logo-word{font-size:42px;}
+  .otp-box{width:42px;height:50px;font-size:20px;}
+  .otp-row{gap:8px;}
+  .phone-input,.login-input-group input{font-size:14px;padding:12px 12px 12px 40px;}
+  .phone-code{padding:12px 10px;font-size:13px;}
+  .login-btn{padding:13px;font-size:15px;}
+  .google-signin-btn{padding:12px;font-size:14px;}
 }
 @keyframes popIn{0%{transform:scale(0.5);opacity:0}70%{transform:scale(1.15)}100%{transform:scale(1);opacity:1}}
 @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
