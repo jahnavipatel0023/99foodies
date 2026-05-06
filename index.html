@@ -462,13 +462,13 @@ box-sizing:border-box;
 @keyframes spin-slow{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
 @media(max-width:600px){
   .nav-search-wrap{display:none !important;flex:0 !important;width:0 !important;margin:0 !important;padding:0 !important;}
-  .navbar{padding:8px 10px;gap:6px;flex-wrap:nowrap;}
-  .nav-brand{gap:6px;flex-shrink:0;min-width:0;}
-  .nav-logo-img{width:36px;height:36px;flex-shrink:0;min-width:36px;}
-  .nav-title{font-size:16px;white-space:nowrap;}
-  .nav-title .nav-99{font-size:18px;}
-  .nav-title .nav-foodies{font-size:16px;}
-  .nav-sub{display:none;}
+  .navbar{padding:8px 12px;gap:8px;flex-wrap:nowrap;}
+  .nav-brand{gap:8px;flex-shrink:0;min-width:0;}
+  .nav-logo-img{width:40px;height:40px;flex-shrink:0;min-width:40px;}
+  .nav-title{font-size:17px;white-space:nowrap;}
+  .nav-title .nav-99{font-size:19px;}
+  .nav-title .nav-foodies{font-size:17px;}
+  .nav-sub{display:block;font-size:10px;color:#888;}
   .nav-actions{gap:4px;flex-shrink:0;margin-left:auto;}
   .nav-btn{width:36px;height:36px;font-size:15px;border-radius:10px;}
   .hero-banner{padding:16px 12px;min-height:auto;}
@@ -2460,7 +2460,7 @@ html{scroll-behavior:smooth;}
 <!-- --- NAVBAR --- -->
 <nav class="navbar">
   <div class="nav-brand">
-    <img src="assets/logo.png" class="nav-logo-img" alt="99Foodies Logo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="nav-logo-fallback" style="display:none;width:48px;height:48px;background:linear-gradient(135deg,#c8a84b,#f5d78e);border-radius:50%;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:#1a1a1a;flex-shrink:0;">99</span>
+    <img src="assets/logo.png" class="nav-logo-img" alt="99Foodies Logo" onerror="this.src='https://i.ibb.co/n8bWTHyf/99foodies.png'">
     <div>
       <div class="nav-title"><span class="nav-99">99</span><span class="nav-foodies">Foodies</span></div>
       <div class="nav-sub">Good Food, Great Mood!</div>
